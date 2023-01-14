@@ -44,6 +44,7 @@ dependencies:
   google_sign_in: ^5.4.3
   font_awesome_flutter: ^10.3.0
   flutter_bluetooth_serial: ^0.4.0
+  connectivity_plus: ^3.0.2
 
 dev_dependencies:
   flutter_test:
