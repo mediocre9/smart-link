@@ -1,26 +1,37 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:remo_tooth/config/app_strings.dart';
 
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  final FlutterBlue _blueTooth = FlutterBlue.instance;
   HomeCubit() : super(Initial());
-  List<ScanResult> _devices = [];
+  final List<BluetoothDevice> _devices = [];
 
-  Future scanForDevices() async {
-    if (await _blueTooth.isOn) {
+  scanForDevices() async {
+    _devices.clear();
+    bool? isBluetoothEnabled = await FlutterBluetoothSerial.instance.isEnabled;
+
+    if (isBluetoothEnabled!) {
       emit(Scanning());
-      await _blueTooth.startScan(timeout: const Duration(seconds: 5));
-      _blueTooth.scanResults.listen((devices) {
-        _devices = devices;
+      FlutterBluetoothSerial.instance.startDiscovery().listen((event) {
+        _devices.add(event.device);
+      }).onDone(() {
+        if (_devices.isNotEmpty) {
+          emit(DevicesFound(
+            devices: _devices,
+            totalFoundDevices: _devices.length,
+          ));
+          return;
+        } else {
+          emit(DevicesNotFound(
+            message: AppString.DEVICES_NOT_FOUND,
+          ));
+          return;
+        }
       });
+    } else {
+      emit(BluetoothNotEnabled(message: AppString.BLUE_TOOTH_SERVICE_MSG));
     }
-    emit(Result(devices: _devices));
-  }
-
-  Future stopScanning() async {
-    _blueTooth.stopScan();
   }
 }

@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:remo_tooth/config/app_routes.dart';
 import 'package:remo_tooth/screens/sign_in/cubit/sign_in_cubit.dart';
 
-import '../../config/app_constants.dart';
+import '../../config/app_strings.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -12,13 +12,12 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var mediaQuery = MediaQuery.of(context);
-    var theme = Theme.of(context);
 
     return Scaffold(
       bottomSheet: const Padding(
         padding: EdgeInsets.all(14),
         child: Text(
-          "IT & Robotics Society - Electrical and Software Engineering Team",
+          'Copyright (c) ${AppString.DEVELOPER} 2023. All rights reserved.',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -37,11 +36,11 @@ class SignInScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
-              AppAssetsPath.LOGO,
+              AppString.LOGO,
               height: MediaQuery.of(context).size.height / 6,
             ),
             const Text(
-              "Remo Tooth",
+              AppString.APP_NAME,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -49,7 +48,7 @@ class SignInScreen extends StatelessWidget {
               ),
             ),
             const Text(
-              "An app to remotely connect to an arduino device via bluetooth.",
+              AppString.DESCRIPTION,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -66,29 +65,31 @@ class SignInScreen extends StatelessWidget {
                     arguments: state.userCredential,
                   );
                 } else if (state is Success) {
-                  ScaffoldMessenger.of(_)
-                      .showSnackBar(SnackBar(content: Text(state.message)));
+                  ScaffoldMessenger.of(_).showSnackBar(
+                    SnackBar(content: Text(state.message)),
+                  );
                 } else if (state is Error) {
-                  ScaffoldMessenger.of(_)
-                      .showSnackBar(SnackBar(content: Text(state.message)));
+                  ScaffoldMessenger.of(_).showSnackBar(
+                    SnackBar(content: Text(state.message)),
+                  );
                 }
               },
               builder: (_, state) {
                 if (state is Initial) {
                   return ElevatedButton.icon(
-                    label: const Text("Sign in with Google"),
+                    label: const Text(AppString.GOOGLE_SIGN_IN_BTN),
                     icon: const Icon(FontAwesomeIcons.google),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
                         Colors.blueGrey,
                       ),
                     ),
-                    onPressed: () {
-                      BlocProvider.of<SignInCubit>(_).signIn();
-                    },
+                    onPressed: () => BlocProvider.of<SignInCubit>(_).signIn(),
                   );
                 } else if (state is Loading) {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
                 return Container();
               },

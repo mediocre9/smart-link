@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:remo_tooth/config/app_strings.dart';
 
 import '../../../auth/google_auth.dart';
 part 'sign_in_state.dart';
@@ -11,10 +12,12 @@ class SignInCubit extends Cubit<SignInState> {
     _googleAuthentication.getFirebaseAuthInstance!.authStateChanges().listen(
       (event) async {
         if (event != null) {
-          await signIn();
+          Authenticated(
+            userCredential: _googleAuthentication.getUserCredential!,
+          );
         }
       },
-    ).cancel();
+    );
   }
 
   Future<void> signIn() async {
@@ -27,13 +30,18 @@ class SignInCubit extends Cubit<SignInState> {
         return;
       }
 
-      emit(Success(message: "Successfully logged in!"));
+      emit(
+        Success(
+          message:
+              'Signed in as ${_googleAuthentication.getUserCredential!.email}',
+        ),
+      );
       emit(
         Authenticated(userCredential: _googleAuthentication.getUserCredential!),
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-disabled') {
-        emit(Error(message: "Your account has been suspended!"));
+        emit(Error(message: AppString.SUSPEND_MSG));
         emit(Initial());
         return;
       }
