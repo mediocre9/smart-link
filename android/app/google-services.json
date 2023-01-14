@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "812958689034",
+    "project_id": "remo-tooth",
+    "storage_bucket": "remo-tooth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812958689034:android:a5a9830330cb74b9c5fcf3",
+        "android_client_info": {
+          "package_name": "com.example.remo_tooth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "812958689034-opcfv913r6k8avg3u3asda3e1ned4dqo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX3oMXbPmmbFhp2MeNzqdbZBnXd__LR7w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "812958689034-opcfv913r6k8avg3u3asda3e1ned4dqo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
