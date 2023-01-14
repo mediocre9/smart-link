@@ -72,6 +72,10 @@ class SignInScreen extends StatelessWidget {
                   ScaffoldMessenger.of(_).showSnackBar(
                     SnackBar(content: Text(state.message)),
                   );
+                } else if (state is NoInternet) {
+                  ScaffoldMessenger.of(_).showSnackBar(
+                    SnackBar(content: Text(state.message)),
+                  );
                 }
               },
               builder: (_, state) {

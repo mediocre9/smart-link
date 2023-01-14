@@ -38,3 +38,12 @@ class Error extends SignInState {
   @override
   List<Object?> get props => [message];
 }
+
+class NoInternet extends SignInState {
+  final String message;
+
+  NoInternet({required this.message});
+
+  @override
+  List<Object?> get props => [message];
+}

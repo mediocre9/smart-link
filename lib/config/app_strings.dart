@@ -8,6 +8,7 @@ class AppString {
   static const String LOGO = 'assets/images/logo.jpg';
   static const String SUSPEND_MSG = 'Your account has been suspended.';
   static const String ON_SCAN_MSG = 'Scanning for nearby devices . . .';
+  static const String INTERNET_MSG = 'No Internet Connection!';
   static const String BLUE_TOOTH_SERVICE_MSG = 'Bluetooth service is off.';
   static const String DESCRIPTION =
       'An app to remotely connect to an arduino device via bluetooth.';
