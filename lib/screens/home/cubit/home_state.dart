@@ -1,18 +1,29 @@
 part of 'home_cubit.dart';
 
-abstract class HomeState extends Equatable {
-  const HomeState();
-
-  @override
-  List<Object> get props => [];
-}
+abstract class HomeState {}
 
 class Initial extends HomeState {}
 
 class Scanning extends HomeState {}
 
-class Result extends HomeState {
-  final List<ScanResult> devices;
+class DevicesFound extends HomeState {
+  final List<BluetoothDevice> devices;
+  final int totalFoundDevices;
 
-  const Result({required this.devices});
+  DevicesFound({
+    required this.totalFoundDevices,
+    required this.devices,
+  });
+}
+
+class DevicesNotFound extends HomeState {
+  final String message;
+
+  DevicesNotFound({required this.message});
+}
+
+class BluetoothNotEnabled extends HomeState {
+  final String message;
+
+  BluetoothNotEnabled({required this.message});
 }
