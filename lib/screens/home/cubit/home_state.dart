@@ -4,26 +4,26 @@ abstract class HomeState {}
 
 class Initial extends HomeState {}
 
-class Scanning extends HomeState {}
+class Connected extends HomeState {}
 
-class DevicesFound extends HomeState {
+class Loading extends HomeState {
+  final String message;
+  Loading({required this.message});
+}
+
+class ShowDevices extends HomeState {
   final List<BluetoothDevice> devices;
-  final int totalFoundDevices;
 
-  DevicesFound({
-    required this.totalFoundDevices,
+  final int totalDevices;
+
+  ShowDevices({
+    required this.totalDevices,
     required this.devices,
   });
 }
 
-class DevicesNotFound extends HomeState {
+class BluetoothResponse extends HomeState {
   final String message;
 
-  DevicesNotFound({required this.message});
-}
-
-class BluetoothNotEnabled extends HomeState {
-  final String message;
-
-  BluetoothNotEnabled({required this.message});
+  BluetoothResponse({required this.message});
 }
