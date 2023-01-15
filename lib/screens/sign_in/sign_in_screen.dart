@@ -17,7 +17,7 @@ class SignInScreen extends StatelessWidget {
       bottomSheet: const Padding(
         padding: EdgeInsets.all(14),
         child: Text(
-          'Copyright (c) ${AppString.DEVELOPER} 2023. All rights reserved.',
+          'Copyright (c) 2023 CUSIT - ${AppString.DEVELOPER}. All rights reserved.',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -47,14 +47,27 @@ class SignInScreen extends StatelessWidget {
                 fontSize: 36,
               ),
             ),
-            const Text(
-              AppString.DESCRIPTION,
+            const Text.rich(
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+              TextSpan(
+                text: AppString.DESCRIPTION,
+                children: [
+                  TextSpan(
+                    text:
+                        "\nNOTE: This app is still under development and has not been fully tested yet.",
+                    style: TextStyle(color: Colors.red),
+                  )
+                ],
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             SizedBox(height: mediaQuery.size.height / 50),
+
+            /**
+             * Handling UI states here . . . 
+             */
             BlocConsumer<SignInCubit, SignInState>(
               listener: (_, state) {
                 if (state is Authenticated) {

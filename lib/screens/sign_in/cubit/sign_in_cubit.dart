@@ -10,6 +10,7 @@ part 'sign_in_state.dart';
 class SignInCubit extends Cubit<SignInState> {
   final GoogleAuthentication _googleAuthentication = GoogleAuthentication();
   late ConnectivityResult _connectivityResult;
+
   SignInCubit() : super(Initial()) {
     _googleAuthentication.getFirebaseAuthInstance!.authStateChanges().listen(
       (event) async {
