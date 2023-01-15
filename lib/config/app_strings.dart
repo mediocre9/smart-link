@@ -1,5 +1,6 @@
 // ignore_for_file: constant_identifier_names
 
+/// Constant string values for app.
 class AppString {
   AppString._();
 
@@ -14,7 +15,7 @@ class AppString {
       'An app to remotely connect to an arduino device via bluetooth.';
   static const String DEVICES_NOT_FOUND =
       'No nearby device(s) available. Try Again!';
-  static const String DEVELOPER = 'IT & Robotics Society';
+  static const String DEVELOPER = 'IT & Robotics Engineering Team';
 
   static const String GOOGLE_SIGN_IN_BTN = 'Sign in with Google';
 }

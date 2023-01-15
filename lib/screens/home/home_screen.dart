@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:remo_tooth/config/app_strings.dart';
 
 import '../../config/app_routes.dart';
-import '../sign_in/cubit/sign_in_cubit.dart';
+import '../sign_in/cubit/sign_in_cubit.dart' hide Initial, Loading;
 import 'cubit/home_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton.large(
         child: const Icon(Icons.play_arrow_sharp),
-        onPressed: () => BlocProvider.of<HomeCubit>(context).scanForDevices(),
+        onPressed: () => BlocProvider.of<HomeCubit>(context).discoverDevices(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
@@ -37,11 +37,7 @@ class HomeScreen extends StatelessWidget {
                   context: context,
                   applicationName: AppString.APP_NAME,
                   applicationVersion: AppString.APP_VERSION,
-                  children: [
-                    const Text(
-                      "Developed by ${AppString.DEVELOPER}",
-                    )
-                  ],
+                  children: [const Text(AppString.DEVELOPER)],
                 );
               }
             },
@@ -68,44 +64,83 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            /**
+             * Handling UI states here . . . 
+             */
+
             BlocConsumer<HomeCubit, HomeState>(
-              listener: (_, state) {
-                if (state is DevicesNotFound) {
-                  ScaffoldMessenger.of(_).showSnackBar(
-                    SnackBar(content: Text(state.message)),
-                  );
-                } else if (state is DevicesFound) {
-                  ScaffoldMessenger.of(_).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        '${state.totalFoundDevices} device(s) found!',
-                      ),
-                    ),
-                  );
-                } else if (state is BluetoothNotEnabled) {
-                  ScaffoldMessenger.of(_).showSnackBar(
+              listener: (context, state) {
+                if (state is BluetoothResponse) {
+                  ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(state.message)),
                   );
                 }
               },
-              builder: (_, state) {
-                if (state is DevicesFound) {
+              builder: (context, state) {
+                if (state is ShowDevices) {
                   return Expanded(
                     child: ListView.separated(
                       itemCount: state.devices.length,
                       separatorBuilder: (_, index) => const Divider(),
                       itemBuilder: (_, index) {
-                        return ListTile(
-                          title: Text(state.devices[index].name!),
-                          subtitle: Text(state.devices[index].address),
-                          trailing: const Icon(Icons.tap_and_play_rounded),
-                          dense: true,
-                          onTap: () {},
+                        return Card(
+                          color: Colors.blue[50],
+                          child: ListTile(
+                            title: Text(state.devices[index].name!),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    'Type: ${state.devices[index].type.stringValue}'),
+                                Text('MAC: ${state.devices[index].address}'),
+                              ],
+                            ),
+                            trailing: const Icon(Icons.tap_and_play_rounded),
+                            dense: true,
+                            onLongPress: () {
+                              BlocProvider.of<HomeCubit>(context)
+                                  .unPairDevice(state.devices[index]);
+                            },
+                            onTap: () {
+                              BlocProvider.of<HomeCubit>(context)
+                                  .establishConnectionToDevice(
+                                      state.devices[index]);
+                            },
+                          ),
                         );
                       },
                     ),
                   );
-                } else if (state is Scanning) {
+                } else if (state is Connected) {
+                  return Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FloatingActionButton(
+                          onPressed: () =>
+                              BlocProvider.of<HomeCubit>(context).onMessage(),
+                          backgroundColor: Colors.orange,
+                          child: const Text('1'),
+                        ),
+                        const SizedBox(height: 20),
+                        FloatingActionButton(
+                          onPressed: () =>
+                              BlocProvider.of<HomeCubit>(context).offMessage(),
+                          backgroundColor: Colors.orange,
+                          child: const Text('0'),
+                        ),
+                        const SizedBox(height: 15),
+                        const Text(
+                          'CAUTION: Unstable code here! The application may crash here...',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (state is Loading) {
                   return Center(
                     child: Column(
                       children: [
@@ -113,9 +148,9 @@ class HomeScreen extends StatelessWidget {
                         SizedBox(
                           height: MediaQuery.of(context).size.height / 20,
                         ),
-                        const Text(
-                          AppString.ON_SCAN_MSG,
-                          style: TextStyle(
+                        Text(
+                          state.message,
+                          style: const TextStyle(
                             color: Colors.black54,
                           ),
                         )
@@ -125,7 +160,7 @@ class HomeScreen extends StatelessWidget {
                 }
                 return Container();
               },
-            ),
+            )
           ],
         ),
       ),
