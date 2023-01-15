@@ -11,8 +11,10 @@ class GoogleAuthentication implements Authentication {
   bool _hasSignedUp = false;
   bool _hasLoggedOut = false;
 
+  /// Returns currenly signed up user credentials.
   User? get getUserCredential => _firebaseAuth.currentUser!;
 
+  /// Returns an instance of `FirebaseAuth`.
   FirebaseAuth? get getFirebaseAuthInstance => _firebaseAuth;
 
   @override
