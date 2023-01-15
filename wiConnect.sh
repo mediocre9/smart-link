@@ -1,7 +1,3 @@
-echo "Host IP Address: "
-read val
-
 adb tcpip 5555
-adb connect $val
-Sleep 1000
-read
+adb connect 192.168.18.5:5555
+Sleep 2000
