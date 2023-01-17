@@ -36,5 +36,11 @@
 - lottie: 2.2.0
 
 
-
-
+## Build Previews:
+<p float="left">
+  <img src="previews/1.jpg" height="480">
+  <img src="previews/3.jpg" height="480">
+  <img src="previews/2.jpg" height="480">
+  <img src="previews/4.jpg" height="480">
+  <img src="previews/5.jpg" height="480">
+</o>
