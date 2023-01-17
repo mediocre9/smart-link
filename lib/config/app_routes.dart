@@ -3,6 +3,7 @@
 class AppRoute {
   AppRoute._();
 
-  static const String SIGN_UP = '/';
+  static const String SIGN_IN = '/';
   static const String HOME = '/home';
+  static const String REMOTE = '/remote';
 }
