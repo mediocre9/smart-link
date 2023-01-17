@@ -1,73 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:remo_tooth/config/app_routes.dart';
+import 'package:remo_tooth/config/app_strings.dart';
 import 'package:remo_tooth/screens/sign_in/cubit/sign_in_cubit.dart';
 
-import '../../config/app_strings.dart';
+import '../../config/app_routes.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context).textTheme;
     var mediaQuery = MediaQuery.of(context);
+    var event = BlocProvider.of<SignInCubit>(context);
 
     return Scaffold(
-      bottomSheet: const Padding(
-        padding: EdgeInsets.all(14),
-        child: Text(
-          'Copyright (c) 2023 CUSIT - ${AppString.DEVELOPER}. All rights reserved.',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
-          ),
-        ),
+      bottomSheet: Text(
+        AppString.COPYRIGHT,
+        style: theme.labelSmall,
+        textAlign: TextAlign.center,
       ),
-      body: Container(
-        height: double.infinity,
+      body: SizedBox(
         width: double.infinity,
-        margin: EdgeInsets.zero,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              AppString.LOGO,
-              height: MediaQuery.of(context).size.height / 6,
-            ),
-            const Text(
-              AppString.APP_NAME,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 36,
-              ),
-            ),
-            const Text.rich(
-              textAlign: TextAlign.center,
-              TextSpan(
-                text: AppString.DESCRIPTION,
-                children: [
-                  TextSpan(
-                    text:
-                        "\nNOTE: This app is still under development and has not been fully tested yet.",
-                    style: TextStyle(color: Colors.red),
-                  )
-                ],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            SizedBox(height: mediaQuery.size.height / 50),
-
-            /**
-             * Handling UI states here . . . 
-             */
+            Text(AppString.APP_NAME, style: theme.displayMedium),
+            Text(AppString.APP_DESCRIPTION, style: theme.titleSmall),
+            SizedBox(height: mediaQuery.size.height / 20),
             BlocConsumer<SignInCubit, SignInState>(
               listener: (_, state) {
                 if (state is Authenticated) {
@@ -82,26 +43,17 @@ class SignInScreen extends StatelessWidget {
                     SnackBar(content: Text(state.message)),
                   );
                 } else if (state is Error) {
-                  ScaffoldMessenger.of(_).showSnackBar(
-                    SnackBar(content: Text(state.message)),
-                  );
+                  _showSnackBar(state.message, context);
                 } else if (state is NoInternet) {
-                  ScaffoldMessenger.of(_).showSnackBar(
-                    SnackBar(content: Text(state.message)),
-                  );
+                  _showSnackBar(state.message, context);
                 }
               },
               builder: (_, state) {
                 if (state is Initial) {
                   return ElevatedButton.icon(
-                    label: const Text(AppString.GOOGLE_SIGN_IN_BTN),
-                    icon: const Icon(FontAwesomeIcons.google),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        Colors.blueGrey,
-                      ),
-                    ),
-                    onPressed: () => BlocProvider.of<SignInCubit>(_).signIn(),
+                    icon: Image.asset(AppString.GOOGLE_LOGO_IMAGE),
+                    label: const Text(AppString.GOOGLE_LABEL_BUTTON),
+                    onPressed: () => event.signIn(),
                   );
                 } else if (state is Loading) {
                   return const Center(
@@ -114,6 +66,12 @@ class SignInScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showSnackBar(String message, BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
     );
   }
 }

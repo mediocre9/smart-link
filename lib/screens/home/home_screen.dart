@@ -1,11 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' show User;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocConsumer, BlocProvider;
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart'
+    show BluetoothDevice;
 import 'package:remo_tooth/config/app_strings.dart';
-
+import 'package:remo_tooth/screens/home/cubit/home_cubit.dart';
+import 'package:lottie/lottie.dart';
 import '../../config/app_routes.dart';
-import '../sign_in/cubit/sign_in_cubit.dart' hide Initial, Loading;
-import 'cubit/home_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
   final User userCredential;
@@ -13,147 +14,94 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    var mediaQuery = MediaQuery.of(context);
+    var event = BlocProvider.of<HomeCubit>(context);
+
     return Scaffold(
-      floatingActionButton: FloatingActionButton.large(
-        child: const Icon(Icons.play_arrow_sharp),
-        onPressed: () => BlocProvider.of<HomeCubit>(context).discoverDevices(),
+      floatingActionButton: ElevatedButton(
+        style: theme.elevatedButtonTheme.style!.copyWith(
+          padding: MaterialStateProperty.all(
+            const EdgeInsets.symmetric(horizontal: 40),
+          ),
+        ),
+        child: const Text('Scan'),
+        onPressed: () => event.discoverDevices(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
         title: const Text(AppString.APP_NAME),
-        backgroundColor: Colors.transparent,
         actions: [
           PopupMenuButton(
-            onSelected: (value) {
-              if (value == 1) {
-                BlocProvider.of<SignInCubit>(context).signOut();
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  AppRoute.SIGN_UP,
-                  (route) => false,
-                );
-              } else {
-                showAboutDialog(
-                  context: context,
-                  applicationName: AppString.APP_NAME,
-                  applicationVersion: AppString.APP_VERSION,
-                  children: [const Text(AppString.DEVELOPER)],
-                );
-              }
-            },
             itemBuilder: (context) {
-              return [
-                const PopupMenuItem(
-                  value: 1,
-                  child: Text('Logout'),
-                ),
-                const PopupMenuItem(
-                  value: 2,
-                  child: Text('About'),
-                ),
-              ];
+              return [];
             },
           ),
         ],
       ),
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: Colors.white,
+        padding: const EdgeInsets.all(5),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            /**
-             * Handling UI states here . . . 
-             */
-
             BlocConsumer<HomeCubit, HomeState>(
               listener: (context, state) {
                 if (state is BluetoothResponse) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(state.message)),
-                  );
+                  _showSnackBar(state.message, context);
+                } else if (state is Paired) {
+                  Navigator.pushNamed(context, AppRoute.REMOTE,
+                      arguments: state.device);
                 }
               },
               builder: (context, state) {
-                if (state is ShowDevices) {
+                if (state is Initial) {
+                  return Center(
+                    child: Text(
+                      state.message,
+                      style: theme.textTheme.titleSmall,
+                    ),
+                  );
+                } else if (state is ShowDevices) {
                   return Expanded(
                     child: ListView.separated(
                       itemCount: state.devices.length,
-                      separatorBuilder: (_, index) => const Divider(),
-                      itemBuilder: (_, index) {
-                        return Card(
-                          color: Colors.blue[50],
-                          child: ListTile(
-                            title: Text(state.devices[index].name!),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                    'Type: ${state.devices[index].type.stringValue}'),
-                                Text('MAC: ${state.devices[index].address}'),
-                              ],
-                            ),
-                            trailing: const Icon(Icons.tap_and_play_rounded),
-                            dense: true,
-                            onLongPress: () {
-                              BlocProvider.of<HomeCubit>(context)
-                                  .unPairDevice(state.devices[index]);
-                            },
-                            onTap: () {
-                              BlocProvider.of<HomeCubit>(context)
-                                  .establishConnectionToDevice(
-                                      state.devices[index]);
-                            },
-                          ),
+                      separatorBuilder: (context, __) => const Divider(),
+                      itemBuilder: (context, i) {
+                        return _CardTile(
+                          device: state.devices[i],
+                          theme: theme,
+                          onLongPress: () =>
+                              event.unPairDevice(state.devices[i]),
+                          onPressed: () => event.pairDevice(state.devices[i]),
                         );
                       },
                     ),
                   );
-                } else if (state is Connected) {
-                  return Expanded(
+                } else if (state is Discovering) {
+                  return Center(
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        FloatingActionButton(
-                          onPressed: () =>
-                              BlocProvider.of<HomeCubit>(context).onMessage(),
-                          backgroundColor: Colors.orange,
-                          child: const Text('1'),
+                        Lottie.asset(
+                          'assets/animations/radar.json',
+                          height: mediaQuery.size.height / 5,
                         ),
-                        const SizedBox(height: 20),
-                        FloatingActionButton(
-                          onPressed: () =>
-                              BlocProvider.of<HomeCubit>(context).offMessage(),
-                          backgroundColor: Colors.orange,
-                          child: const Text('0'),
-                        ),
-                        const SizedBox(height: 15),
-                        const Text(
-                          'CAUTION: Unstable code here! The application may crash here...',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.bold),
-                        ),
+                        SizedBox(height: mediaQuery.size.height / 20),
+                        Text(state.message, style: theme.textTheme.titleSmall),
                       ],
                     ),
                   );
-                } else if (state is Loading) {
+                } else if (state is Pairing) {
                   return Center(
                     child: Column(
                       children: [
                         const CircularProgressIndicator(),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height / 20,
-                        ),
+                        SizedBox(height: mediaQuery.size.height / 20),
                         Text(
                           state.message,
-                          style: const TextStyle(
-                            color: Colors.black54,
-                          ),
-                        )
+                          style: theme.textTheme.titleSmall,
+                          textAlign: TextAlign.center,
+                        ),
                       ],
                     ),
                   );
@@ -163,6 +111,52 @@ class HomeScreen extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  void _showSnackBar(String message, BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  }
+}
+
+class _CardTile extends StatelessWidget {
+  final BluetoothDevice device;
+  final void Function() onPressed;
+  final void Function() onLongPress;
+  const _CardTile({
+    Key? key,
+    required this.theme,
+    required this.device,
+    required this.onPressed,
+    required this.onLongPress,
+  }) : super(key: key);
+
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        trailing: device.isBonded
+            ? const Icon(Icons.bluetooth_connected_rounded)
+            : const Icon(Icons.bluetooth_disabled_rounded),
+        title: Text(device.name!, style: theme.textTheme.titleMedium),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text('Type: ${device.type.stringValue}',
+                style: theme.textTheme.labelMedium),
+            Text('Paired: ${device.isBonded}',
+                style: theme.textTheme.labelMedium),
+            Text('MAC: ${device.address}', style: theme.textTheme.labelMedium),
+          ],
+        ),
+        onLongPress: onLongPress,
+        onTap: onPressed,
       ),
     );
   }

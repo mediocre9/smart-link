@@ -8,10 +8,11 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:remo_tooth/firebase_options.dart';
+import 'package:remo_tooth/theme/theme.dart';
 
+import 'config/app_routes.dart';
 import 'config/app_strings.dart';
-import '../config/route_generator.dart';
-import '../config/app_routes.dart';
+import 'config/route_generator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,11 +29,12 @@ class RemoToothApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: AppString.APP_NAME,
-      initialRoute: AppRoute.SIGN_UP,
+      initialRoute: AppRoute.SIGN_IN,
       onGenerateRoute: RouteGenerator.generate,
       debugShowCheckedModeBanner: false,
+      theme: AppTheme.darkTheme(),
     );
   }
 }
