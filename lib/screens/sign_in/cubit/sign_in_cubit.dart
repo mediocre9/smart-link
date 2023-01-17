@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
@@ -61,7 +63,7 @@ class SignInCubit extends Cubit<SignInState> {
         }
       }
     } else {
-      emit(NoInternet(message: AppString.INTERNET_MSG));
+      emit(NoInternet(message: AppString.NO_INTERNET_MSG));
       emit(Initial());
     }
   }
@@ -69,6 +71,8 @@ class SignInCubit extends Cubit<SignInState> {
   Future<void> signOut() async {
     try {
       await _googleAuthentication.logOut();
-    } catch (e) {}
+    } catch (e) {
+      log(e.toString());
+    }
   }
 }
