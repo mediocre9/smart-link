@@ -2,7 +2,49 @@
 /// [arduino] device via [bluetooth] technology.
 ///
 /// @Created Date: January 13th, 2023
-/// @Developers: It & Robotics - Electrical and Software Engineering Team
+/// @Copyright: It & Robotics - Electrical and Software Engineering Team
+/// @Developed by: SAASH
+
+/// NOTE: The [Flutter_Bluetooth_Serial] library has current tracking issues.
+/// and it has been repeatedly raised on the github forum that it is not
+/// able to transmit or receive signals.
+///
+///
+/// Raised Issues:
+/// [https://github.com/edufolly/flutter_bluetooth_serial/issues/18]
+/// [https://github.com/edufolly/flutter_bluetooth_serial/issues/174]
+///
+/// Problem Identification:
+/// =======================
+/// If we look at the library's source code their is socket I/O problem
+/// because it is using the DEFAULT dummy [UUID] value.
+///
+///
+/// Possible Fixes and Solution:
+/// ============================
+/// [https://github.com/edufolly/flutter_bluetooth_serial/issues/154#issuecomment-1158520603]
+///
+///
+/// Why did i choose this library?
+/// ==============================
+/// If arduino uses [classic] bluetooth component, then the only library
+/// that solves the problem is this library.
+/// But if our arduino device does use [BLE] (Bluetooth Low Energy) component.
+/// Then the problem can be resolved because we have a stable libary on the market
+/// named [Flutter_Blue].
+///
+///
+/// Current features in the app:
+/// ============================
+/// 1). Authentication system.
+/// 2). It is able to find all paired devices.
+/// 3). It is able to discover new devices.
+/// 4). It is able to pair between devices.
+/// 5). It is currently not able to send/recieve signals due to
+/// technical problems.
+///
+/// Problematic code is on [Remote_Cubit] dart file.
+/// screens -> remote -> cubit -> remote_cubit.dart
 
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
