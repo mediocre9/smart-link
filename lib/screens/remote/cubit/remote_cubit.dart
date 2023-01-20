@@ -12,8 +12,22 @@ class RemoteCubit extends Cubit<RemoteState> {
 
   Future<void> onMessage(BluetoothDevice device) async {
     emit(Loading());
+
+
+    /**
+     * Wrote test cases, have tested
+     * on real devices. Wrote an external server script to
+     * this library and even did some changes to library's
+     * java source code for testing purpose. Still no luck... :(
+     * 
+     * Culprit code is below that establishes connection 
+     * between devices...
+     */
     BluetoothConnection con =
         await BluetoothConnection.toAddress(device.address);
+    
+    
+    
     con.output.add(Uint8List.fromList(utf8.encode('Hello')));
     con.dispose();
     listenResponse(device);

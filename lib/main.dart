@@ -27,11 +27,19 @@
 ///
 /// Why did i choose this library?
 /// ==============================
-/// If arduino uses [classic] bluetooth component, then the only library
+/// If arduino uses [classic] bluetooth component like (HC-05, 06 ....), then the only library
 /// that solves the problem is this library.
-/// But if our arduino device does use [BLE] (Bluetooth Low Energy) component.
+/// But if our arduino device does use [BLE] (Bluetooth Low Energy) component like (HM-10 BLE).
 /// Then the problem can be resolved because we have a stable libary on the market
 /// named [Flutter_Blue].
+/// 
+/// 
+/// Solutions and Advices:
+/// ======================
+/// If this app does not solves the problem. Then we can use this application
+/// [Serial Bluetooth Terminal]. 
+/// Download Link: [https://play.google.com/store/apps/details?id=de.kai_morich.serial_bluetooth_terminal&hl=en&gl=US]
+/// 
 ///
 ///
 /// Current features in the app:
