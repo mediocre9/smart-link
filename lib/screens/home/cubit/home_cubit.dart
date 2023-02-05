@@ -37,7 +37,6 @@ class HomeCubit extends Cubit<HomeState> {
         if (isBluetoothTurnedOn!) {
           _getPairedDevices();
         } else {
-          // emit(BluetoothResponse(message: AppString.DISABLED_BLUETOOTH_MSG));
           emit(Initial(message: 'Scan for beacon devices'));
         }
       });
