@@ -126,24 +126,6 @@ class AppTheme {
           fontWeight: FontWeight.w500,
         ),
       ),
-
-      /**
-      * 
-      * Floating action button
-      */
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: const Color(0xFF313034),
-        foregroundColor: const Color(0xFFB7B7B7),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50),
-          side: const BorderSide(
-            color: Color(0xFF938F99),
-            style: BorderStyle.solid,
-            width: 0.5,
-          ),
-        ),
-        iconSize: 90,
-      ),
     );
   }
 }
