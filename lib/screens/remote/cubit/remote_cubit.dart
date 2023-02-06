@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
@@ -6,52 +8,39 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 part 'remote_state.dart';
 
 class RemoteCubit extends Cubit<RemoteState> {
-  RemoteCubit() : super(OffSignal());
+  RemoteCubit() : super(Initial(status: false, message: 'WAITING'));
+
+  static const String FORWARD = 'F';
+  static const String BACKWARD = 'B';
+  static const String LEFT = 'L';
+  static const String RIGHT = 'R';
 
   BluetoothDevice? device;
+  BluetoothConnection? _connection;
 
-  Future<void> onMessage(BluetoothDevice device) async {
+  Future<void> connect(BluetoothDevice device) async {
     emit(Loading());
-
-
-    /**
-     * Wrote test cases, have tested
-     * on real devices. Wrote an external server script to
-     * this library and even did some changes to library's
-     * java source code for testing purpose. Still no luck... :(
-     * 
-     * Culprit code is below that establishes connection 
-     * between devices...
-     */
-    BluetoothConnection con =
-        await BluetoothConnection.toAddress(device.address);
-    
-    
-    
-    con.output.add(Uint8List.fromList(utf8.encode('Hello')));
-    con.dispose();
-    listenResponse(device);
-    emit(OnSignal());
+    _connection = await BluetoothConnection.toAddress(device.address);
+    emit(Initial(status: _connection!.isConnected, message: 'WAITING'));
   }
 
-  Future<void> offMessage(BluetoothDevice device) async {
-    emit(Loading());
-    BluetoothConnection con =
-        await BluetoothConnection.toAddress(device.address);
-    con.output.add(Uint8List.fromList(utf8.encode('World')));
-    con.dispose();
-    emit(OffSignal());
+  void moveForward() {
+    _connection!.output.add(Uint8List.fromList(utf8.encode(FORWARD)));
+    emit(Initial(status: _connection!.isConnected, message: FORWARD));
   }
 
-  Future listenResponse(BluetoothDevice device) async {
-    emit(Loading());
-    BluetoothConnection con =
-        await BluetoothConnection.toAddress(device.address);
-    con.input!.listen((event) {
-      ascii.decode(event);
-    }).onDone(() {
-      con.dispose();
-      emit(OffSignal());
-    });
+  void moveBackward() {
+    _connection!.output.add(Uint8List.fromList(utf8.encode(BACKWARD)));
+    emit(Initial(status: _connection!.isConnected, message: BACKWARD));
+  }
+
+  void moveLeft() {
+    _connection!.output.add(Uint8List.fromList(utf8.encode(LEFT)));
+    emit(Initial(status: _connection!.isConnected, message: LEFT));
+  }
+
+  void moveRight() {
+    _connection!.output.add(Uint8List.fromList(utf8.encode(RIGHT)));
+    emit(Initial(status: _connection!.isConnected, message: RIGHT));
   }
 }

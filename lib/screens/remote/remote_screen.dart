@@ -1,22 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:remo_tooth/screens/remote/cubit/remote_cubit.dart';
 
-class RemoteScreen extends StatelessWidget {
+class RemoteScreen extends StatefulWidget {
   final BluetoothDevice device;
   const RemoteScreen({super.key, required this.device});
+
+  @override
+  State<RemoteScreen> createState() => _RemoteScreenState();
+}
+
+class _RemoteScreenState extends State<RemoteScreen> {
+  @override
+  void initState() {
+    () async {
+      await BlocProvider.of<RemoteCubit>(context).connect(widget.device);
+    }();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     var event = BlocProvider.of<RemoteCubit>(context);
     var mediaQuery = MediaQuery.of(context);
     var theme = Theme.of(context);
-    var message = '0';
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(device.name!),
+        title: Text(widget.device.name!),
         actions: [
           PopupMenuButton(
             itemBuilder: (context) {
@@ -35,35 +48,50 @@ class RemoteScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  BlocConsumer<RemoteCubit, RemoteState>(
-                    listener: (context, state) {
-                      if (state is ListenResponse) {
-                        message = state.message;
-                      }
-                    },
-                    builder: (context, state) {
-                      if (state is Loading) {
-                        return FloatingActionButton.large(
-                          child: const CircularProgressIndicator(),
-                          onPressed: () => event.onMessage(device),
-                        );
-                      } else if (state is OnSignal) {
-                        return FloatingActionButton.large(
-                          foregroundColor:
-                              const Color.fromARGB(255, 131, 78, 255),
-                          child: const Icon(Icons.power_settings_new_rounded),
-                          onPressed: () => event.offMessage(device),
-                        );
-                      } else if (state is OffSignal) {
-                        return FloatingActionButton.large(
-                          child: const Icon(Icons.power_settings_new_rounded),
-                          onPressed: () => event.onMessage(device),
-                        );
-                      } else {
-                        return Container();
-                      }
-                    },
-                  )
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      OutlinedButton(
+                        style: ButtonStyle(
+                          overlayColor: MaterialStateProperty.all(Colors.blue),
+                        ),
+                        child: const Icon(Icons.arrow_circle_up_rounded),
+                        onPressed: () async {
+                          event.moveForward();
+                          await HapticFeedback.heavyImpact();
+                        },
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          OutlinedButton(
+                            style: ButtonStyle(
+                              overlayColor:
+                                  MaterialStateProperty.all(Colors.blue),
+                            ),
+                            child: const Icon(Icons.arrow_circle_left_outlined),
+                            onPressed: () => event.moveLeft(),
+                          ),
+                          OutlinedButton(
+                            style: ButtonStyle(
+                              overlayColor:
+                                  MaterialStateProperty.all(Colors.blue),
+                            ),
+                            child:
+                                const Icon(Icons.arrow_circle_right_outlined),
+                            onPressed: () => event.moveRight(),
+                          ),
+                        ],
+                      ),
+                      OutlinedButton(
+                        style: ButtonStyle(
+                          overlayColor: MaterialStateProperty.all(Colors.blue),
+                        ),
+                        child: const Icon(Icons.arrow_circle_down_rounded),
+                        onPressed: () => event.moveBackward(),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -82,20 +110,36 @@ class RemoteScreen extends StatelessWidget {
                 ),
               ),
               child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Console Log:', style: theme.textTheme.labelLarge),
-                    SizedBox(height: mediaQuery.size.height / 150),
-                    Text('Device: ${device.name}',
-                        style: theme.textTheme.labelMedium),
-                    Text('Connected: ${device.isConnected}',
-                        style: theme.textTheme.labelMedium),
-                    Text('MAC: ${device.address}',
-                        style: theme.textTheme.labelMedium),
-                    Text('Signal Status: $message',
-                        style: theme.textTheme.labelSmall),
-                  ],
+                child: BlocBuilder<RemoteCubit, RemoteState>(
+                  builder: (context, state) {
+                    if (state is Loading) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          LinearProgressIndicator(),
+                        ],
+                      );
+                    } else if (state is Initial) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Console Log:',
+                              style: theme.textTheme.labelLarge),
+                          SizedBox(height: mediaQuery.size.height / 150),
+                          Text('Device: ${widget.device.name}',
+                              style: theme.textTheme.labelMedium),
+                          Text('Connected: ${state.status}',
+                              style: theme.textTheme.labelMedium),
+                          Text('MAC: ${widget.device.address}',
+                              style: theme.textTheme.labelMedium),
+                          Text('Operation Status: ${state.message}',
+                              style: theme.textTheme.labelSmall),
+                        ],
+                      );
+                    }
+
+                    return Container();
+                  },
                 ),
               ),
             ),
