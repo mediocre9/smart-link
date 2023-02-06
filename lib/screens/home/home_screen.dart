@@ -71,8 +71,6 @@ class HomeScreen extends StatelessWidget {
                         return _CardTile(
                           device: state.devices[i],
                           theme: theme,
-                          onLongPress: () =>
-                              event.unPairDevice(state.devices[i]),
                           onPressed: () => event.pairDevice(state.devices[i]),
                         );
                       },
@@ -125,13 +123,11 @@ class HomeScreen extends StatelessWidget {
 class _CardTile extends StatelessWidget {
   final BluetoothDevice device;
   final void Function() onPressed;
-  final void Function() onLongPress;
   const _CardTile({
     Key? key,
     required this.theme,
     required this.device,
     required this.onPressed,
-    required this.onLongPress,
   }) : super(key: key);
 
   final ThemeData theme;
@@ -155,7 +151,6 @@ class _CardTile extends StatelessWidget {
             Text('MAC: ${device.address}', style: theme.textTheme.labelMedium),
           ],
         ),
-        onLongPress: onLongPress,
         onTap: onPressed,
       ),
     );

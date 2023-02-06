@@ -96,19 +96,4 @@ class HomeCubit extends Cubit<HomeState> {
       emit(Paired(device: device));
     }
   }
-
-  /// Unpairs a bonded/paired device.
-  Future<void> unPairDevice(BluetoothDevice device) async {
-    _foundedDevices.removeWhere((element) => element.address == device.address);
-    if (device.isBonded) {
-      await _bluetooth
-          .removeDeviceBondWithAddress(device.address)
-          .then((isUnPairSucessful) {
-        if (isUnPairSucessful!) {
-          emit(BluetoothResponse(
-              message: 'Device ${device.name} has been unpaired!'));
-        }
-      });
-    }
-  }
 }
