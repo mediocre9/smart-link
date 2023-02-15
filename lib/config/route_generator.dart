@@ -7,8 +7,6 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:remo_tooth/screens/home/cubit/home_cubit.dart';
 import 'package:remo_tooth/screens/remote/cubit/remote_cubit.dart';
 import 'package:remo_tooth/screens/remote/remote_screen.dart';
-import 'package:remo_tooth/screens/sign_in/cubit/sign_in_cubit.dart';
-import '../screens/sign_in/sign_in_screen.dart';
 import 'app_routes.dart';
 import '../screens/home/home_screen.dart';
 
@@ -18,24 +16,11 @@ class RouteGenerator {
   static Route<dynamic> generate(RouteSettings routeSettings) {
     var arg = routeSettings.arguments;
     switch (routeSettings.name) {
-      case AppRoute.SIGN_IN:
-        return _pageTransition(
-          BlocProvider(
-            create: (_) => SignInCubit(),
-            child: const SignInScreen(),
-          ),
-        );
-
       case AppRoute.HOME:
-        return _pageTransition(
-          MultiBlocProvider(
-            providers: [
-              BlocProvider(lazy: false, create: (_) => SignInCubit()),
-              BlocProvider(lazy: false, create: (_) => HomeCubit()),
-            ],
-            child: HomeScreen(userCredential: (arg as User)),
-          ),
-        );
+        return _pageTransition(BlocProvider(
+            lazy: false,
+            create: (_) => HomeCubit(),
+            child: const HomeScreen()));
 
       case AppRoute.REMOTE:
         return _pageTransition(

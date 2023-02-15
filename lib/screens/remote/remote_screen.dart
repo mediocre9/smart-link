@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
@@ -23,24 +21,15 @@ class _RemoteScreenState extends State<RemoteScreen> {
     super.initState();
   }
 
-  List<bool> buttons = [false, false, false, false];
+  List<bool> robotControlButtons = [false, false, false, false];
 
   @override
   Widget build(BuildContext context) {
-    var event = BlocProvider.of<RemoteCubit>(context);
     var mediaQuery = MediaQuery.of(context);
-    var theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.device.name!),
-        actions: [
-          PopupMenuButton(
-            itemBuilder: (context) {
-              return [];
-            },
-          ),
-        ],
       ),
       body: SizedBox(
         height: mediaQuery.size.height,
@@ -59,18 +48,16 @@ class _RemoteScreenState extends State<RemoteScreen> {
                         OutlinedButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  (buttons[0] == true && buttons[3] == false)
+                                  robotControlButtons[0]
                                       ? Colors.blue
                                       : Colors.transparent)),
-                          onPressed: buttons[0]
-                              ? () {}
-                              : () {
-                                  setState(() {
-                                    buttons[0] = true;
-                                    buttons[3] = false;
-                                    event.moveForward();
-                                  });
-                                },
+                          onPressed: () {
+                            setState(() {
+                              robotControlButtons
+                                  .setAll(0, [true, false, false, false]);
+                              context.read<RemoteCubit>().moveForward();
+                            });
+                          },
                           child: const Icon(Icons.arrow_circle_up_rounded),
                         ),
                         Row(
@@ -79,20 +66,18 @@ class _RemoteScreenState extends State<RemoteScreen> {
                             OutlinedButton(
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                    buttons[1]
+                                    robotControlButtons[1]
                                         ? Colors.blue
                                         : Colors.transparent),
                               ),
-                              onPressed:
-                                  (buttons[1] == true && buttons[2] == false)
-                                      ? () {}
-                                      : () {
-                                          setState(() {
-                                            buttons[1] = true;
-                                            buttons[2] = false;
-                                            event.moveLeft();
-                                          });
-                                        },
+                              onPressed: () {
+                                setState(() {
+                                  robotControlButtons
+                                      .setAll(0, [false, true, false, false]);
+
+                                  context.read<RemoteCubit>().moveLeft();
+                                });
+                              },
                               child:
                                   const Icon(Icons.arrow_circle_left_outlined),
                             ),
@@ -100,27 +85,25 @@ class _RemoteScreenState extends State<RemoteScreen> {
                                 child: const Icon(Icons.restart_alt_outlined),
                                 onPressed: () {
                                   setState(() {
-                                    buttons.setAll(
+                                    robotControlButtons.setAll(
                                         0, [false, false, false, false]);
-                                    event.reset();
+                                    context.read<RemoteCubit>().reset();
                                   });
                                 }),
                             OutlinedButton(
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                    (buttons[2] == true && buttons[1] == false)
+                                    robotControlButtons[2]
                                         ? Colors.blue
                                         : Colors.transparent),
                               ),
-                              onPressed: buttons[2]
-                                  ? () {}
-                                  : () {
-                                      setState(() {
-                                        buttons[2] = true;
-                                        buttons[1] = false;
-                                        event.moveRight();
-                                      });
-                                    },
+                              onPressed: () {
+                                setState(() {
+                                  robotControlButtons
+                                      .setAll(0, [false, false, true, false]);
+                                  context.read<RemoteCubit>().moveRight();
+                                });
+                              },
                               child:
                                   const Icon(Icons.arrow_circle_right_outlined),
                             ),
@@ -129,86 +112,79 @@ class _RemoteScreenState extends State<RemoteScreen> {
                         OutlinedButton(
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
-                                  (buttons[3] == true && buttons[0] == false)
+                                  robotControlButtons[3]
                                       ? Colors.blue
                                       : Colors.transparent)),
-                          onPressed: buttons[3]
-                              ? () {}
-                              : () {
-                                  setState(() {
-                                    buttons[3] = true;
-                                    buttons[0] = false;
-                                    event.moveBackward();
-                                  });
-                                },
+                          onPressed: () {
+                            setState(() {
+                              robotControlButtons
+                                  .setAll(0, [false, false, false, true]);
+                              context.read<RemoteCubit>().moveBackward();
+                            });
+                          },
                           child: const Icon(Icons.arrow_circle_down_outlined),
                         ),
                         const Text("Movement Controller"),
                         const Divider(),
-                        OutlinedButton(
-                          style: ButtonStyle(
-                              overlayColor:
-                                  MaterialStateProperty.all(Colors.blue)),
-                          onPressed: () {
-                            Timer.periodic(const Duration(milliseconds: 1),
-                                (timer) {
-                              setState(() {
-                                event.moveCameraAngleToUp();
-                              });
-                            });
+                        GestureDetector(
+                          onLongPressStart: (details) {
+                            context.read<RemoteCubit>().moveCameraAngleToUp();
                           },
-                          child: const Icon(
-                              Icons.keyboard_double_arrow_up_rounded),
+                          onLongPressEnd: (details) =>
+                              context.read<RemoteCubit>().stopCamera(),
+                          child: OutlinedButton(
+                            style: ButtonStyle(
+                                overlayColor:
+                                    MaterialStateProperty.all(Colors.blue)),
+                            onPressed: () {},
+                            child: const Icon(
+                                Icons.keyboard_double_arrow_up_rounded),
+                          ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            OutlinedButton(
-                              style: ButtonStyle(
-                                  overlayColor:
-                                      MaterialStateProperty.all(Colors.blue)),
-                              onPressed: () {
-                                Timer.periodic(const Duration(milliseconds: 1),
-                                    (timer) {
-                                  setState(() {
-                                    event.moveCameraAngleToLeft();
-                                  });
-                                });
+                            GestureDetector(
+                              onLongPressStart: (details) {
+                                context
+                                    .read<RemoteCubit>()
+                                    .moveCameraAngleToLeft();
                               },
-                              child: const Icon(
-                                  Icons.keyboard_double_arrow_left_rounded),
+                              onLongPressEnd: (details) =>
+                                  context.read<RemoteCubit>().stopCamera(),
+                              child: OutlinedButton(
+                                onPressed: () {},
+                                child: const Icon(
+                                    Icons.keyboard_double_arrow_left_rounded),
+                              ),
                             ),
-                            OutlinedButton(
-                              style: ButtonStyle(
-                                  overlayColor:
-                                      MaterialStateProperty.all(Colors.blue)),
-                              onPressed: () {
-                                Timer.periodic(const Duration(milliseconds: 1),
-                                    (timer) {
-                                  setState(() {
-                                    event.moveCameraAngleToRight();
-                                  });
-                                });
+                            GestureDetector(
+                              onLongPressStart: (details) {
+                                context
+                                    .read<RemoteCubit>()
+                                    .moveCameraAngleToRight();
                               },
-                              child: const Icon(
-                                  Icons.keyboard_double_arrow_right_rounded),
+                              onLongPressEnd: (details) =>
+                                  context.read<RemoteCubit>().stopCamera(),
+                              child: OutlinedButton(
+                                onPressed: () {},
+                                child: const Icon(
+                                    Icons.keyboard_double_arrow_right_rounded),
+                              ),
                             ),
                           ],
                         ),
-                        OutlinedButton(
-                          style: ButtonStyle(
-                              overlayColor:
-                                  MaterialStateProperty.all(Colors.blue)),
-                          onPressed: () {
-                            Timer.periodic(const Duration(milliseconds: 1),
-                                (timer) {
-                              setState(() {
-                                event.moveCameraAngleToDown();
-                              });
-                            });
+                        GestureDetector(
+                          onLongPressStart: (details) {
+                            context.read<RemoteCubit>().moveCameraAngleToDown();
                           },
-                          child: const Icon(
-                              Icons.keyboard_double_arrow_down_rounded),
+                          onLongPressEnd: (details) =>
+                              context.read<RemoteCubit>().stopCamera(),
+                          child: OutlinedButton(
+                            onPressed: () {},
+                            child: const Icon(
+                                Icons.keyboard_double_arrow_down_rounded),
+                          ),
                         ),
                         SizedBox(height: mediaQuery.size.height / 20),
                         const Text("Camera Controller")

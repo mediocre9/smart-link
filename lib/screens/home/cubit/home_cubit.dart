@@ -57,8 +57,8 @@ class HomeCubit extends Cubit<HomeState> {
             devices: _foundedDevices,
           ));
         } else {
+          _getPairedDevices();
           emit(BluetoothResponse(message: AppString.UNDISCOVERED_DEVICES_MSG));
-          emit(Initial(message: 'Scan for beacon devices'));
         }
       });
     } else {

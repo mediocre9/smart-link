@@ -19,10 +19,8 @@ class AppColors {
   static const Color LIST_TILE_COLOR = Color(0xFF25232A);
 
   /// Text Colors....
-
   static const Color APP_BAR_TEXT_COLOR = Color(0xFFE2D9F8);
   static const Color DISPLAY_MEDIUM_COLOR = Color(0xFFAC8EF0);
-  // static const Color DISPLAY_MEDIUM_COLOR = Color(0xFF63D3CC);
   static const Color TITLE_SMALL_COLOR = Color(0xFFE6E1E5);
   static const Color TITLE_MEDIUM_COLOR = Color(0xFFE2D9F8);
   static const Color LABEL_SMALL_COLOR = Color(0xFF7A7A7A);

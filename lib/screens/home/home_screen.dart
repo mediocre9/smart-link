@@ -1,6 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart' show User;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocConsumer, BlocProvider;
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocConsumer, ReadContext;
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart'
     show BluetoothDevice;
 import 'package:remo_tooth/config/app_strings.dart';
@@ -9,14 +8,12 @@ import 'package:lottie/lottie.dart';
 import '../../config/app_routes.dart';
 
 class HomeScreen extends StatelessWidget {
-  final User userCredential;
-  const HomeScreen({super.key, required this.userCredential});
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     var mediaQuery = MediaQuery.of(context);
-    var event = BlocProvider.of<HomeCubit>(context);
 
     return Scaffold(
       floatingActionButton: ElevatedButton(
@@ -26,18 +23,11 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         child: const Text('Scan'),
-        onPressed: () => event.discoverDevices(),
+        onPressed: () => context.read<HomeCubit>().discoverDevices(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
         title: const Text(AppString.APP_NAME),
-        actions: [
-          PopupMenuButton(
-            itemBuilder: (context) {
-              return [];
-            },
-          ),
-        ],
       ),
       body: Container(
         padding: const EdgeInsets.all(5),
@@ -50,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                 if (state is BluetoothResponse) {
                   _showSnackBar(state.message, context);
                 } else if (state is Paired) {
-                  Navigator.pushNamed(context, AppRoute.REMOTE,
+                  Navigator.pushReplacementNamed(context, AppRoute.REMOTE,
                       arguments: state.device);
                 }
               },
@@ -71,7 +61,9 @@ class HomeScreen extends StatelessWidget {
                         return _CardTile(
                           device: state.devices[i],
                           theme: theme,
-                          onPressed: () => event.pairDevice(state.devices[i]),
+                          onPressed: () => context
+                              .read<HomeCubit>()
+                              .pairDevice(state.devices[i]),
                         );
                       },
                     ),
