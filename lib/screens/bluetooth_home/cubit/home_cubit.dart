@@ -4,11 +4,11 @@ import 'package:remo_tooth/config/app_strings.dart';
 
 part 'home_state.dart';
 
-class HomeCubit extends Cubit<HomeState> {
+class BluetoothHomeCubit extends Cubit<HomeState> {
   final FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
   final List<BluetoothDevice> _foundedDevices = List.empty(growable: true);
 
-  HomeCubit() : super(Initial(message: 'Scan for beacon devices')) {
+  BluetoothHomeCubit() : super(Initial(message: 'Scan for beacon devices')) {
     _getPairedDevices();
   }
 

@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart' show CupertinoPageRoute;
-import 'package:firebase_auth/firebase_auth.dart' show User;
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart'
-    show MultiBlocProvider, BlocProvider;
+import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider;
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:remo_tooth/screens/home/cubit/home_cubit.dart';
-import 'package:remo_tooth/screens/remote/cubit/remote_cubit.dart';
-import 'package:remo_tooth/screens/remote/remote_screen.dart';
+import 'package:remo_tooth/screens/wifi_remote/cubit/wifi_remote_cubit.dart';
+import '../screens/bluetooth_home/cubit/home_cubit.dart';
+import '../screens/bluetooth_home/home_screen.dart';
+import '../screens/bluetooth_remote/cubit/bluetooth_remote_cubit.dart';
+import '../screens/bluetooth_remote/remote_screen.dart';
+import '../screens/wifi_home/cubit/wifi_home_cubit.dart';
+import '../screens/wifi_home/wifi_home_Screen.dart';
+import '../screens/wifi_remote/wifi_remote_screen.dart';
 import 'app_routes.dart';
-import '../screens/home/home_screen.dart';
 
 class RouteGenerator {
   RouteGenerator._();
@@ -16,18 +18,36 @@ class RouteGenerator {
   static Route<dynamic> generate(RouteSettings routeSettings) {
     var arg = routeSettings.arguments;
     switch (routeSettings.name) {
-      case AppRoute.HOME:
+      case AppRoute.BLUETOOTH_REMOTE_HOME:
         return _pageTransition(BlocProvider(
             lazy: false,
-            create: (_) => HomeCubit(),
-            child: const HomeScreen()));
+            create: (_) => BluetoothHomeCubit(),
+            child: const BluetoothHomeScreen()));
 
-      case AppRoute.REMOTE:
+      case AppRoute.BLUETOOTH_REMOTE_CONTROLLER:
         return _pageTransition(
           BlocProvider(
             lazy: false,
-            create: (_) => RemoteCubit(),
-            child: RemoteScreen(device: (arg as BluetoothDevice)),
+            create: (_) => BluetoothRemoteCubit(),
+            child: BluetoothRemoteScreen(device: (arg as BluetoothDevice)),
+          ),
+        );
+
+      case AppRoute.WIFI_REMOTE_HOME:
+        return _pageTransition(
+          BlocProvider(
+            lazy: false,
+            create: (_) => WifiHomeCubit(),
+            child: const WifiHomeScreen(),
+          ),
+        );
+
+      case AppRoute.WIFI_REMOTE_CONTROLLER:
+        return _pageTransition(
+          BlocProvider(
+            lazy: false,
+            create: (_) => WifiRemoteCubit(),
+            child: WifiRemoteScreen(baseUrl: (arg as String)),
           ),
         );
 

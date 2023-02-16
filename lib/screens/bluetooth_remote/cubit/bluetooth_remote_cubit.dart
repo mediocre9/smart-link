@@ -5,10 +5,10 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
-part 'remote_state.dart';
+part 'bluetooth_remote_state.dart';
 
-class RemoteCubit extends Cubit<RemoteState> {
-  RemoteCubit() : super(Initial());
+class BluetoothRemoteCubit extends Cubit<BluetoothRemoteState> {
+  BluetoothRemoteCubit() : super(Initial());
   static const String FORWARD = 'F';
   static const String BACKWARD = 'B';
   static const String LEFT = 'L';

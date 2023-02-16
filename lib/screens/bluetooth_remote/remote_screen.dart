@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:remo_tooth/screens/remote/cubit/remote_cubit.dart';
+import 'package:remo_tooth/screens/bluetooth_remote/cubit/bluetooth_remote_cubit.dart';
 
-class RemoteScreen extends StatefulWidget {
+class BluetoothRemoteScreen extends StatefulWidget {
   final BluetoothDevice device;
-  const RemoteScreen({super.key, required this.device});
+  const BluetoothRemoteScreen({super.key, required this.device});
 
   @override
-  State<RemoteScreen> createState() => _RemoteScreenState();
+  State<BluetoothRemoteScreen> createState() => _BluetoothRemoteScreenState();
 }
 
-class _RemoteScreenState extends State<RemoteScreen> {
+class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
   Color buttonColor = Colors.grey;
   @override
   void initState() {
     () async {
-      await BlocProvider.of<RemoteCubit>(context).connect(widget.device);
+      await BlocProvider.of<BluetoothRemoteCubit>(context)
+          .connect(widget.device);
     }();
     super.initState();
   }
@@ -36,7 +37,7 @@ class _RemoteScreenState extends State<RemoteScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            BlocBuilder<RemoteCubit, RemoteState>(
+            BlocBuilder<BluetoothRemoteCubit, BluetoothRemoteState>(
               builder: (context, state) {
                 if (state is Loading) {
                   return const Center(child: CircularProgressIndicator());
@@ -55,7 +56,9 @@ class _RemoteScreenState extends State<RemoteScreen> {
                             setState(() {
                               robotControlButtons
                                   .setAll(0, [true, false, false, false]);
-                              context.read<RemoteCubit>().moveForward();
+                              context
+                                  .read<BluetoothRemoteCubit>()
+                                  .moveForward();
                             });
                           },
                           child: const Icon(Icons.arrow_circle_up_rounded),
@@ -75,7 +78,9 @@ class _RemoteScreenState extends State<RemoteScreen> {
                                   robotControlButtons
                                       .setAll(0, [false, true, false, false]);
 
-                                  context.read<RemoteCubit>().moveLeft();
+                                  context
+                                      .read<BluetoothRemoteCubit>()
+                                      .moveLeft();
                                 });
                               },
                               child:
@@ -87,7 +92,9 @@ class _RemoteScreenState extends State<RemoteScreen> {
                                   setState(() {
                                     robotControlButtons.setAll(
                                         0, [false, false, false, false]);
-                                    context.read<RemoteCubit>().reset();
+                                    context
+                                        .read<BluetoothRemoteCubit>()
+                                        .reset();
                                   });
                                 }),
                             OutlinedButton(
@@ -101,7 +108,9 @@ class _RemoteScreenState extends State<RemoteScreen> {
                                 setState(() {
                                   robotControlButtons
                                       .setAll(0, [false, false, true, false]);
-                                  context.read<RemoteCubit>().moveRight();
+                                  context
+                                      .read<BluetoothRemoteCubit>()
+                                      .moveRight();
                                 });
                               },
                               child:
@@ -119,7 +128,9 @@ class _RemoteScreenState extends State<RemoteScreen> {
                             setState(() {
                               robotControlButtons
                                   .setAll(0, [false, false, false, true]);
-                              context.read<RemoteCubit>().moveBackward();
+                              context
+                                  .read<BluetoothRemoteCubit>()
+                                  .moveBackward();
                             });
                           },
                           child: const Icon(Icons.arrow_circle_down_outlined),
@@ -128,10 +139,12 @@ class _RemoteScreenState extends State<RemoteScreen> {
                         const Divider(),
                         GestureDetector(
                           onLongPressStart: (details) {
-                            context.read<RemoteCubit>().moveCameraAngleToUp();
+                            context
+                                .read<BluetoothRemoteCubit>()
+                                .moveCameraAngleToUp();
                           },
                           onLongPressEnd: (details) =>
-                              context.read<RemoteCubit>().stopCamera(),
+                              context.read<BluetoothRemoteCubit>().stopCamera(),
                           child: OutlinedButton(
                             style: ButtonStyle(
                                 overlayColor:
@@ -147,11 +160,12 @@ class _RemoteScreenState extends State<RemoteScreen> {
                             GestureDetector(
                               onLongPressStart: (details) {
                                 context
-                                    .read<RemoteCubit>()
+                                    .read<BluetoothRemoteCubit>()
                                     .moveCameraAngleToLeft();
                               },
-                              onLongPressEnd: (details) =>
-                                  context.read<RemoteCubit>().stopCamera(),
+                              onLongPressEnd: (details) => context
+                                  .read<BluetoothRemoteCubit>()
+                                  .stopCamera(),
                               child: OutlinedButton(
                                 onPressed: () {},
                                 child: const Icon(
@@ -161,11 +175,12 @@ class _RemoteScreenState extends State<RemoteScreen> {
                             GestureDetector(
                               onLongPressStart: (details) {
                                 context
-                                    .read<RemoteCubit>()
+                                    .read<BluetoothRemoteCubit>()
                                     .moveCameraAngleToRight();
                               },
-                              onLongPressEnd: (details) =>
-                                  context.read<RemoteCubit>().stopCamera(),
+                              onLongPressEnd: (details) => context
+                                  .read<BluetoothRemoteCubit>()
+                                  .stopCamera(),
                               child: OutlinedButton(
                                 onPressed: () {},
                                 child: const Icon(
@@ -176,10 +191,12 @@ class _RemoteScreenState extends State<RemoteScreen> {
                         ),
                         GestureDetector(
                           onLongPressStart: (details) {
-                            context.read<RemoteCubit>().moveCameraAngleToDown();
+                            context
+                                .read<BluetoothRemoteCubit>()
+                                .moveCameraAngleToDown();
                           },
                           onLongPressEnd: (details) =>
-                              context.read<RemoteCubit>().stopCamera(),
+                              context.read<BluetoothRemoteCubit>().stopCamera(),
                           child: OutlinedButton(
                             onPressed: () {},
                             child: const Icon(

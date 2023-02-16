@@ -22,7 +22,7 @@ class RemoToothApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: AppString.APP_NAME,
-      initialRoute: AppRoute.HOME,
+      initialRoute: AppRoute.BLUETOOTH_REMOTE_HOME,
       onGenerateRoute: RouteGenerator.generate,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme(),

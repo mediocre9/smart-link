@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show BlocConsumer, ReadContext;
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart'
     show BluetoothDevice;
-import 'package:remo_tooth/config/app_strings.dart';
-import 'package:remo_tooth/screens/home/cubit/home_cubit.dart';
 import 'package:lottie/lottie.dart';
+import 'package:remo_tooth/screens/bluetooth_home/cubit/home_cubit.dart';
 import '../../config/app_routes.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class BluetoothHomeScreen extends StatelessWidget {
+  const BluetoothHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +15,25 @@ class HomeScreen extends StatelessWidget {
     var mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            const DrawerHeader(child: Text("Remo Tooth")),
+            ListTile(
+              title: const Text("HC-06"),
+              onTap: () {
+                Navigator.pushNamed(context, AppRoute.BLUETOOTH_REMOTE_HOME);
+              },
+            ),
+            ListTile(
+              title: const Text("Node MCU"),
+              onTap: () {
+                Navigator.pushNamed(context, AppRoute.WIFI_REMOTE_HOME);
+              },
+            ),
+          ],
+        ),
+      ),
       floatingActionButton: ElevatedButton(
         style: theme.elevatedButtonTheme.style!.copyWith(
           padding: MaterialStateProperty.all(
@@ -23,11 +41,11 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         child: const Text('Scan'),
-        onPressed: () => context.read<HomeCubit>().discoverDevices(),
+        onPressed: () => context.read<BluetoothHomeCubit>().discoverDevices(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
-        title: const Text(AppString.APP_NAME),
+        title: const Text("Bluetooth Remote"),
       ),
       body: Container(
         padding: const EdgeInsets.all(5),
@@ -35,12 +53,13 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            BlocConsumer<HomeCubit, HomeState>(
+            BlocConsumer<BluetoothHomeCubit, HomeState>(
               listener: (context, state) {
                 if (state is BluetoothResponse) {
                   _showSnackBar(state.message, context);
                 } else if (state is Paired) {
-                  Navigator.pushReplacementNamed(context, AppRoute.REMOTE,
+                  Navigator.pushReplacementNamed(
+                      context, AppRoute.BLUETOOTH_REMOTE_CONTROLLER,
                       arguments: state.device);
                 }
               },
@@ -62,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                           device: state.devices[i],
                           theme: theme,
                           onPressed: () => context
-                              .read<HomeCubit>()
+                              .read<BluetoothHomeCubit>()
                               .pairDevice(state.devices[i]),
                         );
                       },
