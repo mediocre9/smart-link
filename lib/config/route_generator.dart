@@ -1,15 +1,16 @@
-import 'package:flutter/cupertino.dart' show CupertinoPageRoute;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart' show BlocProvider;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:remo_tooth/screens/wifi_remote/cubit/wifi_remote_cubit.dart';
-import '../screens/bluetooth_home/cubit/home_cubit.dart';
-import '../screens/bluetooth_home/home_screen.dart';
-import '../screens/bluetooth_remote/cubit/bluetooth_remote_cubit.dart';
-import '../screens/bluetooth_remote/remote_screen.dart';
-import '../screens/wifi_home/cubit/wifi_home_cubit.dart';
-import '../screens/wifi_home/wifi_home_Screen.dart';
-import '../screens/wifi_remote/wifi_remote_screen.dart';
+import 'package:remo_tooth/screens/splash_screen/splash_screen.dart';
+import '../screens/bluetooth_home_screen/bluetooth_home_screen.dart';
+import '../screens/bluetooth_home_screen/bluetooth_remote_screen/bluetooth_remote_screen.dart';
+import '../screens/bluetooth_home_screen/bluetooth_remote_screen/cubit/bluetooth_remote_cubit.dart';
+import '../screens/bluetooth_home_screen/cubit/bluetooth_home_cubit.dart';
+import '../screens/wifi_home_screen/cubit/wifi_home_cubit.dart';
+import '../screens/wifi_home_screen/wifi_home_Screen.dart';
+import '../screens/wifi_home_screen/wifi_remote_screen/wifi_remote_screen.dart';
+import '../screens/wifi_home_screen/wifi_remote_screen/cubit/wifi_remote_cubit.dart';
 import 'app_routes.dart';
 
 class RouteGenerator {
@@ -17,12 +18,18 @@ class RouteGenerator {
 
   static Route<dynamic> generate(RouteSettings routeSettings) {
     var arg = routeSettings.arguments;
+
     switch (routeSettings.name) {
+      case AppRoute.SPLASH_SCREEN:
+        return _pageTransition(const SplashScreen());
+
       case AppRoute.BLUETOOTH_REMOTE_HOME:
-        return _pageTransition(BlocProvider(
-            lazy: false,
-            create: (_) => BluetoothHomeCubit(),
-            child: const BluetoothHomeScreen()));
+        return _pageTransition(
+          BlocProvider(
+              lazy: false,
+              create: (_) => BluetoothHomeCubit(),
+              child: const BluetoothHomeScreen()),
+        );
 
       case AppRoute.BLUETOOTH_REMOTE_CONTROLLER:
         return _pageTransition(
