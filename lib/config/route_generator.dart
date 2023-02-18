@@ -1,48 +1,60 @@
-import 'package:flutter/cupertino.dart' show CupertinoPageRoute;
-import 'package:firebase_auth/firebase_auth.dart' show User;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart'
-    show MultiBlocProvider, BlocProvider;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:remo_tooth/screens/home/cubit/home_cubit.dart';
-import 'package:remo_tooth/screens/remote/cubit/remote_cubit.dart';
-import 'package:remo_tooth/screens/remote/remote_screen.dart';
-import 'package:remo_tooth/screens/sign_in/cubit/sign_in_cubit.dart';
-import '../screens/sign_in/sign_in_screen.dart';
+import 'package:remo_tooth/screens/splash_screen/splash_screen.dart';
+import '../screens/bluetooth_home_screen/bluetooth_home_screen.dart';
+import '../screens/bluetooth_home_screen/bluetooth_remote_screen/bluetooth_remote_screen.dart';
+import '../screens/bluetooth_home_screen/bluetooth_remote_screen/cubit/bluetooth_remote_cubit.dart';
+import '../screens/bluetooth_home_screen/cubit/bluetooth_home_cubit.dart';
+import '../screens/wifi_home_screen/cubit/wifi_home_cubit.dart';
+import '../screens/wifi_home_screen/wifi_home_Screen.dart';
+import '../screens/wifi_home_screen/wifi_remote_screen/wifi_remote_screen.dart';
+import '../screens/wifi_home_screen/wifi_remote_screen/cubit/wifi_remote_cubit.dart';
 import 'app_routes.dart';
-import '../screens/home/home_screen.dart';
 
 class RouteGenerator {
   RouteGenerator._();
 
   static Route<dynamic> generate(RouteSettings routeSettings) {
     var arg = routeSettings.arguments;
+
     switch (routeSettings.name) {
-      case AppRoute.SIGN_IN:
+      case AppRoute.SPLASH_SCREEN:
+        return _pageTransition(const SplashScreen());
+
+      case AppRoute.BLUETOOTH_REMOTE_HOME:
         return _pageTransition(
           BlocProvider(
-            create: (_) => SignInCubit(),
-            child: const SignInScreen(),
-          ),
+              lazy: false,
+              create: (_) => BluetoothHomeCubit(),
+              child: const BluetoothHomeScreen()),
         );
 
-      case AppRoute.HOME:
-        return _pageTransition(
-          MultiBlocProvider(
-            providers: [
-              BlocProvider(lazy: false, create: (_) => SignInCubit()),
-              BlocProvider(lazy: false, create: (_) => HomeCubit()),
-            ],
-            child: HomeScreen(userCredential: (arg as User)),
-          ),
-        );
-
-      case AppRoute.REMOTE:
+      case AppRoute.BLUETOOTH_REMOTE_CONTROLLER:
         return _pageTransition(
           BlocProvider(
             lazy: false,
-            create: (_) => RemoteCubit(),
-            child: RemoteScreen(device: (arg as BluetoothDevice)),
+            create: (_) => BluetoothRemoteCubit(),
+            child: BluetoothRemoteScreen(device: (arg as BluetoothDevice)),
+          ),
+        );
+
+      case AppRoute.WIFI_REMOTE_HOME:
+        return _pageTransition(
+          BlocProvider(
+            lazy: false,
+            create: (_) => WifiHomeCubit(),
+            child: const WifiHomeScreen(),
+          ),
+        );
+
+      case AppRoute.WIFI_REMOTE_CONTROLLER:
+        return _pageTransition(
+          BlocProvider(
+            lazy: false,
+            create: (_) => WifiRemoteCubit(),
+            child: WifiRemoteScreen(baseUrl: (arg as String)),
           ),
         );
 

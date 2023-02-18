@@ -3,36 +3,46 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
-part 'remote_state.dart';
+part 'bluetooth_remote_state.dart';
 
-class RemoteCubit extends Cubit<RemoteState> {
-  RemoteCubit() : super(Initial());
-  static const Color SELECTED_BUTTON_COLOR = Colors.blue;
+class BluetoothRemoteCubit extends Cubit<BluetoothRemoteState> {
+  BluetoothRemoteCubit() : super(ConnectedToBluetoothDevice());
   static const String FORWARD = 'F';
   static const String BACKWARD = 'B';
   static const String LEFT = 'L';
   static const String RIGHT = 'R';
-  static const String RESET = 'X';
+  static const String STOP = 'X';
 
   static const String CAMERA_ANGLE_UP = 'W';
   static const String CAMERA_ANGLE_DOWN = 'S';
-  static const String CAMERA_ANGLE_LEFT = 'D';
-  static const String CAMERA_ANGLE_RIGHT = 'A';
+  static const String CAMERA_ANGLE_LEFT = 'A';
+  static const String CAMERA_ANGLE_RIGHT = 'D';
+  static const String CAMERA_STOP = '0';
 
   BluetoothDevice? device;
   BluetoothConnection? _connection;
 
   Future<void> connect(BluetoothDevice device) async {
-    emit(Loading());
-    _connection = await BluetoothConnection.toAddress(device.address);
-    emit(Initial());
+    emit(EstablishingBluetoothConnection());
+
+    try {
+      _connection = await BluetoothConnection.toAddress(device.address);
+      emit(ConnectionStatus(message: "Connected!"));
+      emit(ConnectedToBluetoothDevice());
+    } catch (e) {
+      emit(ConnectionStatus(message: "End device not responding!"));
+    }
+  }
+
+  void disconnectOnGoingConnection() async {
+    await _connection!.finish();
+    emit(ConnectionStatus(message: "Disconnected!"));
   }
 
   void reset() {
-    _connection!.output.add(Uint8List.fromList(utf8.encode(RESET)));
+    _connection!.output.add(Uint8List.fromList(utf8.encode(STOP)));
   }
 
   void moveForward() {
@@ -67,5 +77,9 @@ class RemoteCubit extends Cubit<RemoteState> {
 
   void moveCameraAngleToLeft() {
     _connection!.output.add(Uint8List.fromList(utf8.encode(CAMERA_ANGLE_LEFT)));
+  }
+
+  void stopCamera() {
+    _connection!.output.add(Uint8List.fromList(utf8.encode(CAMERA_STOP)));
   }
 }

@@ -2,8 +2,9 @@
 
 class AppRoute {
   AppRoute._();
-
-  static const String SIGN_IN = '/';
-  static const String HOME = '/home';
-  static const String REMOTE = '/remote';
+  static const String SPLASH_SCREEN = '/';
+  static const String BLUETOOTH_REMOTE_HOME = '/bluetoothHome';
+  static const String BLUETOOTH_REMOTE_CONTROLLER = '/bluetoothRemote';
+  static const String WIFI_REMOTE_HOME = '/wifiHome';
+  static const String WIFI_REMOTE_CONTROLLER = '/wifiRemote';
 }
