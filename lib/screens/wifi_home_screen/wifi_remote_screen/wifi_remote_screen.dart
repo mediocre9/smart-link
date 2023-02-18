@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:remo_tooth/screens/wifi_remote/cubit/wifi_remote_cubit.dart';
+import 'cubit/wifi_remote_cubit.dart';
 
 class WifiRemoteScreen extends StatelessWidget {
   final String baseUrl;
@@ -8,12 +8,8 @@ class WifiRemoteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var event = BlocProvider.of<WifiRemoteCubit>(context);
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Controller"),
-      ),
+      appBar: AppBar(title: const Text("Node MCU Controller")),
       body: Column(
         children: [
           Expanded(
@@ -30,19 +26,22 @@ class WifiRemoteScreen extends StatelessWidget {
                       if (state is Loading) {
                         return FloatingActionButton.large(
                           child: const CircularProgressIndicator(),
-                          onPressed: () => event.on(baseUrl),
+                          onPressed: () =>
+                              context.read<WifiRemoteCubit>().on(baseUrl),
                         );
                       } else if (state is OnSignal) {
                         return FloatingActionButton.large(
                           foregroundColor:
                               const Color.fromARGB(255, 147, 240, 170),
                           child: const Icon(Icons.power_settings_new_rounded),
-                          onPressed: () => event.off(baseUrl),
+                          onPressed: () =>
+                              context.read<WifiRemoteCubit>().off(baseUrl),
                         );
                       } else if (state is OffSignal) {
                         return FloatingActionButton.large(
                           child: const Icon(Icons.power_settings_new_rounded),
-                          onPressed: () => event.on(baseUrl),
+                          onPressed: () =>
+                              context.read<WifiRemoteCubit>().on(baseUrl),
                         );
                       } else {
                         return Container();

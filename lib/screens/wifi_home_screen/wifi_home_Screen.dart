@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:remo_tooth/config/app_routes.dart';
-import 'package:remo_tooth/screens/wifi_home/cubit/wifi_home_cubit.dart';
+
+import '../../config/app_strings.dart';
+import 'cubit/wifi_home_cubit.dart';
 
 class WifiHomeScreen extends StatelessWidget {
   static final TextEditingController _ip = TextEditingController();
@@ -15,22 +17,54 @@ class WifiHomeScreen extends StatelessWidget {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Node MCU Remote"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                showAboutDialog(
+                  context: context,
+                  applicationName: AppString.APP_NAME,
+                  applicationVersion: AppString.APP_VERSION,
+                  applicationIcon: Image.asset(
+                    'assets/images/logo.png',
+                    width: mediaQuery.width / 5,
+                  ),
+                  children: [
+                    Text(
+                      AppString.COPYRIGHT,
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                  ],
+                );
+              },
+              icon: const Icon(Icons.info_outline_rounded),
+            )
+          ],
+          title: const Text("Node MCU Home"),
         ),
         drawer: Drawer(
           child: ListView(
             children: [
-              const DrawerHeader(child: Text("Remo Tooth")),
+              DrawerHeader(
+                child: Center(
+                  child: Text(
+                    AppString.APP_NAME,
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                ),
+              ),
               ListTile(
                 title: const Text("HC-06"),
                 onTap: () {
-                  Navigator.pushNamed(context, AppRoute.BLUETOOTH_REMOTE_HOME);
+                  Navigator.pushReplacementNamed(
+                      context, AppRoute.BLUETOOTH_REMOTE_HOME);
                 },
               ),
+              const Divider(),
               ListTile(
                 title: const Text("Node MCU"),
                 onTap: () {
-                  Navigator.pushNamed(context, AppRoute.WIFI_REMOTE_HOME);
+                  Navigator.pushReplacementNamed(
+                      context, AppRoute.WIFI_REMOTE_HOME);
                 },
               ),
             ],
