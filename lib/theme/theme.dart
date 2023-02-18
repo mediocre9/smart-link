@@ -25,6 +25,10 @@ class AppTheme {
           fontSize: 24,
         ),
       ),
+      inputDecorationTheme: const InputDecorationTheme(
+        border: OutlineInputBorder(),
+        isDense: true,
+      ),
 
       /**
       * Popup menu theme
@@ -32,12 +36,17 @@ class AppTheme {
       popupMenuTheme: const PopupMenuThemeData(
         color: Color(0xFFE2D9F8),
       ),
-
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: AppColors.ELEVATED_BUTTON_COLOR,
+        foregroundColor: AppColors.ELEVATED_BUTTON_TEXT_COLOR,
+        shape: CircleBorder(),
+      ),
       /**
       * Bottom Sheet theme data...
       */
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: AppColors.BOTTOM_SHEET_COLOR,
+        shape: BeveledRectangleBorder(),
+        backgroundColor: AppColors.SCAFFOLD_COLOR,
       ),
 
       /**
@@ -102,7 +111,11 @@ class AppTheme {
       * Text Theme...
       */
       textTheme: const TextTheme(
-        displayMedium: TextStyle(
+        displayLarge: TextStyle(
+          color: AppColors.DISPLAY_MEDIUM_COLOR,
+          fontWeight: FontWeight.bold,
+        ),
+        displaySmall: TextStyle(
           color: AppColors.DISPLAY_MEDIUM_COLOR,
           fontWeight: FontWeight.bold,
         ),
