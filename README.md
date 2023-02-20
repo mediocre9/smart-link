@@ -1,6 +1,7 @@
-![GitHub repo size](https://img.shields.io/github/repo-size/mediocre9/remo-tooth?style=plastic)
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/mediocre9/remo-tooth?style=plastic)
-![GitHub closed issues](https://img.shields.io/github/issues-closed/mediocre9/remo-tooth?style=plastic)
+![GitHub repo size](https://img.shields.io/github/repo-size/mediocre9/smart-link?style=plastic)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/mediocre9/smart-link?style=plastic)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/mediocre9/smart-link?style=plastic)
+![GitHub all releases](https://img.shields.io/github/downloads/mediocre9/smart-link/total?color=light&style=plastic)
 
 <div style=" margin: 20px">
   <img src="android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" height="170">
