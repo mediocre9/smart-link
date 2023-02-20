@@ -60,7 +60,7 @@ It scans for nearby beacon devices to establish connection between them. Then it
 ## Build Previews:
 <p float="left">
   <img src="previews/1.jpg" height="480">
-  <img src="previews/3.jpg" height="480">
   <img src="previews/2.jpg" height="480">
+  <img src="previews/3.jpg" height="480">
   <img src="previews/4.jpg" height="480">
 </p>
