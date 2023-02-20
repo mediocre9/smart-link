@@ -13,7 +13,7 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
   BluetoothHomeCubit()
       : super(
           Initial(
-            message: AppString.INITIAL_HOME_SCREEN,
+            text: AppString.INITIAL_HOME_SCREEN,
             icon: Icons.bluetooth_rounded,
           ),
         ) {
@@ -22,26 +22,24 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
 
   Future<bool?> get isBluetoothEnabled async => _bluetooth.isEnabled;
 
-  int get foundedDevices => _foundedDevices.length;
-
   /// retrieves all paired devices.
   Future<void> _getPairedDevices() async {
     _pairedDevices.clear();
     if ((await isBluetoothEnabled)!) {
-      emit(DiscoveringDevices(message: 'Getting paired devices . . .'));
+      emit(GetPairedDevices(text: 'Getting paired devices . . .'));
       await _bluetooth
           .getBondedDevices()
           .then((paired) => _pairedDevices.addAll(paired))
           .whenComplete(() {
         if (_pairedDevices.isNotEmpty) {
-          emit(FoundedBluetoothDevices(
-            totalDevices: _pairedDevices.length,
-            devices: _pairedDevices,
+          emit(ShowPairedDevices(
+            totalPairedDevices: _pairedDevices.length,
+            pairedDevices: _pairedDevices,
           ));
         } else {
           emit(
             Initial(
-              message: AppString.INITIAL_HOME_SCREEN,
+              text: AppString.INITIAL_HOME_SCREEN,
               icon: Icons.bluetooth_rounded,
             ),
           );
@@ -54,7 +52,7 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
         } else {
           emit(
             Initial(
-              message: AppString.INITIAL_HOME_SCREEN,
+              text: AppString.INITIAL_HOME_SCREEN,
               icon: Icons.bluetooth_rounded,
             ),
           );
@@ -71,33 +69,34 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
 
   /// finds nearby beacon bluetooth devices for pairing.
   Future<void> discoverDevices() async {
+    _foundedDevices.clear();
     if ((await isBluetoothEnabled)!) {
-      emit(DiscoveringDevices(message: AppString.DISCOVERING_MSG));
+      emit(DiscoverNewDevices(text: AppString.DISCOVERING_MSG));
       _bluetooth.startDiscovery().listen((e) {
-        _foundedDevices.clear();
-        _foundedDevices.add(e.device);
+        _foundedDevices
+          ..clear()
+          ..add(e.device);
       }).onDone(() {
         if (_foundedDevices.isNotEmpty) {
-          emit(FoundedBluetoothDevices(
-            totalDevices: _foundedDevices.length,
-            devices: _foundedDevices,
+          emit(ShowDiscoveredDevices(
+            totalDiscoveredDevices: _foundedDevices.length,
+            discoveredDevices: _foundedDevices,
           ));
           return;
         } else if (_pairedDevices.isNotEmpty) {
-          emit(BluetoothOnGoingResponse(
+          emit(HasNotFoundNewDevices(
               message: AppString.UNDISCOVERED_DEVICES_MSG));
-          emit(FoundedBluetoothDevices(
-            totalDevices: _pairedDevices.length,
-            devices: _pairedDevices,
+          emit(ShowPairedDevices(
+            totalPairedDevices: _pairedDevices.length,
+            pairedDevices: _pairedDevices,
           ));
-
           return;
         } else {
-          emit(BluetoothOnGoingResponse(
+          emit(HasNotFoundNewDevices(
               message: AppString.UNDISCOVERED_DEVICES_MSG));
           emit(
             Initial(
-              message: AppString.INITIAL_HOME_SCREEN,
+              text: AppString.INITIAL_HOME_SCREEN,
               icon: Icons.bluetooth_rounded,
             ),
           );
@@ -108,14 +107,11 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
         if (isBluetoothTurnedOn!) {
           _getPairedDevices();
         } else {
-          emit(BluetoothOnGoingResponse(
-              message: AppString.DISABLED_BLUETOOTH_MSG));
-          emit(
-            Initial(
-              message: AppString.INITIAL_HOME_SCREEN,
-              icon: Icons.bluetooth_rounded,
-            ),
-          );
+          emit(BluetoothDisabled(message: AppString.DISABLED_BLUETOOTH_MSG));
+          emit(Initial(
+            text: AppString.INITIAL_HOME_SCREEN,
+            icon: Icons.bluetooth_rounded,
+          ));
         }
       });
     }
@@ -124,24 +120,31 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
   /// Tries to pair with discovered unpaired device.
   Future<void> pairDevice(BluetoothDevice device) async {
     if (!device.isBonded) {
-      emit(DeviceIsPairing(
-          message: 'Trying to pair with ${device.name}. Please be patient!'));
+      emit(PairDevice(
+        text: 'Trying to pair with ${device.name}. Please be patient!',
+      ));
+
       await _bluetooth.bondDeviceAtAddress(device.address).then((connState) {
         if (connState!) {
           device;
-          emit(BluetoothOnGoingResponse(message: 'Paired to ${device.name}!'));
-          emit(DeviceHasbeenPaired(device: device));
+          emit(PairSuccessful(
+            message: 'Paired to ${device.name}!',
+            snackbarColor: Colors.green,
+          ));
+          emit(ConnectToRemoteDevice(device: device));
         } else {
-          emit(BluetoothOnGoingResponse(
-              message: 'Couldn`t pair with ${device.name}!'));
-          emit(FoundedBluetoothDevices(
-            totalDevices: _foundedDevices.length,
-            devices: _foundedDevices,
+          emit(PairUnsuccessful(
+            message: 'Couldn`t pair with ${device.name}!',
+            snackbarColor: Colors.deepOrange,
+          ));
+          emit(ShowPairedDevices(
+            totalPairedDevices: _foundedDevices.length,
+            pairedDevices: _foundedDevices,
           ));
         }
       });
-    } else if (device.isBonded) {
-      emit(DeviceHasbeenPaired(device: device));
+    } else {
+      emit(ConnectToRemoteDevice(device: device));
     }
   }
 }

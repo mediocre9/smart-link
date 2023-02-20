@@ -9,7 +9,7 @@ class AppString {
   static const String APP_DESCRIPTION = 'IoT Remote Control';
   static const String INITIAL_HOME_SCREEN = 'Scan for bluetooth devices';
   static const String DISCOVERING_MSG =
-      'This may take a few moments. Please be patient!';
+      'This may take a few moments to discover nearby devices. Please be patient!';
   static const String NO_INTERNET_MSG = 'No Internet Connection!';
   static const String DISABLED_BLUETOOTH_MSG = 'Bluetooth service is off.';
   static const String UNDISCOVERED_DEVICES_MSG =
