@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:lottie/lottie.dart';
+import 'package:remo_tooth/widgets/app_drawer.dart';
 import '../../config/app_routes.dart';
 import '../../config/app_strings.dart';
 import 'cubit/bluetooth_home_cubit.dart';
@@ -14,35 +15,7 @@ class BluetoothHomeScreen extends StatelessWidget {
     var theme = Theme.of(context);
     var mediaQuery = MediaQuery.of(context);
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(
-              child: Center(
-                child: Text(
-                  AppString.APP_NAME,
-                  style: theme.textTheme.displaySmall,
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text("HC-06"),
-              onTap: () {
-                Navigator.pushReplacementNamed(
-                    context, AppRoute.BLUETOOTH_REMOTE_HOME);
-              },
-            ),
-            const Divider(),
-            ListTile(
-              title: const Text("Node MCU"),
-              onTap: () {
-                Navigator.pushReplacementNamed(
-                    context, AppRoute.WIFI_REMOTE_HOME);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: const AppDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: BlocBuilder<BluetoothHomeCubit, BluetoothHomeState>(
         builder: (context, state) {
