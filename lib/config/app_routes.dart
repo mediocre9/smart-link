@@ -7,4 +7,5 @@ class AppRoute {
   static const String BLUETOOTH_REMOTE_CONTROLLER = '/bluetoothRemote';
   static const String WIFI_REMOTE_HOME = '/wifiHome';
   static const String WIFI_REMOTE_CONTROLLER = '/wifiRemote';
+  static const String FINGERPRINT = '/fingerprint';
 }

@@ -1,2 +1,2 @@
-flutter build apk --release
+flutter build apk --split-per-abi
 pause
