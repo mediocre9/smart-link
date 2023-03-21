@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:remo_tooth/config/app_routes.dart';
 
 import '../../config/app_strings.dart';
+import '../../widgets/app_drawer.dart';
 import 'cubit/wifi_home_cubit.dart';
 
 class WifiHomeScreen extends StatelessWidget {
@@ -39,37 +40,9 @@ class WifiHomeScreen extends StatelessWidget {
               icon: const Icon(Icons.info_outline_rounded),
             )
           ],
-          title: const Text("Node MCU Home"),
+          title: const Text("Locker Home"),
         ),
-        drawer: Drawer(
-          child: ListView(
-            children: [
-              DrawerHeader(
-                child: Center(
-                  child: Text(
-                    AppString.APP_NAME,
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                ),
-              ),
-              ListTile(
-                title: const Text("HC-06"),
-                onTap: () {
-                  Navigator.pushReplacementNamed(
-                      context, AppRoute.BLUETOOTH_REMOTE_HOME);
-                },
-              ),
-              const Divider(),
-              ListTile(
-                title: const Text("Node MCU"),
-                onTap: () {
-                  Navigator.pushReplacementNamed(
-                      context, AppRoute.WIFI_REMOTE_HOME);
-                },
-              ),
-            ],
-          ),
-        ),
+        drawer: const AppDrawer(),
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -79,7 +52,10 @@ class WifiHomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextField(
-                  decoration: const InputDecoration(labelText: 'IP'),
+                  decoration: const InputDecoration(
+                    labelText: 'IP',
+                    helperText: "192.168.4.1",
+                  ),
                   controller: _ip,
                 ),
                 SizedBox(height: mediaQuery.height / 40),
@@ -101,7 +77,7 @@ class WifiHomeScreen extends StatelessWidget {
                     if (state is NotConnected) {
                       _showSnackBar(state.message, context);
                     } else if (state is Connected) {
-                      Navigator.pushReplacementNamed(
+                      Navigator.pushNamed(
                         context,
                         AppRoute.WIFI_REMOTE_CONTROLLER,
                         arguments: state.baseUrl,

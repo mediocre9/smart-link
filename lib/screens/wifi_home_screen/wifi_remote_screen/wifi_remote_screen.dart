@@ -9,7 +9,7 @@ class WifiRemoteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Node MCU Controller")),
+      appBar: AppBar(title: const Text("Locker Controller")),
       body: Column(
         children: [
           Expanded(
