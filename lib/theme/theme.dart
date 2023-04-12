@@ -8,7 +8,23 @@ class AppTheme {
   static ThemeData darkTheme() {
     return ThemeData.dark(useMaterial3: true).copyWith(
       primaryColor: AppColors.PRIMARY_COLOR,
-      useMaterial3: true,
+
+      /**
+      * Scaffold theme...
+      */
+      scaffoldBackgroundColor: AppColors.SCAFFOLD_COLOR,
+
+      /**
+      * AppBar theme...
+      */
+      appBarTheme: const AppBarTheme(
+        backgroundColor: AppColors.APP_BAR_COLOR,
+        titleTextStyle: TextStyle(
+          color: AppColors.APP_BAR_TEXT_COLOR,
+          fontWeight: FontWeight.w600,
+          fontSize: 24,
+        ),
+      ),
       inputDecorationTheme: const InputDecorationTheme(
         border: OutlineInputBorder(),
         isDense: true,

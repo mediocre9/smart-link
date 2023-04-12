@@ -5,7 +5,7 @@ class AppString {
   AppString._();
 
   static const String APP_NAME = 'Smart Link';
-  static const String APP_VERSION = 'v0.3.2';
+  static const String APP_VERSION = 'v0.3.0';
   static const String APP_DESCRIPTION = 'IoT Remote Control';
   static const String INITIAL_HOME_SCREEN = 'Scan for bluetooth devices';
   static const String DISCOVERING_MSG =
@@ -25,5 +25,4 @@ class AppString {
       "Please register your fingerprint from your device settings!";
   static const String HARDWARE_SUPPORT_NOT_AVAILABLE =
       "Your device does not have fingerprint support!";
-  static const String NODEMCU_DEFAULT_IP = "192.168.4.1";
 }
