@@ -13,10 +13,6 @@ class AppTheme {
         border: OutlineInputBorder(),
         isDense: true,
       ),
-
-      /**
-      * Popup menu theme
-      */
       popupMenuTheme: const PopupMenuThemeData(
         color: Color(0xFFE2D9F8),
       ),
@@ -25,24 +21,13 @@ class AppTheme {
         foregroundColor: AppColors.ELEVATED_BUTTON_TEXT_COLOR,
         shape: CircleBorder(),
       ),
-      /**
-      * Bottom Sheet theme data...
-      */
       bottomSheetTheme: const BottomSheetThemeData(
         shape: BeveledRectangleBorder(),
         backgroundColor: AppColors.SCAFFOLD_COLOR,
       ),
-
-      /**
-      * Progress Indicator theme...
-      */
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: AppColors.PROGRESS_INDICATOR_COLOR,
       ),
-
-      /**
-      * Card theme...
-      */
       cardTheme: CardTheme(
         color: AppColors.CARD_COLOR,
         shape: RoundedRectangleBorder(
@@ -58,10 +43,6 @@ class AppTheme {
         dense: true,
         tileColor: AppColors.LIST_TILE_COLOR,
       ),
-
-      /**
-      * Elevated button theme....
-      */
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
           shape: MaterialStateProperty.all(
@@ -77,10 +58,6 @@ class AppTheme {
           ),
         ),
       ),
-
-      /**
-      * SnackBar theme...
-      */
       snackBarTheme: SnackBarThemeData(
         backgroundColor: AppColors.SNACKBAR_COLOR,
         contentTextStyle: const TextStyle(
@@ -90,10 +67,6 @@ class AppTheme {
           borderRadius: BorderRadius.circular(4),
         ),
       ),
-
-      /**
-      * Text Theme...
-      */
       textTheme: const TextTheme(
         displayLarge: TextStyle(
           color: AppColors.DISPLAY_MEDIUM_COLOR,
