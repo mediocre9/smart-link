@@ -7,8 +7,6 @@ import '../../widgets/app_drawer.dart';
 import 'cubit/wifi_home_cubit.dart';
 
 class WifiHomeScreen extends StatelessWidget {
-  static final TextEditingController _ip = TextEditingController();
-
   const WifiHomeScreen({super.key});
 
   @override
@@ -49,24 +47,17 @@ class WifiHomeScreen extends StatelessWidget {
             height: mediaQuery.height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                TextField(
-                  decoration: const InputDecoration(
-                    labelText: 'IP',
-                    helperText: "192.168.4.1",
-                  ),
-                  controller: _ip,
-                ),
-                SizedBox(height: mediaQuery.height / 40),
                 BlocConsumer<WifiHomeCubit, WifiHomeState>(
                   builder: (context, state) {
                     if (state is Initial) {
-                      return ElevatedButton(
-                        child: const Text('Connect'),
-                        onPressed: () => context
-                            .read<WifiHomeCubit>()
-                            .hasConnectionBeenEstablished(_ip.text),
+                      return Center(
+                        child: ElevatedButton(
+                          child: const Text('Connect'),
+                          onPressed: () => context
+                              .read<WifiHomeCubit>()
+                              .establishConnection(),
+                        ),
                       );
                     } else if (state is Connecting) {
                       return const Center(child: CircularProgressIndicator());
@@ -84,6 +75,12 @@ class WifiHomeScreen extends StatelessWidget {
                       );
                     }
                   },
+                ),
+                SizedBox(height: mediaQuery.height / 30),
+                Text(
+                  "Help: Connect to nodemcu ssid (It & Robotics - (Node-MCU)) through your system's wifi settings. After successful connection, simply press the connect button.",
+                  textAlign: TextAlign.justify,
+                  style: Theme.of(context).textTheme.labelSmall!,
                 ),
               ],
             ),
