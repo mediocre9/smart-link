@@ -10,7 +10,7 @@
 
 An application to remotely control arduino based robot via bluetooth and wifi technology.
 
-## Stable Version: <a href="https://github.com/mediocre9/remo-tooth/releases/tag/v0.3.0">0.3.0</a>
+## Stable Version: <a href="https://github.com/mediocre9/smart-link/releases/tag/v0.3.2">0.3.2</a>
 
 ![Progress](https://progress-bar.dev/80/?title=progress)
 
@@ -35,12 +35,12 @@ It scans for nearby beacon devices to establish connection between them. Then it
 - [ ] Refactoring
 
 ## Dependencies:
-- flutter_bloc: 8.1.1
-- bloc: 8.1.0
-- flutter_bluetooth_serial: 0.4.0
-- connectivity_plus: 3.0.2
-- lottie: 2.2.0
-- http: 0.13.5
+- flutter_bloc
+- bloc
+- flutter_bluetooth_serial
+- connectivity_plus
+- lottie
+- http
 
 ## Build Previews:
 <p float="left">
