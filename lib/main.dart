@@ -15,10 +15,10 @@ class SmartLinkApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: AppString.APP_NAME,
-      initialRoute: AppRoute.SPLASH_SCREEN,
-      onGenerateRoute: RouteGenerator.generate,
-      debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme(),
+      initialRoute: AppRoute.SPLASH_SCREEN,
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: RouteGenerator.generate,
     );
   }
 }
