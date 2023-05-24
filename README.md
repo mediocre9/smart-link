@@ -8,7 +8,7 @@
 </div>
   <h1 style="color: lightblue;"><b>Smart Link</b></h1>
 
-An application to remotely control arduino based robot via bluetooth and wifi technology.
+An application to remotely control arduino devices via bluetooth and wifi technology.
 
 ## Stable Version: <a href="https://github.com/mediocre9/smart-link/releases/tag/v0.3.2">0.3.2</a>
 
