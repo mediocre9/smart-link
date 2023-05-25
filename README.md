@@ -8,7 +8,7 @@
 </div>
   <h1 style="color: lightblue;"><b>Smart Link</b></h1>
 
-> An application to remotely control arduino devices via bluetooth and wifi technology.
+> An application to remotely control Arduino devices to interact specifically with the HC-06 and ESP8266 (Node-MCU) modules.
 
 ## Stable Version: <a href="https://github.com/mediocre9/smart-link/releases/tag/v0.3.2">0.3.2</a>
 
@@ -18,7 +18,7 @@
 
 ## How it works?
 
-> It scans for nearby beacon devices to establish connection between them. Then it send signals to the connected end-device to perform operations.
+> It scans for nearby devices to establish connection in between them to perform operations.
 
 
 
