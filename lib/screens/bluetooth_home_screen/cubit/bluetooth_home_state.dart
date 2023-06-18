@@ -28,15 +28,6 @@ class DiscoverNewDevices extends BluetoothHomeState {
   DiscoverNewDevices({required this.text});
 }
 
-// class HasFoundNewDevices extends BluetoothHomeState {
-//   final String message;
-//   final Color snackbarColor;
-//   HasFoundNewDevices({
-//     required this.snackbarColor,
-//     required this.message,
-//   });
-// }
-
 class HasNotFoundNewDevices extends BluetoothHomeState {
   final String message;
 

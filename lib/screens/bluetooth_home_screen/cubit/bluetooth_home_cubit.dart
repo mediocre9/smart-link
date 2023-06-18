@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:remo_tooth/config/app_strings.dart';
 
 part 'bluetooth_home_state.dart';
@@ -17,7 +18,18 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
             icon: Icons.bluetooth_rounded,
           ),
         ) {
-    _getPairedDevices();
+    grantPermissions();
+  }
+
+  grantPermissions() async {
+    var conn = await Permission.bluetoothConnect.request();
+    var scan = await Permission.bluetoothScan.request();
+
+    if (conn.isGranted && scan.isGranted) {
+      await _getPairedDevices();
+    } else {
+      emit(BluetoothDisabled(message: AppString.DISABLED_BLUETOOTH_MSG));
+    }
   }
 
   Future<bool?> get isBluetoothEnabled async => _bluetooth.isEnabled;
