@@ -1,2 +1,2 @@
-adb install -r "build\app\outputs\flutter-apk\app-arm64-v8a-release.apk"
+adb install -r "build\app\outputs\flutter-apk\app-armeabi-v7a-release.apk"
 read

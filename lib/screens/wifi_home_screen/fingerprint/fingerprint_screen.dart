@@ -21,14 +21,14 @@ class _FingerprintScreenState extends State<FingerprintScreen> {
 
   Future<void> on() async {
     try {
-      await get(Uri.parse('http://${DEFAULT_GATEWAY}/on_signal'),
+      await get(Uri.parse('http://$DEFAULT_GATEWAY/on_signal'),
           headers: {"Accept": "plain/text"});
     } catch (e) {}
   }
 
   Future<void> off() async {
     try {
-      await get(Uri.parse('http://${DEFAULT_GATEWAY}/off_signal'),
+      await get(Uri.parse('http://$DEFAULT_GATEWAY/off_signal'),
           headers: {"Accept": "plain/text"});
               setState(() {
       isAuthenticated = false;
