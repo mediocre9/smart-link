@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:remo_tooth/widgets/app_drawer.dart';
-import '../../../config/app_routes.dart';
 import 'cubit/wifi_remote_cubit.dart';
 
 class WifiRemoteScreen extends StatelessWidget {
