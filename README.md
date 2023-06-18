@@ -16,9 +16,6 @@
 | [0.3.2](https://github.com/mediocre9/smart-link/releases/tag/v0.3.2)  | [0.3.3-beta](https://github.com/mediocre9/smart-link/releases/tag/v0.3.3-beta)
 
 
-![Progress](https://progress-bar.dev/80/?title=progress)
-
-
 ## How it works?
 
 > It scans for nearby devices to establish connection in between them to perform operations.
