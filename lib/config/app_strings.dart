@@ -5,7 +5,7 @@ class AppString {
   AppString._();
 
   static const String APP_NAME = 'Smart Link';
-  static const String APP_VERSION = 'v0.3.2';
+  static const String APP_VERSION = 'v0.3.3-beta';
   static const String APP_DESCRIPTION = 'IoT Remote Control';
   static const String INITIAL_HOME_SCREEN = 'Scan for bluetooth devices';
   static const String DISCOVERING_MSG =
