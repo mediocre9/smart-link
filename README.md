@@ -8,7 +8,7 @@
 </div>
   <h1 style="color: lightblue;"><b>Smart Link</b></h1>
 
-> An application to remotely control Arduino devices to interact specifically with the HC-06 and ESP8266 (Node-MCU) modules.
+> An application to remotely control Arduino devices to interact specifically with the HC-05/06 and ESP8266 (Node-MCU) modules.
 
 ## Channels
 |  Release |  Beta |
