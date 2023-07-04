@@ -1,11 +1,26 @@
+import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:remo_tooth/theme/theme.dart';
-import 'config/app_routes.dart';
-import 'config/app_strings.dart';
-import 'config/route_generator.dart';
+import 'package:remo_tooth/config/router/route_generator.dart';
+import 'firebase_options.dart';
+import 'config/index.dart';
 
-void main() {
-  runApp(const SmartLinkApp());
+Future<void> initializeFirebaseModule() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+}
+
+Future<void> main() async {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await initializeFirebaseModule();
+    runApp(const SmartLinkApp());
+  }, (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+  });
 }
 
 class SmartLinkApp extends StatelessWidget {
@@ -14,8 +29,9 @@ class SmartLinkApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: AppString.APP_NAME,
-      initialRoute: AppRoute.SPLASH_SCREEN,
+      title: AppString.kAppName,
+      color: AppColors.kPrimary,
+      initialRoute: Routes.kSplash,
       onGenerateRoute: RouteGenerator.generate,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme(),
