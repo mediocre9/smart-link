@@ -13,7 +13,7 @@
 ## Channels
 |  Release |  Beta |
 |---|---|
-| [0.3.2](https://github.com/mediocre9/smart-link/releases/tag/v0.3.2)  | [0.3.3-beta](https://github.com/mediocre9/smart-link/releases/tag/v0.3.3-beta)
+| [0.3.2](https://github.com/mediocre9/smart-link/releases/tag/v0.3.2)  | [0.4.2-beta](https://github.com/mediocre9/smart-link/releases/tag/v0.4.2-beta)
 
 
 ## How it works?
