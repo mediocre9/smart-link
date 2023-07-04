@@ -1,50 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:remo_tooth/config/app_routes.dart';
-
-import '../../config/app_strings.dart';
+import 'package:remo_tooth/config/router/app_routes.dart';
 import '../../widgets/app_drawer.dart';
+import '../../widgets/common.dart';
 import 'cubit/wifi_home_cubit.dart';
 
-class WifiHomeScreen extends StatelessWidget {
+class WifiHomeScreen extends StatelessWidget with StandardAppWidgets {
   const WifiHomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context).size;
+    var mediaQuery = MediaQuery.of(context);
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         appBar: AppBar(
+          title: const Text("Locker Home"),
           actions: [
             IconButton(
-              onPressed: () {
-                showAboutDialog(
-                  context: context,
-                  applicationName: AppString.APP_NAME,
-                  applicationVersion: AppString.APP_VERSION,
-                  applicationIcon: Image.asset(
-                    'assets/images/logo.png',
-                    width: mediaQuery.width / 5,
-                  ),
-                  children: [
-                    Text(
-                      AppString.COPYRIGHT,
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                  ],
-                );
-              },
               icon: const Icon(Icons.info_outline_rounded),
+              onPressed: () =>
+                  showAboutDialogWidget(context, mediaQuery, Theme.of(context)),
             )
           ],
-          title: const Text("Locker Home"),
         ),
         drawer: const AppDrawer(),
         body: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
-            height: mediaQuery.height,
+            height: mediaQuery.size.height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -54,9 +38,9 @@ class WifiHomeScreen extends StatelessWidget {
                       return Center(
                         child: ElevatedButton(
                           child: const Text('Connect'),
-                          onPressed: () => context
-                              .read<WifiHomeCubit>()
-                              .establishConnection(),
+                          onPressed: () {
+                            context.read<WifiHomeCubit>().establishConnection();
+                          },
                         ),
                       );
                     } else if (state is Connecting) {
@@ -66,19 +50,19 @@ class WifiHomeScreen extends StatelessWidget {
                   },
                   listener: (context, state) {
                     if (state is NotConnected) {
-                      _showSnackBar(state.message, context);
+                      showSnackBarWidget(context, state.message);
                     } else if (state is Connected) {
                       Navigator.pushNamed(
                         context,
-                        AppRoute.WIFI_REMOTE_CONTROLLER,
+                        Routes.kWifiRemote,
                         arguments: state.baseUrl,
                       );
                     }
                   },
                 ),
-                SizedBox(height: mediaQuery.height / 30),
+                SizedBox(height: mediaQuery.size.height / 30),
                 Text(
-                  "Help: Connect to nodemcu ssid (It & Robotics - (Node-MCU)) through your system's wifi settings. After successful connection, simply press the connect button.",
+                  "Info: Connect to nodemcu ssid (It & Robotics - (Node-MCU)) through your system's wifi settings. After successful connection, simply press the connect button.",
                   textAlign: TextAlign.justify,
                   style: Theme.of(context).textTheme.labelSmall!,
                 ),
@@ -87,12 +71,6 @@ class WifiHomeScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  void _showSnackBar(String message, BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
     );
   }
 }
