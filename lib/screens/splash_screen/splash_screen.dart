@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:remo_tooth/widgets/common.dart';
+import '../../config/index.dart';
 
-import '../../config/app_routes.dart';
-import '../../config/app_strings.dart';
-
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatefulWidget with StandardAppWidgets {
   const SplashScreen({super.key});
 
   @override
@@ -15,9 +15,25 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Timer(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, AppRoute.BLUETOOTH_REMOTE_HOME);
-    });
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      Timer(const Duration(seconds: 2), () {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          Routes.kBluetooth,
+          (route) => false,
+        );
+      });
+    } else {
+      Future(() => {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              Routes.kAuth,
+              (route) => false,
+            )
+          });
+    }
     super.initState();
   }
 
@@ -33,18 +49,18 @@ class _SplashScreenState extends State<SplashScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/logo.png',
+              AppString.kAppLogoPath,
               width: mediaQuery.size.width / 2,
             ),
             SizedBox(height: mediaQuery.size.height / 40),
             Text(
-              AppString.APP_NAME,
+              AppString.kAppName,
               style: theme.displaySmall!.copyWith(
                 color: Colors.blue,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(AppString.APP_DESCRIPTION, style: theme.labelMedium),
+            Text(AppString.kAppDescription, style: theme.labelMedium),
           ],
         ),
       ),
