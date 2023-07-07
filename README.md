@@ -15,11 +15,6 @@
 |---|---|
 | [0.4.2](https://github.com/mediocre9/smart-link/releases/tag/v0.4.2)  | [0.3.3-beta](https://github.com/mediocre9/smart-link/releases/tag/v0.3.3-beta)
 
-
-## How it works?
-
-> It scans for nearby devices to establish connection in between them to perform operations.
-
 ## Development Branches:
 - **<a href="https://github.com/mediocre9/remo-tooth/tree/development">Development</a>**
 
