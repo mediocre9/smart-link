@@ -2,7 +2,7 @@ class AppString {
   AppString._();
 
   static const String kAppName = 'Smart Link';
-  static const String kAppVersion = 'v0.4.2-beta';
+  static const String kAppVersion = 'v0.4.2';
   static const String kAppDescription = 'IoT Remote Control';
   static const String kAppLogoPath = 'assets/images/logo.png';
   static const String kInitialDescription = 'Scan for bluetooth devices';
