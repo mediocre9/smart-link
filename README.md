@@ -13,32 +13,36 @@
 ## Channels
 |  Release |  Beta |
 |---|---|
-| [0.3.2](https://github.com/mediocre9/smart-link/releases/tag/v0.3.2)  | [0.4.2-beta](https://github.com/mediocre9/smart-link/releases/tag/v0.4.2-beta)
+| [0.4.2](https://github.com/mediocre9/smart-link/releases/tag/v0.4.2)  | [0.3.3-beta](https://github.com/mediocre9/smart-link/releases/tag/v0.3.3-beta)
 
 
 ## How it works?
 
 > It scans for nearby devices to establish connection in between them to perform operations.
 
-
-
 ## Development Branches:
 - **<a href="https://github.com/mediocre9/remo-tooth/tree/development">Development</a>**
-- **<a href="https://github.com/mediocre9/remo-tooth/tree/integration">Integration</a>**
 
 ## Task-List:
 - [x] UI Rework
 - [x] UI Responsiveness 
-- [ ] Unit Testing
 - [ ] Refactoring
 
 ## Dependencies:
 - flutter_bloc
 - bloc
+- equatable
 - flutter_bluetooth_serial
 - connectivity_plus
 - lottie
 - http
+- local_auth
+- permission_handler
+- firebase_crashlytics
+- firebase_auth
+- firebase_core
+- google_sign_in
+- sign_button
 
 ## Build Previews:
 <p float="left">
@@ -47,3 +51,4 @@
   <img src="previews/3.jpg" height="480">
   <img src="previews/4.jpg" height="480">
 </p>
+
