@@ -8,12 +8,12 @@
 </div>
   <h1 style="color: lightblue;"><b>Smart Link</b></h1>
 
-> An application to remotely control Arduino devices to interact specifically with the HC-06 and ESP8266 (Node-MCU) modules.
+> An application to remotely control Arduino devices to interact specifically with the HC-05/06 and ESP8266 (Node-MCU) modules.
 
-## Stable Version: <a href="https://github.com/mediocre9/smart-link/releases/tag/v0.3.2">0.3.2</a>
-
-![Progress](https://progress-bar.dev/80/?title=progress)
-
+## Channels
+|  Release |  Beta |
+|---|---|
+| [0.3.2](https://github.com/mediocre9/smart-link/releases/tag/v0.3.2)  | [0.4.2-beta](https://github.com/mediocre9/smart-link/releases/tag/v0.4.2-beta)
 
 
 ## How it works?
