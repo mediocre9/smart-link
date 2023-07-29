@@ -6,14 +6,14 @@ class InitialHomeScreen extends StatelessWidget {
 
   const InitialHomeScreen({
     super.key,
-    required this.mediaQuery,
-    required this.theme,
+    // required this.mediaQuery,
+    // required this.theme,
     required this.text,
     required this.icon,
   });
 
-  final MediaQueryData mediaQuery;
-  final ThemeData theme;
+  // final MediaQueryData mediaQuery;
+  // final ThemeData theme;
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +22,12 @@ class InitialHomeScreen extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: mediaQuery.size.width / 5,
+            size: MediaQuery.of(context).size.width / 5,
             color: Colors.grey,
           ),
           Text(
             text,
-            style: theme.textTheme.titleSmall,
+            style: Theme.of(context).textTheme.titleSmall,
           ),
         ],
       ),

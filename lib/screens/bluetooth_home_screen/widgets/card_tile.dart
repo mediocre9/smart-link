@@ -7,27 +7,26 @@ class CardTile extends StatelessWidget {
 
   const CardTile({
     Key? key,
-    required this.theme,
     required this.device,
     required this.onPressed,
   }) : super(key: key);
-
-  final ThemeData theme;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text(device.name!, style: theme.textTheme.titleMedium),
+        title:
+            Text(device.name!, style: Theme.of(context).textTheme.titleMedium),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text('Paired: ${device.isBonded ? "Yes" : "No"}',
-                style: theme.textTheme.labelMedium),
+                style: Theme.of(context).textTheme.labelMedium),
             Text('Type: ${device.type.stringValue}',
-                style: theme.textTheme.labelMedium),
-            Text('MAC: ${device.address}', style: theme.textTheme.labelMedium),
+                style: Theme.of(context).textTheme.labelMedium),
+            Text('MAC: ${device.address}',
+                style: Theme.of(context).textTheme.labelMedium),
           ],
         ),
         onTap: onPressed,
