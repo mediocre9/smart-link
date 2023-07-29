@@ -10,12 +10,6 @@
 
 > An application to remotely control Arduino devices to interact specifically with the HC-05/06 and ESP8266 (Node-MCU) modules.
 
-## Channels
-|  Release |  Beta |
-|---|---|
-| [0.4.2](https://github.com/mediocre9/smart-link/releases/tag/v0.4.2)  | [0.5.2-beta](https://github.com/mediocre9/smart-link/releases/tag/v0.5.2)
-
-
 ## Development Branches:
 - **<a href="https://github.com/mediocre9/remo-tooth/tree/development">Development</a>**
 
