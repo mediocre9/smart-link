@@ -15,6 +15,7 @@
 |---|---|
 | [0.4.2](https://github.com/mediocre9/smart-link/releases/tag/v0.4.2)  | [0.5.2-beta](https://github.com/mediocre9/smart-link/releases/tag/v0.5.2)
 
+
 ## Development Branches:
 - **<a href="https://github.com/mediocre9/remo-tooth/tree/development">Development</a>**
 
