@@ -50,3 +50,6 @@ linux/
 macos/
 web/
 ios/
+
+# remove firebase options
+firebase_options.dart
