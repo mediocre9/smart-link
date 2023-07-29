@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:remo_tooth/config/router/index.dart';
 import 'package:remo_tooth/screens/authentication_screen/cubit/authentication_screen_cubit.dart';
-import '../../screens/splash_screen/splash_screen.dart';
+import 'package:remo_tooth/services/auth_service.dart';
 import '../../screens/wifi_home_screen/cubit/wifi_home_cubit.dart';
 
 class RouteGenerator {
@@ -14,18 +14,17 @@ class RouteGenerator {
     var arg = routeSettings.arguments;
 
     switch (routeSettings.name) {
-      case Routes.kSplash:
-        return _pageTransition(const SplashScreen());
-
-      case Routes.kAuth:
+      case Routes.auth:
         return _pageTransition(
           BlocProvider(
-            create: (_) => AuthenticationScreenCubit(),
+            create: (_) => AuthenticationScreenCubit(
+              authService: AuthenticationService(),
+            ),
             child: const AuthenticationScreen(),
           ),
         );
 
-      case Routes.kBluetooth:
+      case Routes.bluetoothHome:
         return _pageTransition(
           BlocProvider(
             lazy: false,
@@ -34,7 +33,7 @@ class RouteGenerator {
           ),
         );
 
-      case Routes.kBluetoothRemote:
+      case Routes.bluetoothRemote:
         return _pageTransition(
           BlocProvider(
             lazy: false,
@@ -43,7 +42,7 @@ class RouteGenerator {
           ),
         );
 
-      case Routes.kWifi:
+      case Routes.wifiHome:
         return _pageTransition(
           BlocProvider(
             lazy: false,
@@ -52,7 +51,7 @@ class RouteGenerator {
           ),
         );
 
-      case Routes.kWifiRemote:
+      case Routes.wifiRemote:
         return _pageTransition(
           BlocProvider(
             lazy: false,
@@ -61,7 +60,7 @@ class RouteGenerator {
           ),
         );
 
-      case Routes.kBiometric:
+      case Routes.biometric:
         return _pageTransition(const BiometricScreen());
 
       default:
