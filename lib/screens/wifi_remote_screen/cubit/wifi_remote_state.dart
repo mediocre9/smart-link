@@ -1,6 +1,6 @@
 part of 'wifi_remote_cubit.dart';
 
-abstract class WifiRemoteState {}
+sealed class WifiRemoteState {}
 
 class Loading extends WifiRemoteState {}
 

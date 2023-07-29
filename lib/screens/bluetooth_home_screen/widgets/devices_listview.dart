@@ -8,11 +8,9 @@ import 'card_tile.dart';
 class DevicesListView extends StatelessWidget {
   final List<BluetoothDevice> bluetoothDevices;
   final int totalDevices;
-  final ThemeData theme;
 
   const DevicesListView({
     super.key,
-    required this.theme,
     required this.bluetoothDevices,
     required this.totalDevices,
   });
@@ -22,11 +20,9 @@ class DevicesListView extends StatelessWidget {
     return Expanded(
       child: ListView.builder(
         itemCount: bluetoothDevices.length,
-        // separatorBuilder: (context, __) => const Divider(),
         itemBuilder: (context, i) {
           return CardTile(
             device: bluetoothDevices[i],
-            theme: theme,
             onPressed: () {
               context
                   .read<BluetoothHomeCubit>()

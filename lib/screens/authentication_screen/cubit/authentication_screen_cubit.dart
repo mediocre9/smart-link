@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
@@ -11,18 +9,9 @@ part 'authentication_screen_state.dart';
 
 class AuthenticationScreenCubit extends Cubit<AuthenticationScreenState> {
   late ConnectivityResult _connectivityResult;
+  final AuthenticationService authService;
 
-  AuthenticationScreenCubit() : super(Initial()) {
-    AuthService.getFirebaseAuthInstance!.authStateChanges().listen(
-      (event) async {
-        if (event != null) {
-          Authenticated(
-            userCredential: AuthService.getCurrentUser!,
-          );
-        }
-      },
-    );
-  }
+  AuthenticationScreenCubit({required this.authService}) : super(Initial());
 
   Future<bool> _isInternetAvailable() async {
     _connectivityResult = await Connectivity().checkConnectivity();
@@ -34,37 +23,25 @@ class AuthenticationScreenCubit extends Cubit<AuthenticationScreenState> {
   }
 
   Future<void> signIn() async {
-    if (await _isInternetAvailable()) {
+    if (!await _isInternetAvailable()) {
+      emit(NoInternet(message: Strings.noInternet));
+      emit(Initial());
+    } else {
       emit(Loading());
 
-      SignInState state = await AuthService.signUp();
+      SignInState state = await authService.signIn();
+
       switch (state) {
-        case SignInState.notFound:
         case SignInState.disabled:
-          emit(Error(message: AppString.kAuthSuspendMessage));
+          emit(UserBlocked(message: Strings.userBlocked));
           emit(Initial());
           break;
         default:
-          emit(
-            Success(
-              message: 'Signed in as ${AuthService.getCurrentUser!.email}',
-            ),
-          );
-          emit(
-            Authenticated(userCredential: AuthService.getCurrentUser!),
-          );
+          emit(Authenticated(
+            user: authService.getCurrentUser!,
+            message: 'Signed in as ${authService.getCurrentUser!.email}',
+          ));
       }
-    } else {
-      emit(NoInternet(message: AppString.kNoInternetMessage));
-      emit(Initial());
-    }
-  }
-
-  Future<void> signOut() async {
-    try {
-      await AuthService.logOut();
-    } catch (e) {
-      log(e.toString());
     }
   }
 }

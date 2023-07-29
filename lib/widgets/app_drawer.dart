@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:remo_tooth/services/auth_service.dart';
 import 'package:remo_tooth/widgets/common.dart';
 
-import '../config/router/app_routes.dart';
+import '../config/router/routes.dart';
 
 class AppDrawer extends StatelessWidget with StandardAppWidgets {
-  const AppDrawer({
-    super.key,
-  });
+  final AuthenticationService _authService = AuthenticationService();
+  AppDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,20 +20,19 @@ class AppDrawer extends StatelessWidget with StandardAppWidgets {
               children: [
                 CircleAvatar(
                   radius: 35,
-                  foregroundImage: NetworkImage(
-                    AuthService.getCurrentUser!.photoURL!,
-                  ),
+                  foregroundImage:
+                      NetworkImage(_authService.getCurrentUser!.photoURL!),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      AuthService.getCurrentUser!.displayName!,
+                      _authService.getCurrentUser!.displayName!,
                       style: const TextStyle(fontSize: 18),
                     ),
                     Text(
-                      "ID: ${AuthService.getCurrentUser!.uid}",
+                      "ID: ${_authService.getCurrentUser!.uid}",
                       style: const TextStyle(fontSize: 9, color: Colors.grey),
                     ),
                   ],
@@ -46,7 +44,7 @@ class AppDrawer extends StatelessWidget with StandardAppWidgets {
             leading: const Icon(Icons.connect_without_contact_rounded),
             title: const Text("HC-06"),
             onTap: () {
-              Navigator.pushReplacementNamed(context, Routes.kBluetooth);
+              Navigator.pushReplacementNamed(context, Routes.bluetoothHome);
             },
           ),
           const Divider(),
@@ -57,39 +55,17 @@ class AppDrawer extends StatelessWidget with StandardAppWidgets {
               ListTile(
                 title: const Text("Locker"),
                 onTap: () {
-                  Navigator.pushReplacementNamed(context, Routes.kWifi);
+                  Navigator.pushReplacementNamed(context, Routes.wifiHome);
                 },
               ),
               ListTile(
                 title: const Text("Fingerprint"),
                 onTap: () {
-                  Navigator.pushReplacementNamed(context, Routes.kBiometric);
+                  Navigator.pushReplacementNamed(context, Routes.biometric);
                 },
               ),
             ],
           ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(Icons.logout_rounded),
-            title: const Text("Sign out"),
-            onTap: () {
-              AuthService.logOut().then((user) => {
-                    if (user == null)
-                      {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          Routes.kAuth,
-                          (route) => false,
-                        )
-                      }
-                    else
-                      {
-                        showSnackBarWidget(context, "Sign out failed!"),
-                      }
-                  });
-            },
-          ),
-          const Divider(),
         ],
       ),
     );
