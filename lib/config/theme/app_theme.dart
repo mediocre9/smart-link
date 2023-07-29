@@ -7,7 +7,7 @@ class AppTheme {
 
   static ThemeData darkTheme() {
     return ThemeData.dark(useMaterial3: true).copyWith(
-      primaryColor: AppColors.kPrimary,
+      primaryColor: AppColors.primary,
       useMaterial3: true,
       inputDecorationTheme: const InputDecorationTheme(
         border: OutlineInputBorder(),
@@ -17,23 +17,23 @@ class AppTheme {
         color: Color(0xFFE2D9F8),
       ),
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: AppColors.kElevatedButton,
-        foregroundColor: AppColors.kElevatedButtonText,
+        backgroundColor: AppColors.elevatedButton,
+        foregroundColor: AppColors.elevatedButtonContent,
         shape: CircleBorder(),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
         shape: BeveledRectangleBorder(),
-        backgroundColor: AppColors.kScaffold,
+        backgroundColor: AppColors.scaffold,
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
-        color: AppColors.kProgressIndicator,
+        color: AppColors.progressIndicator,
       ),
       cardTheme: CardTheme(
-        color: AppColors.kCard,
+        color: AppColors.card,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
           side: const BorderSide(
-            color: AppColors.kCardBorder,
+            color: AppColors.cardBorder,
             style: BorderStyle.solid,
             width: 0.5,
           ),
@@ -41,7 +41,7 @@ class AppTheme {
       ),
       listTileTheme: const ListTileThemeData(
         dense: true,
-        tileColor: AppColors.kListTile,
+        tileColor: AppColors.listTile,
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
@@ -51,17 +51,17 @@ class AppTheme {
             ),
           ),
           backgroundColor: MaterialStateProperty.all(
-            AppColors.kElevatedButton,
+            AppColors.elevatedButton,
           ),
           foregroundColor: MaterialStateProperty.all(
-            AppColors.kElevatedButtonText,
+            AppColors.elevatedButtonContent,
           ),
         ),
       ),
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: AppColors.kSnackbar,
+        backgroundColor: AppColors.snackBar,
         contentTextStyle: const TextStyle(
-          color: AppColors.kSnackbarText,
+          color: AppColors.snackBarContent,
         ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
@@ -69,30 +69,30 @@ class AppTheme {
       ),
       textTheme: const TextTheme(
         displayLarge: TextStyle(
-          color: AppColors.kMediumDisplay,
+          color: AppColors.mediumDisplay,
           fontWeight: FontWeight.bold,
         ),
         displaySmall: TextStyle(
-          color: AppColors.kMediumDisplay,
+          color: AppColors.mediumDisplay,
           fontWeight: FontWeight.bold,
         ),
         titleSmall: TextStyle(
-          color: AppColors.kSmallTitle,
+          color: AppColors.smallTitle,
           fontWeight: FontWeight.w300,
         ),
         titleMedium: TextStyle(
-          color: AppColors.kMediumTitle,
+          color: AppColors.mediumTitle,
           fontWeight: FontWeight.w600,
           fontSize: 16,
         ),
         labelSmall: TextStyle(
-          color: AppColors.kSmallLabel,
+          color: AppColors.smallLabel,
         ),
         labelMedium: TextStyle(
-          color: AppColors.kMediumLabel,
+          color: AppColors.mediumLabel,
         ),
         labelLarge: TextStyle(
-          color: AppColors.kLargeLabel,
+          color: AppColors.largeLabel,
           fontWeight: FontWeight.w500,
         ),
       ),

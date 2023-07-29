@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import '../config/strings/app_strings.dart';
+import '../config/strings/strings.dart';
 
 mixin StandardAppWidgets {
-  void showAboutDialogWidget(
-      BuildContext context, MediaQueryData mediaQuery, ThemeData theme) {
+  void showAboutDialogWidget(BuildContext context) {
     return showAboutDialog(
       context: context,
-      applicationName: AppString.kAppName,
-      applicationVersion: AppString.kAppVersion,
+      applicationName: Strings.appName,
+      applicationVersion: Strings.appVersion,
       applicationIcon: Image.asset(
-        'assets/images/logo.png',
-        width: mediaQuery.size.width / 5,
+        Strings.appLogo,
+        width: MediaQuery.of(context).size.width / 5,
       ),
       children: [
         Text(
-          AppString.kCopyrightStatement,
-          style: theme.textTheme.labelMedium,
+          Strings.copyright,
+          style: Theme.of(context).textTheme.labelMedium,
         ),
       ],
     );

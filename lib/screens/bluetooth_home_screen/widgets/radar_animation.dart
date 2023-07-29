@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-import '../../../config/strings/app_strings.dart';
+import '../../../config/strings/strings.dart';
 
 class RadarAnimation extends StatelessWidget {
   final String text;
-  final MediaQueryData mediaQuery;
-  final ThemeData theme;
 
   const RadarAnimation({
     super.key,
-    required this.mediaQuery,
-    required this.theme,
     required this.text,
   });
 
@@ -21,13 +17,13 @@ class RadarAnimation extends StatelessWidget {
       child: Column(
         children: [
           Lottie.asset(
-            AppString.kRadarAnimationPath,
-            height: mediaQuery.size.height / 5,
+            Strings.radarAnimationPath,
+            height: MediaQuery.of(context).size.height / 5,
           ),
-          SizedBox(height: mediaQuery.size.height / 20),
+          SizedBox(height: MediaQuery.of(context).size.height / 20),
           Text(
             text,
-            style: theme.textTheme.titleSmall,
+            style: Theme.of(context).textTheme.titleSmall,
             textAlign: TextAlign.center,
           ),
         ],

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart';
 
-import '../../../config/strings/app_strings.dart';
+import '../../../config/strings/strings.dart';
 part 'wifi_home_state.dart';
 
 class WifiHomeCubit extends Cubit<WifiHomeState> {
@@ -9,7 +9,7 @@ class WifiHomeCubit extends Cubit<WifiHomeState> {
   String? baseUrl;
 
   Future<void> establishConnection() async {
-    baseUrl = "http://${AppString.kNodeMCUDefaultIp}/";
+    baseUrl = "http://${Strings.microControllerIp}/";
     emit(Connecting());
     try {
       Response response = await get(Uri.parse(baseUrl!));

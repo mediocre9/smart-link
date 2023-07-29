@@ -8,7 +8,6 @@ import '../authentication_screen/cubit/authentication_screen_cubit.dart';
 class AuthenticationScreen extends StatelessWidget with StandardAppWidgets {
   const AuthenticationScreen({super.key});
 
-  // @override
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context).textTheme;
@@ -21,57 +20,62 @@ class AuthenticationScreen extends StatelessWidget with StandardAppWidgets {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
-              AppString.kAppLogoPath,
+              Strings.appLogo,
               width: mediaQuery.size.width / 3,
             ),
             SizedBox(height: mediaQuery.size.height / 40),
             Text(
-              AppString.kAppName,
+              Strings.appName,
               style: theme.displaySmall!.copyWith(
                 color: Colors.blue,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(AppString.kAppDescription, style: theme.labelMedium),
+            Text(Strings.appDescription, style: theme.labelMedium),
             SizedBox(height: mediaQuery.size.height / 30),
             BlocConsumer<AuthenticationScreenCubit, AuthenticationScreenState>(
-              listener: (_, state) {
-                if (state is Authenticated) {
-                  Navigator.pushNamedAndRemoveUntil(
-                    _,
-                    Routes.kBluetooth,
-                    (route) => false,
-                  );
-                } else if (state is Success) {
-                  ScaffoldMessenger.of(_).showSnackBar(
-                    SnackBar(content: Text(state.message)),
-                  );
-                } else if (state is Error) {
-                  showSnackBarWidget(context, state.message);
-                } else if (state is NoInternet) {
-                  showSnackBarWidget(context, state.message);
-                }
-              },
-              builder: (_, state) {
-                if (state is Initial) {
-                  return SignInButton(
-                    buttonType: ButtonType.googleDark,
-                    shape: const BeveledRectangleBorder(),
-                    onPressed: () {
-                      context.read<AuthenticationScreenCubit>().signIn();
-                    },
-                  );
-                } else if (state is Loading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return Container();
-              },
+              builder: _blocBuilders,
+              listener: _blocListeners,
             ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _blocBuilders(BuildContext context, AuthenticationScreenState state) {
+    switch (state) {
+      case Initial():
+        return SignInButton(
+          buttonType: ButtonType.googleDark,
+          shape: const BeveledRectangleBorder(),
+          onPressed: () => context.read<AuthenticationScreenCubit>().signIn(),
+        );
+
+      default:
+        return const Center(child: CircularProgressIndicator());
+    }
+  }
+
+  void _blocListeners(BuildContext context, AuthenticationScreenState state) {
+    switch (state) {
+      case Authenticated():
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          Routes.bluetoothHome,
+          (route) => false,
+        );
+        showSnackBarWidget(context, state.message);
+        break;
+
+      case UserBlocked():
+        showSnackBarWidget(context, state.message);
+        break;
+
+      case NoInternet():
+        showSnackBarWidget(context, state.message);
+        break;
+      default:
+    }
   }
 }

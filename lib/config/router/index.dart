@@ -7,4 +7,4 @@ export '../../screens/wifi_home_screen/wifi_home_screen.dart';
 export '../../screens/wifi_remote_screen/cubit/wifi_remote_cubit.dart';
 export '../../screens/wifi_remote_screen/wifi_remote_screen.dart';
 export '../../screens/biometric_screen/fingerprint_screen.dart';
-export 'app_routes.dart';
+export 'routes.dart';

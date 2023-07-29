@@ -1,6 +1,6 @@
 part of 'wifi_home_cubit.dart';
 
-abstract class WifiHomeState {}
+sealed class WifiHomeState {}
 
 class Initial extends WifiHomeState {}
 

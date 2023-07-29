@@ -4,7 +4,7 @@ import 'package:remo_tooth/widgets/app_drawer.dart';
 import 'cubit/wifi_remote_cubit.dart';
 
 class WifiRemoteScreen extends StatelessWidget {
-  // dependent on wifi home cubit . . .
+  // dependent on wifi home cubit (route_args) . . .
   final String baseUrl;
   const WifiRemoteScreen({super.key, required this.baseUrl});
 
@@ -12,7 +12,7 @@ class WifiRemoteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Locker")),
-      drawer: const AppDrawer(),
+      drawer: AppDrawer(),
       body: Column(
         children: [
           Expanded(
@@ -24,31 +24,7 @@ class WifiRemoteScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   BlocBuilder<WifiRemoteCubit, WifiRemoteState>(
-                    builder: (context, state) {
-                      if (state is Loading) {
-                        return FloatingActionButton.large(
-                          child: const CircularProgressIndicator(),
-                          onPressed: () =>
-                              context.read<WifiRemoteCubit>().on(baseUrl),
-                        );
-                      } else if (state is OnSignal) {
-                        return FloatingActionButton.large(
-                          foregroundColor:
-                              const Color.fromARGB(255, 147, 240, 170),
-                          child: const Icon(Icons.power_settings_new_rounded),
-                          onPressed: () =>
-                              context.read<WifiRemoteCubit>().off(baseUrl),
-                        );
-                      } else if (state is OffSignal) {
-                        return FloatingActionButton.large(
-                          child: const Icon(Icons.power_settings_new_rounded),
-                          onPressed: () =>
-                              context.read<WifiRemoteCubit>().on(baseUrl),
-                        );
-                      } else {
-                        return Container();
-                      }
-                    },
+                    builder: _blocBuilders,
                   ),
                 ],
               ),
@@ -57,5 +33,31 @@ class WifiRemoteScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _blocBuilders(BuildContext context, WifiRemoteState state) {
+    switch (state) {
+      case Loading():
+        return FloatingActionButton.large(
+          child: const CircularProgressIndicator(),
+          onPressed: () =>
+              context.read<WifiRemoteCubit>().sendOnMessage(baseUrl),
+        );
+      case OnSignal():
+        return FloatingActionButton.large(
+          foregroundColor: const Color.fromARGB(255, 147, 240, 170),
+          child: const Icon(Icons.power_settings_new_rounded),
+          onPressed: () =>
+              context.read<WifiRemoteCubit>().sendOffMessage(baseUrl),
+        );
+      case OffSignal():
+        return FloatingActionButton.large(
+          child: const Icon(Icons.power_settings_new_rounded),
+          onPressed: () =>
+              context.read<WifiRemoteCubit>().sendOnMessage(baseUrl),
+        );
+      default:
+        return Container();
+    }
   }
 }

@@ -29,9 +29,9 @@ class SmartLinkApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: AppString.kAppName,
-      color: AppColors.kPrimary,
-      initialRoute: Routes.kSplash,
+      title: Strings.appName,
+      color: AppColors.primary,
+      initialRoute: Routes.auth,
       onGenerateRoute: RouteGenerator.generate,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme(),

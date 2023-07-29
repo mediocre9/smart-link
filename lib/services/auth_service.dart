@@ -6,32 +6,22 @@ import 'package:google_sign_in/google_sign_in.dart';
 enum SignInState {
   authenticated,
   disabled,
-  notFound,
 }
 
-class AuthService {
-  static final FirebaseAuth _auth = FirebaseAuth.instance;
-  static final GoogleSignIn _googleSignIn = GoogleSignIn();
+abstract interface class IAuthenticationService {
+  Future<SignInState> signIn();
+}
 
-  /// Returns currently signed up user credentials.
-  static User? get getCurrentUser => _auth.currentUser;
+class AuthenticationService implements IAuthenticationService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  /// Returns an instance of `FirebaseAuth`.
-  static FirebaseAuth? get getFirebaseAuthInstance => _auth;
+  User? get getCurrentUser => _auth.currentUser;
 
-  static Future<User?> logOut() async {
+  @override
+  Future<SignInState> signIn() async {
     try {
-      await _googleSignIn.signOut();
-      await _auth.signOut();
-    } on FirebaseAuthException catch (e) {
-      log(e.message!);
-    }
-    return getCurrentUser;
-  }
-
-  static Future<SignInState> signUp() async {
-    try {
-      GoogleSignInAccount? user = await _googleSignIn.signIn();
+      GoogleSignIn googleSignIn = GoogleSignIn();
+      GoogleSignInAccount? user = await googleSignIn.signIn();
 
       if (user != null) {
         GoogleSignInAuthentication auth = await user.authentication;
@@ -44,11 +34,9 @@ class AuthService {
         await _auth.signInWithCredential(credential);
       }
     } on FirebaseAuthException catch (e) {
-      switch (e.code) {
-        case 'user-disabled':
-          return SignInState.disabled;
-        case 'user-not-found':
-          return SignInState.notFound;
+      log(e.message!);
+      if (e.code == 'user-disabled') {
+        return SignInState.disabled;
       }
     }
     return SignInState.authenticated;
