@@ -1,6 +1,6 @@
 part of 'authentication_screen_cubit.dart';
 
-abstract class AuthenticationScreenState extends Equatable {}
+sealed class AuthenticationScreenState extends Equatable {}
 
 class Initial extends AuthenticationScreenState {
   @override
@@ -13,27 +13,18 @@ class Loading extends AuthenticationScreenState {
 }
 
 class Authenticated extends AuthenticationScreenState {
-  final User userCredential;
-
-  Authenticated({required this.userCredential});
+  final User user;
+  final String message;
+  Authenticated({required this.message, required this.user});
 
   @override
-  List<Object?> get props => [userCredential];
+  List<Object?> get props => [user, message];
 }
 
-class Success extends AuthenticationScreenState {
+class UserBlocked extends AuthenticationScreenState {
   final String message;
 
-  Success({required this.message});
-
-  @override
-  List<Object?> get props => [message];
-}
-
-class Error extends AuthenticationScreenState {
-  final String message;
-
-  Error({required this.message});
+  UserBlocked({required this.message});
 
   @override
   List<Object?> get props => [message];

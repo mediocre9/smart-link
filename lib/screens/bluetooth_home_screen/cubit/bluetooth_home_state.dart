@@ -1,8 +1,6 @@
-// ignore_for_file: slash_for_doc_comments
-
 part of 'bluetooth_home_cubit.dart';
 
-abstract class BluetoothHomeState {}
+sealed class BluetoothHomeState {}
 
 class Initial extends BluetoothHomeState {
   final IconData icon;
@@ -20,9 +18,6 @@ class BluetoothDisabled extends BluetoothHomeState {
   BluetoothDisabled({required this.message});
 }
 
-/* 
-* Discovery States . . .
-*/
 class DiscoverNewDevices extends BluetoothHomeState {
   final String text;
   DiscoverNewDevices({required this.text});
@@ -50,9 +45,6 @@ class ShowDiscoveredDevices extends BluetoothHomeState {
   });
 }
 
-/** 
- * Pairing states 
- */
 class PairDevice extends BluetoothHomeState {
   final String text;
   PairDevice({required this.text});
