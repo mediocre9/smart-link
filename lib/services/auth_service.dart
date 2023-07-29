@@ -6,7 +6,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 enum SignInState {
   authenticated,
   disabled,
-  notFound,
 }
 
 abstract interface class IAuthenticationService {
