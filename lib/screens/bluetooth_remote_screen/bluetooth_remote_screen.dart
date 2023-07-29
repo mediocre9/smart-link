@@ -45,7 +45,7 @@ class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
                   if (state.message == "End device not responding!") {
                     Navigator.pushReplacementNamed(
                       context,
-                      Routes.kBluetooth,
+                      Routes.bluetoothHome,
                     );
                   }
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -70,13 +70,13 @@ class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               robotControlButtons[0]
-                                  ? AppColors.kElevatedButton
+                                  ? AppColors.elevatedButton
                                   : Colors.transparent,
                             ),
                             foregroundColor: MaterialStateProperty.all(
                               robotControlButtons[0]
-                                  ? AppColors.kElevatedButtonText
-                                  : AppColors.kElevatedButton,
+                                  ? AppColors.elevatedButtonContent
+                                  : AppColors.elevatedButton,
                             ),
                           ),
                           onPressed: () {
@@ -97,13 +97,13 @@ class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
                                   robotControlButtons[1]
-                                      ? AppColors.kElevatedButton
+                                      ? AppColors.elevatedButton
                                       : Colors.transparent,
                                 ),
                                 foregroundColor: MaterialStateProperty.all(
                                   robotControlButtons[1]
-                                      ? AppColors.kElevatedButtonText
-                                      : AppColors.kElevatedButton,
+                                      ? AppColors.elevatedButtonContent
+                                      : AppColors.elevatedButton,
                                 ),
                               ),
                               onPressed: () {
@@ -134,13 +134,13 @@ class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
                                   robotControlButtons[2]
-                                      ? AppColors.kElevatedButton
+                                      ? AppColors.elevatedButton
                                       : Colors.transparent,
                                 ),
                                 foregroundColor: MaterialStateProperty.all(
                                   robotControlButtons[2]
-                                      ? AppColors.kElevatedButtonText
-                                      : AppColors.kElevatedButton,
+                                      ? AppColors.elevatedButtonContent
+                                      : AppColors.elevatedButton,
                                 ),
                               ),
                               onPressed: () {
@@ -161,13 +161,13 @@ class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               robotControlButtons[3]
-                                  ? AppColors.kElevatedButton
+                                  ? AppColors.elevatedButton
                                   : Colors.transparent,
                             ),
                             foregroundColor: MaterialStateProperty.all(
                               robotControlButtons[3]
-                                  ? AppColors.kElevatedButtonText
-                                  : AppColors.kElevatedButton,
+                                  ? AppColors.elevatedButtonContent
+                                  : AppColors.elevatedButton,
                             ),
                           ),
                           onPressed: () {
@@ -263,7 +263,7 @@ class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
                                               .disconnect();
                                           Navigator.pushReplacementNamed(
                                             context,
-                                            Routes.kBluetooth,
+                                            Routes.bluetoothHome,
                                           );
                                         },
                                         child: const Text("Disconnect"),
