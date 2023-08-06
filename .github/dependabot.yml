@@ -1,0 +1,9 @@
+version: 2
+enable-beta-ecosystems: true
+updates:
+  - package-ecosystem: "pub"
+    directory: "/"
+    schedule:
+      interval: weekly
+      time: "12:00"
+    open-pull-requests-limit: 10
