@@ -10,6 +10,10 @@
 
 > An application to remotely control Arduino devices to interact specifically with the HC-05/06 and ESP8266 (Node-MCU) modules.
 
+## Hardware Repositories:
+1. **<a href="https://github.com/mediocre9/arduino-uno-robot">Arduino Uno Robot</a>**
+2. **<a href="https://github.com/mediocre9/nodemcu-esp8266">(SoC) ESP8266 NodeMCU </a>**
+
 ## Development Branches:
 - **<a href="https://github.com/mediocre9/remo-tooth/tree/development">Development</a>**
 
