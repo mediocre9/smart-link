@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:remo_tooth/config/router/routes.dart';
+import 'package:smart_link/config/router/routes.dart';
 import '../../widgets/app_drawer.dart';
 import '../../widgets/common.dart';
 import 'cubit/wifi_home_cubit.dart';

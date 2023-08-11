@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:remo_tooth/services/auth_service.dart';
-import 'package:remo_tooth/widgets/common.dart';
+import 'package:smart_link/services/auth_service.dart';
+import 'package:smart_link/widgets/common.dart';
 
 import '../config/router/routes.dart';
 

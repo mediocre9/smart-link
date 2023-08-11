@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:remo_tooth/widgets/common.dart';
+import 'package:smart_link/widgets/common.dart';
 import 'package:sign_button/sign_button.dart';
 import '../../config/index.dart';
 import '../authentication_screen/cubit/authentication_screen_cubit.dart';
