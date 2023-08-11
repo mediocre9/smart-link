@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:remo_tooth/config/index.dart';
+import 'package:smart_link/config/index.dart';
 
 import 'cubit/bluetooth_remote_cubit.dart';
 

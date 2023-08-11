@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:remo_tooth/config/router/index.dart';
-import 'package:remo_tooth/screens/authentication_screen/cubit/authentication_screen_cubit.dart';
-import 'package:remo_tooth/services/auth_service.dart';
+import 'package:smart_link/config/router/index.dart';
+import 'package:smart_link/screens/authentication_screen/cubit/authentication_screen_cubit.dart';
+import 'package:smart_link/services/auth_service.dart';
 import '../../screens/wifi_home_screen/cubit/wifi_home_cubit.dart';
 
 class RouteGenerator {

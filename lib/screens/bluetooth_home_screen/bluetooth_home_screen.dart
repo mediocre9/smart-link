@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:remo_tooth/screens/bluetooth_home_screen/widgets/devices_listview.dart';
-import 'package:remo_tooth/screens/bluetooth_home_screen/widgets/initial_widget.dart';
-import 'package:remo_tooth/screens/bluetooth_home_screen/widgets/radar_animation.dart';
-import 'package:remo_tooth/widgets/app_drawer.dart';
+import 'package:smart_link/screens/bluetooth_home_screen/widgets/devices_listview.dart';
+import 'package:smart_link/screens/bluetooth_home_screen/widgets/initial_widget.dart';
+import 'package:smart_link/screens/bluetooth_home_screen/widgets/radar_animation.dart';
+import 'package:smart_link/widgets/app_drawer.dart';
 import '../../config/router/routes.dart';
 import '../../widgets/common.dart';
 import 'cubit/bluetooth_home_cubit.dart';
