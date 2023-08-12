@@ -1,4 +1,4 @@
-package com.example.remo_tooth
+package com.mediocre.smartlink
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterFragmentActivity;
