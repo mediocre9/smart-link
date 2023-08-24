@@ -43,7 +43,7 @@ dependencies:
   lottie: ^2.6.0
   http: ^1.1.0
   local_auth: ^2.1.5
-  permission_handler: ^10.3.0
+  permission_handler: ^10.4.3
   firebase_crashlytics: ^3.3.3
   firebase_auth: ^4.7.3
   firebase_core: ^2.14.0
