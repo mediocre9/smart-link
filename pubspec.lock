@@ -748,10 +748,10 @@ packages:
     dependency: "direct main"
     description:
       name: sign_button
-      sha256: "896a23fd956bed66330ac19251e0f25c0dad4fe04f8bdde7e51bb2f73c198397"
+      sha256: "4d5f24b164447390dd5eab5046ad37a773493c5c984e95f482a0de015e63e302"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.4"
+    version: "2.0.5"
   sky_engine:
     dependency: transitive
     description: flutter
