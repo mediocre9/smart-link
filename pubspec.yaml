@@ -42,7 +42,7 @@ dependencies:
   connectivity_plus: ^4.0.1
   lottie: ^2.6.0
   http: ^1.1.0
-  local_auth: ^2.1.5
+  local_auth: ^2.1.7
   permission_handler: ^10.3.0
   firebase_crashlytics: ^3.3.3
   firebase_auth: ^4.7.3
