@@ -14,30 +14,6 @@
 1. **<a href="https://github.com/mediocre9/arduino-uno-robot">Arduino Uno Robot</a>**
 2. **<a href="https://github.com/mediocre9/nodemcu-esp8266">(SoC) ESP8266 NodeMCU </a>**
 
-## Development Branches:
-- **<a href="https://github.com/mediocre9/remo-tooth/tree/development">Development</a>**
-
-## Task-List:
-- [x] UI Rework
-- [x] UI Responsiveness 
-- [ ] Refactoring
-
-## Dependencies:
-- flutter_bloc
-- bloc
-- equatable
-- flutter_bluetooth_serial
-- connectivity_plus
-- lottie
-- http
-- local_auth
-- permission_handler
-- firebase_crashlytics
-- firebase_auth
-- firebase_core
-- google_sign_in
-- sign_button
-
 ## Build Previews:
 <p float="left">
   <img src="previews/1.jpg" height="480">
