@@ -12,7 +12,8 @@
 
 ## Hardware Repositories:
 1. **<a href="https://github.com/mediocre9/arduino-uno-robot">Arduino Uno Robot</a>**
-2. **<a href="https://github.com/mediocre9/nodemcu-esp8266">(SoC) ESP8266 NodeMCU </a>**
+2. **<a href="https://github.com/mediocre9/nodemcu-esp8266">(SoC) ESP8266 NodeMCU - Standalone Server</a>**
+3. **<a href="https://github.com/mediocre9/nodemcu-touchpass/tree/main">(Soc) ESP8266 NodeMCU - Firebase</a>**
 
 ## Build Previews:
 <p float="left">
