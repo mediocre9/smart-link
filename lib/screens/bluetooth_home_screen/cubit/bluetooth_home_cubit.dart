@@ -1,161 +1,91 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../../config/strings/strings.dart';
+import '../../../services/bluetooth_service.dart';
+import '../../../services/permission_service.dart';
 
 part 'bluetooth_home_state.dart';
 
 class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
-  final FlutterBluetoothSerial _bluetooth = FlutterBluetoothSerial.instance;
-  final List<BluetoothDevice> _foundedDevices = [];
-  final List<BluetoothDevice> _pairedDevices = [];
+  final BluetoothPermissionService _permission;
+  final BluetoothService _bluetooth;
+  final List<BluetoothDevice> _discovered = [];
+  final List<BluetoothDevice> _paired = [];
 
-  BluetoothHomeCubit()
-      : super(
-          Initial(
-            text: Strings.bluetoothOnHomeDescription,
-            icon: Icons.bluetooth_rounded,
-          ),
-        ) {
-    _grantPermissions();
+  BluetoothHomeCubit(
+    this._permission,
+    this._bluetooth,
+  ) : super(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded)) {
+    init();
   }
 
-  Future<void> _grantPermissions() async {
-    PermissionStatus connectStatus =
-        await Permission.bluetoothConnect.request();
-    PermissionStatus scanStatus = await Permission.bluetoothScan.request();
+  Future<void> init() async {
+    bool hasBluetoothPermission = await _permission.requestPermissions();
+    bool? isBluetoothEnabled = await _bluetooth.enableBluetooth();
 
-    if (connectStatus.isGranted && scanStatus.isGranted) {
+    if (hasBluetoothPermission && isBluetoothEnabled!) {
       await _getPairedDevices();
     } else {
       emit(BluetoothDisabled(message: Strings.bluetoothOff));
+      emit(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
     }
   }
 
-  Future<bool?> get isBluetoothEnabled async => _bluetooth.isEnabled;
+  Future<void> startScan() async {
+    bool? isBluetoothEnabled = await _bluetooth.enableBluetooth();
 
-  /// retrieves all paired devices.
-  Future<void> _getPairedDevices() async {
-    _pairedDevices.clear();
-    if ((await isBluetoothEnabled)!) {
-      emit(GetPairedDevices(text: 'Getting paired devices . . .'));
-      await _bluetooth
-          .getBondedDevices()
-          .then((paired) => _pairedDevices.addAll(paired))
-          .whenComplete(() {
-        if (_pairedDevices.isNotEmpty) {
-          emit(ShowPairedDevices(
-            totalPairedDevices: _pairedDevices.length,
-            pairedDevices: _pairedDevices,
-          ));
-        } else {
-          emit(
-            Initial(
-              text: Strings.bluetoothOnHomeDescription,
-              icon: Icons.bluetooth_rounded,
-            ),
-          );
-        }
-      });
+    if (!isBluetoothEnabled!) {
+      emit(BluetoothDisabled(message: Strings.bluetoothOff));
+      emit(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
+      return;
+    }
+
+    emit(DiscoverDevices(text: Strings.bluetoothDiscoveryDescription));
+    _discovered.clear();
+
+    await for (final result in _bluetooth.startDiscovery()) {
+      _discovered.add(result.device);
+    }
+
+    if (_discovered.isNotEmpty) {
+      emit(ShowDiscoveredDevices(devices: _discovered));
     } else {
-      await _bluetooth.requestEnable().then((isBluetoothTurnedOn) {
-        if (isBluetoothTurnedOn!) {
-          _getPairedDevices();
-        } else {
-          emit(
-            Initial(
-              text: Strings.bluetoothOnHomeDescription,
-              icon: Icons.bluetooth_rounded,
-            ),
-          );
-        }
-      });
+      emit(HasNotFoundNewDevices(message: Strings.devicesNotInRange));
+      await _getPairedDevices();
     }
   }
 
-  /// cancel discovery operation . . .
-  Future<void> stopDiscovery() async {
+  Future<void> stopScan() async {
     await _bluetooth.cancelDiscovery();
-    _getPairedDevices();
+    await _getPairedDevices();
   }
 
-  /// finds nearby beacon bluetooth devices for pairing.
-  Future<void> discoverDevices() async {
-    _foundedDevices.clear();
-    if ((await isBluetoothEnabled)!) {
-      emit(DiscoverNewDevices(text: Strings.bluetoothDiscoveryDescription));
-      _bluetooth.startDiscovery().listen((e) {
-        _foundedDevices
-          ..clear()
-          ..add(e.device);
-      }).onDone(() {
-        if (_foundedDevices.isNotEmpty) {
-          emit(ShowDiscoveredDevices(
-            totalDiscoveredDevices: _foundedDevices.length,
-            discoveredDevices: _foundedDevices,
-          ));
-          return;
-        } else if (_pairedDevices.isNotEmpty) {
-          emit(HasNotFoundNewDevices(message: Strings.devicesNotInRange));
-          emit(ShowPairedDevices(
-            totalPairedDevices: _pairedDevices.length,
-            pairedDevices: _pairedDevices,
-          ));
-          return;
-        } else {
-          emit(HasNotFoundNewDevices(message: Strings.devicesNotInRange));
-          emit(
-            Initial(
-              text: Strings.bluetoothOnHomeDescription,
-              icon: Icons.bluetooth_rounded,
-            ),
-          );
-        }
-      });
-    } else {
-      await _bluetooth.requestEnable().then((isBluetoothTurnedOn) {
-        if (isBluetoothTurnedOn!) {
-          _getPairedDevices();
-        } else {
-          emit(BluetoothDisabled(message: Strings.bluetoothOff));
-          emit(Initial(
-            text: Strings.bluetoothOnHomeDescription,
-            icon: Icons.bluetooth_rounded,
-          ));
-        }
-      });
-    }
-  }
-
-  /// Tries to pair with discovered unpaired device.
   Future<void> pairDevice(BluetoothDevice device) async {
-    if (!device.isBonded) {
-      emit(PairDevice(
-        text: 'Trying to pair with ${device.name}. Please be patient!',
+    emit(PairDevice(text: 'Trying to pair with ${device.name}. Please be patient!'));
+    bool? isBonded = await _bluetooth.bondDevice(device);
+
+    if (!isBonded!) {
+      emit(PairUnsuccessful(
+        message: Strings.pairUnsuccessful,
+        snackbarColor: Colors.deepOrange,
       ));
 
-      await _bluetooth.bondDeviceAtAddress(device.address).then((connState) {
-        if (connState!) {
-          device;
-          emit(PairSuccessful(
-            message: 'Paired to ${device.name}!',
-            snackbarColor: Colors.green,
-          ));
-          emit(ConnectToRemoteDevice(device: device));
-        } else {
-          emit(PairUnsuccessful(
-            message: 'Couldn`t pair with ${device.name}!',
-            snackbarColor: Colors.deepOrange,
-          ));
-          emit(ShowPairedDevices(
-            totalPairedDevices: _foundedDevices.length,
-            pairedDevices: _foundedDevices,
-          ));
-        }
-      });
+      emit(ShowPairedDevices(devices: _paired));
     } else {
       emit(ConnectToRemoteDevice(device: device));
     }
+  }
+
+  Future<void> _getPairedDevices() async {
+    emit(GetPairedDevices(text: Strings.gettingPairedDevices));
+
+    var devices = await _bluetooth.fetchPairedDevices();
+    _paired
+      ..clear()
+      ..addAll(devices);
+
+    var currentState = _paired.isNotEmpty ? ShowPairedDevices(devices: _paired) : Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded);
+    emit(currentState);
   }
 }
