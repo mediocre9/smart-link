@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_link/config/router/route_generator.dart';
 import 'firebase_options.dart';
@@ -31,9 +32,9 @@ class SmartLinkApp extends StatelessWidget {
     return MaterialApp(
       title: Strings.appName,
       color: AppColors.primary,
-      initialRoute: Routes.auth,
+      initialRoute: kDebugMode ? Routes.bluetoothHome : Routes.auth,
       onGenerateRoute: RouteGenerator.generate,
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: kDebugMode ? true : false,
       theme: AppTheme.darkTheme(),
     );
   }
