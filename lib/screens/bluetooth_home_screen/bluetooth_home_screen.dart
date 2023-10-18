@@ -53,15 +53,15 @@ class BluetoothHomeScreen extends StatelessWidget with StandardAppWidgets {
         return FloatingActionButton(
           child: const Icon(Icons.play_arrow_rounded),
           onPressed: () {
-            context.read<BluetoothHomeCubit>().discoverDevices();
+            context.read<BluetoothHomeCubit>().startScan();
           },
         );
 
-      case DiscoverNewDevices():
+      case DiscoverDevices():
         return FloatingActionButton(
           child: const Icon(Icons.pause),
           onPressed: () {
-            context.read<BluetoothHomeCubit>().stopDiscovery();
+            context.read<BluetoothHomeCubit>().stopScan();
           },
         );
 
@@ -117,16 +117,10 @@ class BluetoothHomeScreen extends StatelessWidget with StandardAppWidgets {
         );
 
       case ShowPairedDevices():
-        return DevicesListView(
-          bluetoothDevices: state.pairedDevices,
-          totalDevices: state.totalPairedDevices,
-        );
+        return DevicesListView(devices: state.devices);
       case ShowDiscoveredDevices():
-        return DevicesListView(
-          bluetoothDevices: state.discoveredDevices,
-          totalDevices: state.totalDiscoveredDevices,
-        );
-      case DiscoverNewDevices():
+        return DevicesListView(devices: state.devices);
+      case DiscoverDevices():
         return RadarAnimation(text: state.text);
 
       case PairDevice():
