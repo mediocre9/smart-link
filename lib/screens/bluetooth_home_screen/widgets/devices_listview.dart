@@ -6,27 +6,23 @@ import '../cubit/bluetooth_home_cubit.dart';
 import 'card_tile.dart';
 
 class DevicesListView extends StatelessWidget {
-  final List<BluetoothDevice> bluetoothDevices;
-  final int totalDevices;
+  final List<BluetoothDevice> devices;
 
   const DevicesListView({
     super.key,
-    required this.bluetoothDevices,
-    required this.totalDevices,
+    required this.devices,
   });
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-        itemCount: bluetoothDevices.length,
+        itemCount: devices.length,
         itemBuilder: (context, i) {
           return CardTile(
-            device: bluetoothDevices[i],
+            device: devices[i],
             onPressed: () {
-              context
-                  .read<BluetoothHomeCubit>()
-                  .pairDevice(bluetoothDevices[i]);
+              context.read<BluetoothHomeCubit>().pairDevice(devices[i]);
             },
           );
         },
