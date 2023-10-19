@@ -19,7 +19,8 @@ class BiometricScreen extends StatefulWidget {
   State<BiometricScreen> createState() => _BiometricScreenState();
 }
 
-class _BiometricScreenState extends State<BiometricScreen> with StandardAppWidgets {
+class _BiometricScreenState extends State<BiometricScreen>
+    with StandardAppWidgets {
   bool isAuthenticated = false;
 
   Future<void> on() async {
@@ -109,13 +110,18 @@ class _BiometricScreenState extends State<BiometricScreen> with StandardAppWidge
               onPressed: () => _startAuthentication(),
               icon: const Icon(Icons.fingerprint_rounded),
               iconSize: mediaQuery.size.height / 5,
-              color: isAuthenticated ? AppColors.primary : const Color.fromARGB(255, 107, 107, 107),
+              color: isAuthenticated
+                  ? AppColors.primary
+                  : const Color.fromARGB(255, 107, 107, 107),
             ),
             OutlinedButton(
               onPressed: () => off(),
               child: Text(
                 "Switch Off",
-                style: TextStyle(color: isAuthenticated ? AppColors.primary : const Color.fromARGB(255, 107, 107, 107)),
+                style: TextStyle(
+                    color: isAuthenticated
+                        ? AppColors.primary
+                        : const Color.fromARGB(255, 107, 107, 107)),
               ),
             ),
           ],

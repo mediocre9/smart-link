@@ -5,8 +5,6 @@ import 'package:smart_link/config/index.dart';
 
 import 'cubit/bluetooth_remote_cubit.dart';
 
-/// [Refactoring needed]
-/// Priority-Level: 2
 class BluetoothRemoteScreen extends StatefulWidget {
   final BluetoothDevice device;
   const BluetoothRemoteScreen({super.key, required this.device});
@@ -20,7 +18,8 @@ class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
   @override
   void initState() {
     () async {
-      await BlocProvider.of<BluetoothRemoteCubit>(context).connect(widget.device);
+      await BlocProvider.of<BluetoothRemoteCubit>(context)
+          .connect(widget.device);
     }();
     super.initState();
   }
@@ -52,7 +51,9 @@ class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(state.message),
-                      backgroundColor: (state.message == "Connected!") ? Colors.green : Colors.red,
+                      backgroundColor: (state.message == "Connected!")
+                          ? Colors.green
+                          : Colors.red,
                     ),
                   );
                 }
@@ -68,16 +69,23 @@ class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
                         OutlinedButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                              robotControlButtons[0] ? AppColors.elevatedButton : Colors.transparent,
+                              robotControlButtons[0]
+                                  ? AppColors.elevatedButton
+                                  : Colors.transparent,
                             ),
                             foregroundColor: MaterialStateProperty.all(
-                              robotControlButtons[0] ? AppColors.elevatedButtonContent : AppColors.elevatedButton,
+                              robotControlButtons[0]
+                                  ? AppColors.elevatedButtonContent
+                                  : AppColors.elevatedButton,
                             ),
                           ),
                           onPressed: () {
                             setState(() {
-                              robotControlButtons.setAll(0, [true, false, false, false]);
-                              context.read<BluetoothRemoteCubit>().moveForward();
+                              robotControlButtons
+                                  .setAll(0, [true, false, false, false]);
+                              context
+                                  .read<BluetoothRemoteCubit>()
+                                  .moveForward();
                             });
                           },
                           child: const Icon(Icons.arrow_circle_up_rounded),
@@ -88,61 +96,87 @@ class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
                             OutlinedButton(
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                  robotControlButtons[1] ? AppColors.elevatedButton : Colors.transparent,
+                                  robotControlButtons[1]
+                                      ? AppColors.elevatedButton
+                                      : Colors.transparent,
                                 ),
                                 foregroundColor: MaterialStateProperty.all(
-                                  robotControlButtons[1] ? AppColors.elevatedButtonContent : AppColors.elevatedButton,
+                                  robotControlButtons[1]
+                                      ? AppColors.elevatedButtonContent
+                                      : AppColors.elevatedButton,
                                 ),
                               ),
                               onPressed: () {
                                 setState(() {
-                                  robotControlButtons.setAll(0, [false, true, false, false]);
+                                  robotControlButtons
+                                      .setAll(0, [false, true, false, false]);
 
-                                  context.read<BluetoothRemoteCubit>().moveLeft();
+                                  context
+                                      .read<BluetoothRemoteCubit>()
+                                      .moveLeft();
                                 });
                               },
-                              child: const Icon(Icons.arrow_circle_left_outlined),
+                              child:
+                                  const Icon(Icons.arrow_circle_left_outlined),
                             ),
                             OutlinedButton(
                                 child: const Icon(Icons.restart_alt_outlined),
                                 onPressed: () {
                                   setState(() {
-                                    robotControlButtons.setAll(0, [false, false, false, false]);
-                                    context.read<BluetoothRemoteCubit>().reset();
+                                    robotControlButtons.setAll(
+                                        0, [false, false, false, false]);
+                                    context
+                                        .read<BluetoothRemoteCubit>()
+                                        .reset();
                                   });
                                 }),
                             OutlinedButton(
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
-                                  robotControlButtons[2] ? AppColors.elevatedButton : Colors.transparent,
+                                  robotControlButtons[2]
+                                      ? AppColors.elevatedButton
+                                      : Colors.transparent,
                                 ),
                                 foregroundColor: MaterialStateProperty.all(
-                                  robotControlButtons[2] ? AppColors.elevatedButtonContent : AppColors.elevatedButton,
+                                  robotControlButtons[2]
+                                      ? AppColors.elevatedButtonContent
+                                      : AppColors.elevatedButton,
                                 ),
                               ),
                               onPressed: () {
                                 setState(() {
-                                  robotControlButtons.setAll(0, [false, false, true, false]);
-                                  context.read<BluetoothRemoteCubit>().moveRight();
+                                  robotControlButtons
+                                      .setAll(0, [false, false, true, false]);
+                                  context
+                                      .read<BluetoothRemoteCubit>()
+                                      .moveRight();
                                 });
                               },
-                              child: const Icon(Icons.arrow_circle_right_outlined),
+                              child:
+                                  const Icon(Icons.arrow_circle_right_outlined),
                             ),
                           ],
                         ),
                         OutlinedButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                              robotControlButtons[3] ? AppColors.elevatedButton : Colors.transparent,
+                              robotControlButtons[3]
+                                  ? AppColors.elevatedButton
+                                  : Colors.transparent,
                             ),
                             foregroundColor: MaterialStateProperty.all(
-                              robotControlButtons[3] ? AppColors.elevatedButtonContent : AppColors.elevatedButton,
+                              robotControlButtons[3]
+                                  ? AppColors.elevatedButtonContent
+                                  : AppColors.elevatedButton,
                             ),
                           ),
                           onPressed: () {
                             setState(() {
-                              robotControlButtons.setAll(0, [false, false, false, true]);
-                              context.read<BluetoothRemoteCubit>().moveBackward();
+                              robotControlButtons
+                                  .setAll(0, [false, false, false, true]);
+                              context
+                                  .read<BluetoothRemoteCubit>()
+                                  .moveBackward();
                             });
                           },
                           child: const Icon(Icons.arrow_circle_down_outlined),
@@ -151,12 +185,16 @@ class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
                         const Divider(),
                         GestureDetector(
                           onLongPressStart: (details) {
-                            context.read<BluetoothRemoteCubit>().moveCameraAngleToUp();
+                            context
+                                .read<BluetoothRemoteCubit>()
+                                .moveCameraAngleToUp();
                           },
-                          onLongPressEnd: (details) => context.read<BluetoothRemoteCubit>().stopCamera(),
+                          onLongPressEnd: (details) =>
+                              context.read<BluetoothRemoteCubit>().stopCamera(),
                           child: OutlinedButton(
                             onPressed: () {},
-                            child: const Icon(Icons.keyboard_double_arrow_up_rounded),
+                            child: const Icon(
+                                Icons.keyboard_double_arrow_up_rounded),
                           ),
                         ),
                         Row(
@@ -164,34 +202,48 @@ class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
                           children: [
                             GestureDetector(
                               onLongPressStart: (details) {
-                                context.read<BluetoothRemoteCubit>().moveCameraAngleToLeft();
+                                context
+                                    .read<BluetoothRemoteCubit>()
+                                    .moveCameraAngleToLeft();
                               },
-                              onLongPressEnd: (details) => context.read<BluetoothRemoteCubit>().stopCamera(),
+                              onLongPressEnd: (details) => context
+                                  .read<BluetoothRemoteCubit>()
+                                  .stopCamera(),
                               child: OutlinedButton(
                                 onPressed: () {},
-                                child: const Icon(Icons.keyboard_double_arrow_left_rounded),
+                                child: const Icon(
+                                    Icons.keyboard_double_arrow_left_rounded),
                               ),
                             ),
                             GestureDetector(
                               onLongPressStart: (details) {
-                                context.read<BluetoothRemoteCubit>().moveCameraAngleToRight();
+                                context
+                                    .read<BluetoothRemoteCubit>()
+                                    .moveCameraAngleToRight();
                               },
-                              onLongPressEnd: (details) => context.read<BluetoothRemoteCubit>().stopCamera(),
+                              onLongPressEnd: (details) => context
+                                  .read<BluetoothRemoteCubit>()
+                                  .stopCamera(),
                               child: OutlinedButton(
                                 onPressed: () {},
-                                child: const Icon(Icons.keyboard_double_arrow_right_rounded),
+                                child: const Icon(
+                                    Icons.keyboard_double_arrow_right_rounded),
                               ),
                             ),
                           ],
                         ),
                         GestureDetector(
                           onLongPressStart: (details) {
-                            context.read<BluetoothRemoteCubit>().moveCameraAngleToDown();
+                            context
+                                .read<BluetoothRemoteCubit>()
+                                .moveCameraAngleToDown();
                           },
-                          onLongPressEnd: (details) => context.read<BluetoothRemoteCubit>().stopCamera(),
+                          onLongPressEnd: (details) =>
+                              context.read<BluetoothRemoteCubit>().stopCamera(),
                           child: OutlinedButton(
                             onPressed: () {},
-                            child: const Icon(Icons.keyboard_double_arrow_down_rounded),
+                            child: const Icon(
+                                Icons.keyboard_double_arrow_down_rounded),
                           ),
                         ),
                         SizedBox(height: mediaQuery.size.height / 20),
@@ -199,13 +251,16 @@ class _BluetoothRemoteScreenState extends State<BluetoothRemoteScreen> {
                           padding: const EdgeInsets.symmetric(horizontal: 30),
                           child: Row(
                             children: [
-                              BlocBuilder<BluetoothRemoteCubit, BluetoothRemoteState>(
+                              BlocBuilder<BluetoothRemoteCubit,
+                                  BluetoothRemoteState>(
                                 builder: (context, state) {
                                   if (state is ConnectedToBluetoothDevice) {
                                     return Expanded(
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          context.read<BluetoothRemoteCubit>().disconnect();
+                                          context
+                                              .read<BluetoothRemoteCubit>()
+                                              .disconnect();
                                           Navigator.pushReplacementNamed(
                                             context,
                                             Routes.bluetoothHome,
