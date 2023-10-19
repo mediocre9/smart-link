@@ -18,9 +18,9 @@ class BluetoothDisabled extends BluetoothHomeState {
   BluetoothDisabled({required this.message});
 }
 
-class DiscoverDevices extends BluetoothHomeState {
+class DiscoverNewDevices extends BluetoothHomeState {
   final String text;
-  DiscoverDevices({required this.text});
+  DiscoverNewDevices({required this.text});
 }
 
 class HasNotFoundNewDevices extends BluetoothHomeState {
@@ -36,9 +36,13 @@ class ConnectToRemoteDevice extends BluetoothHomeState {
 }
 
 class ShowDiscoveredDevices extends BluetoothHomeState {
-  final List<BluetoothDevice> devices;
+  final List<BluetoothDevice> discoveredDevices;
+  final int totalDiscoveredDevices;
 
-  ShowDiscoveredDevices({required this.devices});
+  ShowDiscoveredDevices({
+    required this.totalDiscoveredDevices,
+    required this.discoveredDevices,
+  });
 }
 
 class PairDevice extends BluetoothHomeState {
@@ -49,7 +53,6 @@ class PairDevice extends BluetoothHomeState {
 class PairUnsuccessful extends BluetoothHomeState {
   final String message;
   final Color snackbarColor;
-
   PairUnsuccessful({
     required this.snackbarColor,
     required this.message,
@@ -72,7 +75,11 @@ class GetPairedDevices extends BluetoothHomeState {
 }
 
 class ShowPairedDevices extends BluetoothHomeState {
-  final List<BluetoothDevice> devices;
+  final List<BluetoothDevice> pairedDevices;
+  final int totalPairedDevices;
 
-  ShowPairedDevices({required this.devices});
+  ShowPairedDevices({
+    required this.totalPairedDevices,
+    required this.pairedDevices,
+  });
 }
