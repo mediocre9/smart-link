@@ -5,8 +5,6 @@ import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:smart_link/config/router/index.dart';
 import 'package:smart_link/screens/authentication_screen/cubit/authentication_screen_cubit.dart';
 import 'package:smart_link/services/auth_service.dart';
-import 'package:smart_link/services/bluetooth_service.dart';
-import 'package:smart_link/services/permission_service.dart';
 import '../../screens/wifi_home_screen/cubit/wifi_home_cubit.dart';
 
 class RouteGenerator {
@@ -30,10 +28,7 @@ class RouteGenerator {
         return _pageTransition(
           BlocProvider(
             lazy: false,
-            create: (_) => BluetoothHomeCubit(
-              BluetoothPermissionService(),
-              BluetoothService(FlutterBluetoothSerial.instance),
-            ),
+            create: (_) => BluetoothHomeCubit(),
             child: const BluetoothHomeScreen(),
           ),
         );
@@ -73,7 +68,8 @@ class RouteGenerator {
     }
   }
 
-  static _pageTransition(Widget route) => CupertinoPageRoute(builder: (_) => route);
+  static _pageTransition(Widget route) =>
+      CupertinoPageRoute(builder: (_) => route);
 
   static _defaultRoute() {
     return const Scaffold(
