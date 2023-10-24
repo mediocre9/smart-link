@@ -146,8 +146,10 @@ class BluetoothHomeScreen extends StatelessWidget with StandardAppWidgets {
 
       case ShowPairedDevices():
         return DevicesListView(devices: state.devices);
+        
       case ShowDiscoveredDevices():
         return DevicesListView(devices: state.devices);
+        
       case ScanAnimation():
         return RadarAnimation(text: state.text);
 
@@ -165,6 +167,7 @@ class BluetoothHomeScreen extends StatelessWidget with StandardAppWidgets {
             ],
           ),
         );
+        
       default:
         return Container();
     }
