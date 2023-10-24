@@ -1,11 +1,14 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:smart_link/config/router/index.dart';
 import 'package:smart_link/screens/authentication_screen/cubit/authentication_screen_cubit.dart';
+import 'package:smart_link/screens/feedback_screen/cubit/feedback_cubit.dart';
+import 'package:smart_link/screens/feedback_screen/feedback_screen.dart';
 import 'package:smart_link/services/auth_service.dart';
 import 'package:smart_link/services/bluetooth_service.dart';
+import 'package:smart_link/services/feedback_service.dart';
 import 'package:smart_link/services/permission_service.dart';
 import '../../screens/wifi_home_screen/cubit/wifi_home_cubit.dart';
 
@@ -31,8 +34,8 @@ class RouteGenerator {
           BlocProvider(
             lazy: false,
             create: (_) => BluetoothHomeCubit(
-              BluetoothPermissionService(),
-              BluetoothService(FlutterBluetoothSerial.instance),
+              permission: BluetoothPermissionService(),
+              bluetooth: BluetoothService(FlutterBluetoothSerial.instance),
             ),
             child: const BluetoothHomeScreen(),
           ),
@@ -65,6 +68,17 @@ class RouteGenerator {
           ),
         );
 
+      case Routes.feedback:
+        return _pageTransition(
+          BlocProvider(
+            create: (_) => FeedbackCubit(
+              feedbackService: FeedbackService(firestore: FirebaseFirestore.instance),
+              service: AuthenticationService(),
+            ),
+            child: const FeedbackScreen(),
+          ),
+        );
+
       case Routes.biometric:
         return _pageTransition(const BiometricScreen());
 
@@ -73,7 +87,7 @@ class RouteGenerator {
     }
   }
 
-  static _pageTransition(Widget route) => CupertinoPageRoute(builder: (_) => route);
+  static _pageTransition(Widget route) => MaterialPageRoute(builder: (_) => route);
 
   static _defaultRoute() {
     return const Scaffold(
