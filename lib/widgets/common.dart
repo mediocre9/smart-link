@@ -20,8 +20,7 @@ mixin StandardAppWidgets {
     );
   }
 
-  void showSnackBarWidget(BuildContext context, String message,
-      {Color? color}) {
+  void showSnackBarWidget(BuildContext context, String message, {Color? color}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
