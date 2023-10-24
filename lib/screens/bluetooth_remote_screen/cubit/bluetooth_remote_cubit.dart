@@ -1,25 +1,39 @@
-// ignore_for_file: constant_identifier_names
-
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:smart_link/config/strings/strings.dart';
 
 part 'bluetooth_remote_state.dart';
 
+enum RobotCommand {
+  forward,
+  backward,
+  left,
+  right,
+  stop,
+  cameraUp,
+  cameraDown,
+  cameraLeft,
+  cameraRight,
+  cameraStop,
+}
+
 class BluetoothRemoteCubit extends Cubit<BluetoothRemoteState> {
   BluetoothRemoteCubit() : super(ConnectedToBluetoothDevice());
-  static const String FORWARD = 'F';
-  static const String BACKWARD = 'B';
-  static const String LEFT = 'L';
-  static const String RIGHT = 'R';
-  static const String STOP = 'X';
 
-  static const String CAMERA_ANGLE_UP = 'W';
-  static const String CAMERA_ANGLE_DOWN = 'S';
-  static const String CAMERA_ANGLE_LEFT = 'A';
-  static const String CAMERA_ANGLE_RIGHT = 'D';
-  static const String CAMERA_STOP = '0';
+  final Map<RobotCommand, String> _commands = {
+    RobotCommand.forward: "F",
+    RobotCommand.backward: "B",
+    RobotCommand.left: "L",
+    RobotCommand.right: "R",
+    RobotCommand.stop: "X",
+    RobotCommand.cameraUp: "W",
+    RobotCommand.cameraDown: "S",
+    RobotCommand.cameraLeft: "A",
+    RobotCommand.cameraRight: "D",
+    RobotCommand.cameraStop: "0"
+  };
 
   BluetoothDevice? device;
   BluetoothConnection? _connection;
@@ -29,57 +43,39 @@ class BluetoothRemoteCubit extends Cubit<BluetoothRemoteState> {
 
     try {
       _connection = await BluetoothConnection.toAddress(device.address);
-      emit(ConnectionStatus(message: "Connected!"));
+      emit(ConnectionStatus(message: Strings.bluetoothConnected));
       emit(ConnectedToBluetoothDevice());
     } catch (e) {
-      emit(ConnectionStatus(message: "End device not responding!"));
+      emit(ConnectionStatus(message: Strings.endDeviceNotResponding));
     }
   }
 
   Future<void> disconnect() async {
     await _connection!.finish();
-    emit(ConnectionStatus(message: "Disconnected!"));
+    emit(ConnectionStatus(message: Strings.bluetoothDisconnected));
   }
 
-  void reset() {
-    _connection!.output.add(Uint8List.fromList(utf8.encode(STOP)));
+  void _sendCommand(RobotCommand command) {
+    _connection!.output.add(Uint8List.fromList(utf8.encode(_commands[command] ?? "")));
   }
 
-  void moveForward() {
-    _connection!.output.add(Uint8List.fromList(utf8.encode(FORWARD)));
-  }
+  void reset() => _sendCommand(RobotCommand.stop);
 
-  void moveBackward() {
-    _connection!.output.add(Uint8List.fromList(utf8.encode(BACKWARD)));
-  }
+  void moveLeft() => _sendCommand(RobotCommand.left);
 
-  void moveLeft() {
-    _connection!.output.add(Uint8List.fromList(utf8.encode(LEFT)));
-  }
+  void moveRight() => _sendCommand(RobotCommand.right);
 
-  void moveRight() {
-    _connection!.output.add(Uint8List.fromList(utf8.encode(RIGHT)));
-  }
+  void moveForward() => _sendCommand(RobotCommand.forward);
 
-  // w / s / d / a
-  void moveCameraAngleToUp() {
-    _connection!.output.add(Uint8List.fromList(utf8.encode(CAMERA_ANGLE_UP)));
-  }
+  void moveBackward() => _sendCommand(RobotCommand.backward);
 
-  void moveCameraAngleToDown() {
-    _connection!.output.add(Uint8List.fromList(utf8.encode(CAMERA_ANGLE_DOWN)));
-  }
+  void stopCamera() => _sendCommand(RobotCommand.cameraStop);
 
-  void moveCameraAngleToRight() {
-    _connection!.output
-        .add(Uint8List.fromList(utf8.encode(CAMERA_ANGLE_RIGHT)));
-  }
+  void moveCameraAngleToUp() => _sendCommand(RobotCommand.cameraUp);
 
-  void moveCameraAngleToLeft() {
-    _connection!.output.add(Uint8List.fromList(utf8.encode(CAMERA_ANGLE_LEFT)));
-  }
+  void moveCameraAngleToDown() => _sendCommand(RobotCommand.cameraDown);
 
-  void stopCamera() {
-    _connection!.output.add(Uint8List.fromList(utf8.encode(CAMERA_STOP)));
-  }
+  void moveCameraAngleToLeft() => _sendCommand(RobotCommand.cameraLeft);
+
+  void moveCameraAngleToRight() => _sendCommand(RobotCommand.cameraRight);
 }
