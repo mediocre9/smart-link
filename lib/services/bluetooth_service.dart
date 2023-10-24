@@ -7,6 +7,8 @@ abstract interface class IBluetoothService {
 
   Future<bool?> enableBluetooth();
 
+  Future<bool?> isEnabled();
+
   Future<bool?> bondDevice(BluetoothDevice device);
 
   Future<void> cancelDiscovery();
@@ -40,5 +42,10 @@ class BluetoothService implements IBluetoothService {
   @override
   Future<bool?> enableBluetooth() async {
     return await _bluetooth.requestEnable();
+  }
+
+  @override
+  Future<bool?> isEnabled() {
+    return _bluetooth.isEnabled;
   }
 }

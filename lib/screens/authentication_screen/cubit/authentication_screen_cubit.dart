@@ -26,22 +26,28 @@ class AuthenticationScreenCubit extends Cubit<AuthenticationScreenState> {
     if (!await _isInternetAvailable()) {
       emit(NoInternet(message: Strings.noInternet));
       emit(Initial());
-    } else {
-      emit(Loading());
+      return;
+    }
 
-      SignInState state = await authService.signIn();
+    emit(Loading());
 
-      switch (state) {
-        case SignInState.disabled:
-          emit(UserBlocked(message: Strings.userBlocked));
-          emit(Initial());
-          break;
-        default:
-          emit(Authenticated(
-            user: authService.getCurrentUser!,
-            message: 'Signed in as ${authService.getCurrentUser!.email}',
-          ));
-      }
+    SignInState state = await authService.signIn();
+
+    switch (state) {
+      case SignInState.disabled:
+        emit(UserBlocked(message: Strings.userBlocked));
+        emit(Initial());
+        break;
+
+      case SignInState.authenticated:
+        emit(Authenticated(
+          user: authService.getCurrentUser!,
+          message: 'Signed in as ${authService.getCurrentUser!.email}',
+        ));
+        break;
+
+      default:
+        emit(Initial());
     }
   }
 }

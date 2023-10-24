@@ -18,9 +18,15 @@ class BluetoothDisabled extends BluetoothHomeState {
   BluetoothDisabled({required this.message});
 }
 
-class DiscoverDevices extends BluetoothHomeState {
+class GrantPermissions extends BluetoothHomeState {
+  final String message;
+
+  GrantPermissions({required this.message});
+}
+
+class ScanAnimation extends BluetoothHomeState {
   final String text;
-  DiscoverDevices({required this.text});
+  ScanAnimation({required this.text});
 }
 
 class HasNotFoundNewDevices extends BluetoothHomeState {

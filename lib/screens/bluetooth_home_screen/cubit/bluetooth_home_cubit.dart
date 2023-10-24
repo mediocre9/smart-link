@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../../config/strings/strings.dart';
 import '../../../services/bluetooth_service.dart';
 import '../../../services/permission_service.dart';
@@ -8,43 +9,61 @@ import '../../../services/permission_service.dart';
 part 'bluetooth_home_state.dart';
 
 class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
-  final BluetoothPermissionService _permission;
-  final BluetoothService _bluetooth;
+  final BluetoothPermissionService permission;
+  final BluetoothService bluetooth;
   final List<BluetoothDevice> _discovered = [];
   final List<BluetoothDevice> _paired = [];
 
-  BluetoothHomeCubit(
-    this._permission,
-    this._bluetooth,
-  ) : super(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded)) {
-    init();
+  BluetoothHomeCubit({
+    required this.permission,
+    required this.bluetooth,
+  }) : super(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded)) {
+    _init();
   }
 
-  Future<void> init() async {
-    bool hasBluetoothPermission = await _permission.requestPermissions();
-    bool? isBluetoothEnabled = await _bluetooth.enableBluetooth();
+  Future<void> _init() async {
+    bool hasPermissions = await permission.requestPermissions();
 
-    if (hasBluetoothPermission && isBluetoothEnabled!) {
-      await _getPairedDevices();
-    } else {
-      emit(BluetoothDisabled(message: Strings.bluetoothOff));
+    if (!hasPermissions) {
+      emit(GrantPermissions(message: Strings.permissionInfo));
       emit(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
+      return;
     }
-  }
 
-  Future<void> startScan() async {
-    bool? isBluetoothEnabled = await _bluetooth.enableBluetooth();
+    bool? isEnabled = await bluetooth.enableBluetooth();
 
-    if (!isBluetoothEnabled!) {
+    if (!isEnabled!) {
       emit(BluetoothDisabled(message: Strings.bluetoothOff));
       emit(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
       return;
     }
 
-    emit(DiscoverDevices(text: Strings.bluetoothDiscoveryDescription));
+    await _getPairedDevices();
+  }
+
+  Future<void> startScan() async {
+    bool hasPermissions = await permission.requestPermissions();
+
+    if (!hasPermissions) {
+      emit(GrantPermissions(message: Strings.permissionInfo));
+      emit(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
+      return;
+    }
+
+    bool? isEnabled = await bluetooth.enableBluetooth();
+
+    if (!isEnabled!) {
+      emit(BluetoothDisabled(message: Strings.bluetoothOff));
+      emit(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
+
+      return;
+    }
+
+    emit(ScanAnimation(text: Strings.bluetoothDiscoveryDescription));
+
     _discovered.clear();
 
-    await for (final result in _bluetooth.startDiscovery()) {
+    await for (final result in bluetooth.startDiscovery()) {
       _discovered.add(result.device);
     }
 
@@ -56,18 +75,20 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
     }
   }
 
+  Future<void> openSettings() async => await openAppSettings();
+
   Future<void> stopScan() async {
-    await _bluetooth.cancelDiscovery();
+    await bluetooth.cancelDiscovery();
     await _getPairedDevices();
   }
 
   Future<void> pairDevice(BluetoothDevice device) async {
     emit(PairDevice(text: 'Trying to pair with ${device.name}. Please be patient!'));
-    bool? isBonded = await _bluetooth.bondDevice(device);
+    bool? isBonded = await bluetooth.bondDevice(device);
 
     if (!isBonded!) {
       emit(PairUnsuccessful(
-        message: Strings.pairUnsuccessful,
+        message: "Couldn't pair with ${device.name}",
         snackbarColor: Colors.deepOrange,
       ));
 
@@ -80,12 +101,12 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
   Future<void> _getPairedDevices() async {
     emit(GetPairedDevices(text: Strings.gettingPairedDevices));
 
-    var devices = await _bluetooth.fetchPairedDevices();
+    final List<BluetoothDevice> devices = await bluetooth.fetchPairedDevices();
     _paired
       ..clear()
       ..addAll(devices);
 
-    var currentState = _paired.isNotEmpty ? ShowPairedDevices(devices: _paired) : Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded);
+    final currentState = _paired.isNotEmpty ? ShowPairedDevices(devices: _paired) : Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded);
     emit(currentState);
   }
 }

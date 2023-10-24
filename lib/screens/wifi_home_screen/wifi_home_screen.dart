@@ -17,9 +17,13 @@ class WifiHomeScreen extends StatelessWidget with StandardAppWidgets {
           title: const Text("Locker Home"),
           actions: [
             IconButton(
+              icon: const Icon(Icons.bug_report_rounded),
+              onPressed: () => Navigator.pushNamed(context, Routes.feedback),
+            ),
+            IconButton(
               icon: const Icon(Icons.info_outline_rounded),
               onPressed: () => showAboutDialogWidget(context),
-            )
+            ),
           ],
         ),
         drawer: AppDrawer(),

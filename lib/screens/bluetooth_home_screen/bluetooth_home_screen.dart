@@ -10,7 +10,6 @@ import 'cubit/bluetooth_home_cubit.dart';
 
 class BluetoothHomeScreen extends StatelessWidget with StandardAppWidgets {
   const BluetoothHomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,9 +17,13 @@ class BluetoothHomeScreen extends StatelessWidget with StandardAppWidgets {
         title: const Text("Bluetooth Home"),
         actions: [
           IconButton(
+            icon: const Icon(Icons.bug_report_rounded),
+            onPressed: () => Navigator.pushNamed(context, Routes.feedback),
+          ),
+          IconButton(
             icon: const Icon(Icons.info_outline_rounded),
             onPressed: () => showAboutDialogWidget(context),
-          )
+          ),
         ],
       ),
       drawer: AppDrawer(),
@@ -57,7 +60,7 @@ class BluetoothHomeScreen extends StatelessWidget with StandardAppWidgets {
           },
         );
 
-      case DiscoverDevices():
+      case ScanAnimation():
         return FloatingActionButton(
           child: const Icon(Icons.pause),
           onPressed: () {
@@ -72,6 +75,31 @@ class BluetoothHomeScreen extends StatelessWidget with StandardAppWidgets {
 
   void _blocListeners(BuildContext context, BluetoothHomeState state) {
     switch (state) {
+      case GrantPermissions():
+        showDialog(
+          context: context,
+          builder: (_) {
+            return AlertDialog(
+              title: const Text("Permission Access"),
+              content: Text(state.message),
+              actions: [
+                TextButton(
+                  child: const Text("Deny"),
+                  onPressed: () => Navigator.pop(context),
+                ),
+                TextButton(
+                  child: const Text("Allow"),
+                  onPressed: () {
+                    context.read<BluetoothHomeCubit>().openSettings();
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        break;
+
       case BluetoothDisabled():
         showSnackBarWidget(context, state.message);
         break;
@@ -118,9 +146,11 @@ class BluetoothHomeScreen extends StatelessWidget with StandardAppWidgets {
 
       case ShowPairedDevices():
         return DevicesListView(devices: state.devices);
+        
       case ShowDiscoveredDevices():
         return DevicesListView(devices: state.devices);
-      case DiscoverDevices():
+        
+      case ScanAnimation():
         return RadarAnimation(text: state.text);
 
       case PairDevice():
@@ -137,6 +167,7 @@ class BluetoothHomeScreen extends StatelessWidget with StandardAppWidgets {
             ],
           ),
         );
+        
       default:
         return Container();
     }
