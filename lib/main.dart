@@ -32,10 +32,10 @@ class SmartLinkApp extends StatelessWidget {
     return MaterialApp(
       title: Strings.appName,
       color: AppColors.primary,
-      initialRoute: kDebugMode ? Routes.bluetoothHome : Routes.auth,
-      onGenerateRoute: RouteGenerator.generate,
-      debugShowCheckedModeBanner: kDebugMode ? true : false,
       theme: AppTheme.darkTheme(),
+      onGenerateRoute: RouteGenerator.generate,
+      initialRoute: kDebugMode ? Routes.bluetoothHome : Routes.auth,
+      debugShowCheckedModeBanner: kDebugMode ? true : false,
     );
   }
 }
