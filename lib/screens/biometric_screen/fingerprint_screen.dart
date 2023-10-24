@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:smart_link/config/colors/app_colors.dart';
+import 'package:smart_link/config/router/routes.dart';
 import 'package:smart_link/config/strings/strings.dart';
 import 'package:smart_link/widgets/common.dart';
 import '../../widgets/app_drawer.dart';
@@ -95,9 +96,13 @@ class _BiometricScreenState extends State<BiometricScreen> with StandardAppWidge
         title: const Text("Fingerprint"),
         actions: [
           IconButton(
-            onPressed: () => showAboutDialogWidget(context),
+            icon: const Icon(Icons.bug_report_rounded),
+            onPressed: () => Navigator.pushNamed(context, Routes.feedback),
+          ),
+          IconButton(
             icon: const Icon(Icons.info_outline_rounded),
-          )
+            onPressed: () => showAboutDialogWidget(context),
+          ),
         ],
       ),
       drawer: AppDrawer(),
