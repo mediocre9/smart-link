@@ -45,7 +45,7 @@ dependencies:
   local_auth: ^2.1.5
   permission_handler: ^10.3.0
   firebase_crashlytics: ^3.3.3
-  firebase_auth: ^4.7.3
+  firebase_auth: ^4.12.1
   firebase_core: ^2.14.0
   google_sign_in: ^6.1.4
   sign_button: ^2.0.4
