@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_link/config/strings/strings.dart';
+import 'package:smart_link/config/strings/app_strings.dart';
 import 'package:smart_link/services/auth_service.dart';
 import 'package:smart_link/services/feedback_service.dart';
 
@@ -13,7 +13,10 @@ class FeedbackCubit extends Cubit<FeedbackState> {
   final FeedbackService feedbackService;
   final AuthenticationService service;
 
-  FeedbackCubit({required this.feedbackService, required this.service}) : super(const FeedbackInitial(color: Colors.grey));
+  FeedbackCubit({
+    required this.feedbackService,
+    required this.service,
+  }) : super(const FeedbackInitial(color: Colors.grey));
 
   Future<void> submitFeedback(String subject, String body) async {
     if (isRequiredFeedbackEmpty(subject, body)) return;
@@ -34,7 +37,8 @@ class FeedbackCubit extends Cubit<FeedbackState> {
     );
 
     await feedbackService.post(feedback);
-    emit(const Submitted(message: Strings.feedbackPosted));
+
+    emit(const Submitted(message: AppStrings.feedbackPosted));
     emit(const FeedbackInitial(color: Colors.grey));
   }
 

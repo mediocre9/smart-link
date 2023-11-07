@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_link/screens/feedback_screen/cubit/feedback_cubit.dart';
-import 'package:smart_link/widgets/common.dart';
+import 'package:smart_link/common/standard_app_widgets.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({super.key});
@@ -11,8 +11,8 @@ class FeedbackScreen extends StatefulWidget {
 }
 
 class _FeedbackScreenState extends State<FeedbackScreen> with StandardAppWidgets {
-  static final TextEditingController _subjectController = TextEditingController();
-  static final TextEditingController _bodyController = TextEditingController();
+  final TextEditingController _subjectController = TextEditingController();
+  final TextEditingController _bodyController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
