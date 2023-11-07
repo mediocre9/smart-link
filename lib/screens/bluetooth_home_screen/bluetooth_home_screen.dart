@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_link/screens/bluetooth_home_screen/widgets/devices_listview.dart';
 import 'package:smart_link/screens/bluetooth_home_screen/widgets/initial_widget.dart';
 import 'package:smart_link/screens/bluetooth_home_screen/widgets/radar_animation.dart';
-import 'package:smart_link/widgets/app_drawer.dart';
+import 'package:smart_link/common/app_drawer.dart';
 import '../../config/router/routes.dart';
-import '../../widgets/common.dart';
+import '../../common/standard_app_widgets.dart';
 import 'cubit/bluetooth_home_cubit.dart';
 
 class BluetoothHomeScreen extends StatelessWidget with StandardAppWidgets {
@@ -146,10 +146,10 @@ class BluetoothHomeScreen extends StatelessWidget with StandardAppWidgets {
 
       case ShowPairedDevices():
         return DevicesListView(devices: state.devices);
-        
+
       case ShowDiscoveredDevices():
         return DevicesListView(devices: state.devices);
-        
+
       case ScanAnimation():
         return RadarAnimation(text: state.text);
 
@@ -161,13 +161,13 @@ class BluetoothHomeScreen extends StatelessWidget with StandardAppWidgets {
               SizedBox(height: MediaQuery.of(context).size.height / 20),
               Text(
                 state.text,
-                style: Theme.of(context).textTheme.titleSmall,
                 textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleSmall,
               ),
             ],
           ),
         );
-        
+
       default:
         return Container();
     }

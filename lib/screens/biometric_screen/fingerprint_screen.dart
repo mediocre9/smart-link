@@ -6,9 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:smart_link/config/colors/app_colors.dart';
 import 'package:smart_link/config/router/routes.dart';
-import 'package:smart_link/config/strings/strings.dart';
-import 'package:smart_link/widgets/common.dart';
-import '../../widgets/app_drawer.dart';
+import 'package:smart_link/config/strings/app_strings.dart';
+import 'package:smart_link/common/standard_app_widgets.dart';
+import '../../common/app_drawer.dart';
 import 'package:local_auth/error_codes.dart' as biometric_error;
 import 'package:http/http.dart' as http;
 
@@ -26,7 +26,7 @@ class _BiometricScreenState extends State<BiometricScreen> with StandardAppWidge
   Future<void> on() async {
     try {
       await http.get(
-        Uri.parse('http://${Strings.microControllerIp}/on_signal'),
+        Uri.parse('http://${AppStrings.deviceServerIP}/on_signal'),
         headers: {
           "Accept": "plain/text",
         },
@@ -39,7 +39,7 @@ class _BiometricScreenState extends State<BiometricScreen> with StandardAppWidge
   Future<void> off() async {
     try {
       await http.get(
-        Uri.parse('http://${Strings.microControllerIp}/off_signal'),
+        Uri.parse('http://${AppStrings.deviceServerIP}/off_signal'),
         headers: {
           "Accept": "plain/text",
         },
@@ -55,7 +55,7 @@ class _BiometricScreenState extends State<BiometricScreen> with StandardAppWidge
   Future<void> _startAuthentication() async {
     try {
       isAuthenticated = await BiometricScreen._authentication.authenticate(
-        localizedReason: "IT & Robotics Engineering.",
+        localizedReason: "IT & Robotics Engineering Society",
         options: const AuthenticationOptions(
           biometricOnly: true,
           stickyAuth: true,
@@ -69,19 +69,19 @@ class _BiometricScreenState extends State<BiometricScreen> with StandardAppWidge
     } on PlatformException catch (e) {
       switch (e.code) {
         case biometric_error.lockedOut:
-          showSnackBarWidget(context, Strings.biometricLock);
+          showSnackBarWidget(context, AppStrings.biometricLock);
           break;
 
         case biometric_error.permanentlyLockedOut:
-          showSnackBarWidget(context, Strings.biometricPermanent);
+          showSnackBarWidget(context, AppStrings.biometricPermanent);
           break;
 
         case biometric_error.notEnrolled:
-          showSnackBarWidget(context, Strings.biometricEnrollment);
+          showSnackBarWidget(context, AppStrings.biometricEnrollment);
           break;
 
         case biometric_error.notAvailable:
-          showSnackBarWidget(context, Strings.biometricNotSupported);
+          showSnackBarWidget(context, AppStrings.biometricNotSupported);
           break;
         default:
       }

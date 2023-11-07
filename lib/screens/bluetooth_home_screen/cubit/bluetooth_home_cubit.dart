@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:permission_handler/permission_handler.dart';
-import '../../../config/strings/strings.dart';
+import '../../../config/strings/app_strings.dart';
 import '../../../services/bluetooth_service.dart';
 import '../../../services/permission_service.dart';
 
@@ -17,7 +17,7 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
   BluetoothHomeCubit({
     required this.permission,
     required this.bluetooth,
-  }) : super(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded)) {
+  }) : super(Initial(text: AppStrings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded)) {
     _init();
   }
 
@@ -25,16 +25,16 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
     bool hasPermissions = await permission.requestPermissions();
 
     if (!hasPermissions) {
-      emit(GrantPermissions(message: Strings.permissionInfo));
-      emit(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
+      emit(GrantPermissions(message: AppStrings.permissionInfo));
+      emit(Initial(text: AppStrings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
       return;
     }
 
     bool? isEnabled = await bluetooth.enableBluetooth();
 
     if (!isEnabled!) {
-      emit(BluetoothDisabled(message: Strings.bluetoothOff));
-      emit(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
+      emit(BluetoothDisabled(message: AppStrings.bluetoothOff));
+      emit(Initial(text: AppStrings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
       return;
     }
 
@@ -45,21 +45,21 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
     bool hasPermissions = await permission.requestPermissions();
 
     if (!hasPermissions) {
-      emit(GrantPermissions(message: Strings.permissionInfo));
-      emit(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
+      emit(GrantPermissions(message: AppStrings.permissionInfo));
+      emit(Initial(text: AppStrings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
       return;
     }
 
     bool? isEnabled = await bluetooth.enableBluetooth();
 
     if (!isEnabled!) {
-      emit(BluetoothDisabled(message: Strings.bluetoothOff));
-      emit(Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
+      emit(BluetoothDisabled(message: AppStrings.bluetoothOff));
+      emit(Initial(text: AppStrings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded));
 
       return;
     }
 
-    emit(ScanAnimation(text: Strings.bluetoothDiscoveryDescription));
+    emit(ScanAnimation(text: AppStrings.bluetoothDiscoveryDescription));
 
     _discovered.clear();
 
@@ -70,7 +70,7 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
     if (_discovered.isNotEmpty) {
       emit(ShowDiscoveredDevices(devices: _discovered));
     } else {
-      emit(HasNotFoundNewDevices(message: Strings.devicesNotInRange));
+      emit(HasNotFoundNewDevices(message: AppStrings.devicesNotInRange));
       await _getPairedDevices();
     }
   }
@@ -99,14 +99,14 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
   }
 
   Future<void> _getPairedDevices() async {
-    emit(GetPairedDevices(text: Strings.gettingPairedDevices));
+    emit(GetPairedDevices(text: AppStrings.gettingPairedDevices));
 
     final List<BluetoothDevice> devices = await bluetooth.fetchPairedDevices();
     _paired
       ..clear()
       ..addAll(devices);
 
-    final currentState = _paired.isNotEmpty ? ShowPairedDevices(devices: _paired) : Initial(text: Strings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded);
+    final currentState = _paired.isNotEmpty ? ShowPairedDevices(devices: _paired) : Initial(text: AppStrings.bluetoothOnHomeDescription, icon: Icons.bluetooth_rounded);
     emit(currentState);
   }
 }

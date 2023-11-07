@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_link/config/router/routes.dart';
-import '../../widgets/app_drawer.dart';
-import '../../widgets/common.dart';
+import 'package:smart_link/config/index.dart';
+import '../../common/app_drawer.dart';
+import '../../common/standard_app_widgets.dart';
 import 'cubit/wifi_home_cubit.dart';
 
 class WifiHomeScreen extends StatelessWidget with StandardAppWidgets {
@@ -40,7 +40,7 @@ class WifiHomeScreen extends StatelessWidget with StandardAppWidgets {
                 ),
                 SizedBox(height: MediaQuery.of(context).size.height / 30),
                 Text(
-                  "Info: Connect to nodemcu ssid (It & Robotics - (Node-MCU)) through your system's wifi settings. After successful connection, simply press the connect button.",
+                  AppStrings.lockerHomeInfo,
                   textAlign: TextAlign.justify,
                   style: Theme.of(context).textTheme.labelSmall!,
                 ),
@@ -59,7 +59,7 @@ class WifiHomeScreen extends StatelessWidget with StandardAppWidgets {
           child: ElevatedButton(
             child: const Text('Connect'),
             onPressed: () {
-              context.read<WifiHomeCubit>().establishConnection();
+              context.read<WifiHomeCubit>().connectToESP8266();
             },
           ),
         );
