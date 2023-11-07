@@ -1,15 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:smart_link/config/router/index.dart';
 import 'package:smart_link/screens/authentication_screen/cubit/authentication_screen_cubit.dart';
 import 'package:smart_link/screens/feedback_screen/cubit/feedback_cubit.dart';
-import 'package:smart_link/screens/feedback_screen/feedback_screen.dart';
-import 'package:smart_link/services/auth_service.dart';
-import 'package:smart_link/services/bluetooth_service.dart';
-import 'package:smart_link/services/feedback_service.dart';
-import 'package:smart_link/services/permission_service.dart';
 import '../../screens/wifi_home_screen/cubit/wifi_home_cubit.dart';
 
 class RouteGenerator {
@@ -20,19 +16,19 @@ class RouteGenerator {
 
     switch (routeSettings.name) {
       case Routes.auth:
-        return _pageTransition(
-          BlocProvider(
+        return _defaultPageTransition(
+          route: BlocProvider(
             create: (_) => AuthenticationScreenCubit(
               authService: AuthenticationService(),
+              internetConnectivity: Connectivity(),
             ),
             child: const AuthenticationScreen(),
           ),
         );
 
       case Routes.bluetoothHome:
-        return _pageTransition(
-          BlocProvider(
-            lazy: false,
+        return _defaultPageTransition(
+          route: BlocProvider(
             create: (_) => BluetoothHomeCubit(
               permission: BluetoothPermissionService(),
               bluetooth: BluetoothService(FlutterBluetoothSerial.instance),
@@ -42,52 +38,64 @@ class RouteGenerator {
         );
 
       case Routes.bluetoothRemote:
-        return _pageTransition(
-          BlocProvider(
-            lazy: false,
+        return _defaultPageTransition(
+          route: BlocProvider(
             create: (_) => BluetoothRemoteCubit(),
-            child: BluetoothRemoteScreen(device: (arg as BluetoothDevice)),
+            child: BluetoothRemoteController(device: arg as BluetoothDevice),
           ),
         );
 
       case Routes.wifiHome:
-        return _pageTransition(
-          BlocProvider(
-            lazy: false,
+        return _defaultPageTransition(
+          route: BlocProvider(
             create: (_) => WifiHomeCubit(),
             child: const WifiHomeScreen(),
           ),
         );
 
       case Routes.wifiRemote:
-        return _pageTransition(
-          BlocProvider(
-            lazy: false,
+        return _defaultPageTransition(
+          route: BlocProvider(
             create: (_) => WifiRemoteCubit(),
             child: WifiRemoteScreen(baseUrl: (arg as String)),
           ),
         );
 
       case Routes.feedback:
-        return _pageTransition(
-          BlocProvider(
+        return _customPageTransition(
+          route: BlocProvider(
             create: (_) => FeedbackCubit(
               feedbackService: FeedbackService(firestore: FirebaseFirestore.instance),
               service: AuthenticationService(),
             ),
             child: const FeedbackScreen(),
           ),
+          pageTransitionBuilder: const FadeUpwardsPageTransitionsBuilder(),
         );
 
       case Routes.biometric:
-        return _pageTransition(const BiometricScreen());
+        return _defaultPageTransition(route: const BiometricScreen());
 
       default:
-        return _pageTransition(_defaultRoute());
+        return _defaultPageTransition(route: _defaultRoute());
     }
   }
 
-  static _pageTransition(Widget route) => MaterialPageRoute(builder: (_) => route);
+  static MaterialPageRoute<dynamic> _defaultPageTransition({
+    required Widget route,
+  }) {
+    return MaterialPageRoute(builder: (context) => route);
+  }
+
+  static _CustomPageTransition<dynamic> _customPageTransition({
+    required Widget route,
+    required PageTransitionsBuilder pageTransitionBuilder,
+  }) {
+    return _CustomPageTransition(
+      pageBuilder: (context, animation, secondaryAnimation) => route,
+      pageTransitionsBuilder: pageTransitionBuilder,
+    );
+  }
 
   static _defaultRoute() {
     return const Scaffold(
@@ -101,6 +109,31 @@ class RouteGenerator {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _CustomPageTransition<T> extends PageRouteBuilder<T> {
+  final PageTransitionsBuilder pageTransitionsBuilder;
+
+  _CustomPageTransition({
+    required RoutePageBuilder pageBuilder,
+    required this.pageTransitionsBuilder,
+  }) : super(pageBuilder: pageBuilder);
+
+  @override
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    return pageTransitionsBuilder.buildTransitions(
+      this,
+      context,
+      animation,
+      secondaryAnimation,
+      child,
     );
   }
 }
