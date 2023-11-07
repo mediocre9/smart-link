@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:smart_link/services/auth_service.dart';
-import 'package:smart_link/widgets/common.dart';
 
 import '../config/router/routes.dart';
 
-class AppDrawer extends StatelessWidget with StandardAppWidgets {
+class AppDrawer extends StatelessWidget {
   final AuthenticationService _authService = AuthenticationService();
   AppDrawer({super.key});
 
@@ -20,8 +19,7 @@ class AppDrawer extends StatelessWidget with StandardAppWidgets {
               children: [
                 CircleAvatar(
                   radius: 35,
-                  foregroundImage:
-                      NetworkImage(_authService.getCurrentUser!.photoURL!),
+                  foregroundImage: NetworkImage(_authService.getCurrentUser!.photoURL!),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
