@@ -1,19 +1,21 @@
-class Strings {
-  Strings._();
+class AppStrings {
+  AppStrings._();
 
   static const String appName = "Smart Link";
 
-  static const String appVersion = "v0.6.1";
+  static const String appVersion = "v0.7.0";
 
   static const String appDescription = "IoT Remote Control";
 
   static const String appLogo = "assets/images/logo.png";
 
-  static const String copyright = "(c) Copyright 2023 CUSIT IT & Robotics Society. All rights reserved.";
+  static final String copyright = "(c) Copyright ${DateTime.now().year} CUSIT IT & Robotics Society. All rights reserved.";
 
   static const String permissionInfo = "Allow Smart Link to access Bluetooth and Location permissions on this device?";
 
-  static const String noInternet = "Unable to connect to the internet.";
+  static const String noInternet = "No internet connection. Please check your network settings and try again.";
+
+  static const String lockerHomeInfo = "Info: Connect to the \"It & Robotics - (Node-MCU)\" network through your system's Wi-Fi settings. You will be prompted to enter the Wi-Fi password, which is \"1116equj5\". After successful connection, simply press the \"Connect\" button.";
 
   static const String bluetoothOnHomeDescription = "Scan for bluetooth devices";
 
@@ -23,11 +25,11 @@ class Strings {
 
   static const String bluetoothOff = "Bluetooth is disabled!";
 
-  static const String bluetoothConnected = "Connected!";
+  static const String connectionSuccessful = "Connected!";
 
   static const String bluetoothDisconnected = "Disconnected!";
 
-  static const String endDeviceNotResponding = "End device not responding!";
+  static const String connectionFailed = "End device not responding!";
 
   static const String devicesNotInRange = "No nearby devices are available. Try Again!";
 
@@ -41,9 +43,9 @@ class Strings {
 
   static const String biometricNotSupported = "Your device does not have fingerprint support!";
 
-  static const String microControllerIp = "192.168.4.1";
+  static const String deviceServerIP = "192.168.4.1";
 
-  static const String userBlocked = "Account access revoked. Contact support.";
+  static const String userBlocked = "Your account access has been revoked!";
 
   static const String googleLogoPath = "assets/images/google_logo.png";
 
