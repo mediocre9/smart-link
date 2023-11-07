@@ -7,13 +7,13 @@ abstract interface class IPermissionService {
 class BluetoothPermissionService implements IPermissionService {
   @override
   Future<bool> requestPermissions() async {
-    final Map<Permission, PermissionStatus> statuses = await [
+    final Map<Permission, PermissionStatus> permissions = await [
       Permission.location,
       Permission.locationWhenInUse,
       Permission.bluetoothConnect,
       Permission.bluetoothScan,
     ].request();
 
-    return statuses.entries.map((e) => e).toList().every((element) => element.value.isGranted);
+    return permissions.values.every((element) => element.isGranted);
   }
 }
