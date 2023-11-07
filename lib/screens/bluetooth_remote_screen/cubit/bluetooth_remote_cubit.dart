@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:smart_link/config/strings/strings.dart';
+import 'package:smart_link/config/strings/app_strings.dart';
 
 part 'bluetooth_remote_state.dart';
 
@@ -20,46 +21,45 @@ enum RobotCommand {
 }
 
 class BluetoothRemoteCubit extends Cubit<BluetoothRemoteState> {
-  BluetoothRemoteCubit() : super(ConnectedToBluetoothDevice());
+  BluetoothRemoteCubit() : super(BluetoothRemoteInitial());
 
   final Map<RobotCommand, String> _commands = {
-    RobotCommand.forward: "F",
-    RobotCommand.backward: "B",
+    RobotCommand.stop: "X",
     RobotCommand.left: "L",
     RobotCommand.right: "R",
-    RobotCommand.stop: "X",
+    RobotCommand.forward: "F",
+    RobotCommand.backward: "B",
     RobotCommand.cameraUp: "W",
+    RobotCommand.cameraStop: "0",
     RobotCommand.cameraDown: "S",
     RobotCommand.cameraLeft: "A",
     RobotCommand.cameraRight: "D",
-    RobotCommand.cameraStop: "0"
   };
 
-  BluetoothDevice? device;
-  BluetoothConnection? _connection;
+  BluetoothConnection? _bluetoothConnection;
 
-  Future<void> connect(BluetoothDevice device) async {
-    emit(EstablishingBluetoothConnection());
+  Future<void> connect({required BluetoothDevice device}) async {
+    emit(Connecting());
 
     try {
-      _connection = await BluetoothConnection.toAddress(device.address);
-      emit(ConnectionStatus(message: Strings.bluetoothConnected));
-      emit(ConnectedToBluetoothDevice());
+      _bluetoothConnection = await BluetoothConnection.toAddress(device.address);
+      emit(Connected(message: "Connected to ${device.name ?? "Unknown"}!"));
     } catch (e) {
-      emit(ConnectionStatus(message: Strings.endDeviceNotResponding));
+      emit(ConnectionFailed(message: AppStrings.connectionFailed));
     }
   }
 
   Future<void> disconnect() async {
-    await _connection!.finish();
-    emit(ConnectionStatus(message: Strings.bluetoothDisconnected));
+    await _bluetoothConnection!.finish();
+    emit(Disconnected(message: AppStrings.bluetoothDisconnected));
   }
 
   void _sendCommand(RobotCommand command) {
-    _connection!.output.add(Uint8List.fromList(utf8.encode(_commands[command] ?? "")));
+    log("Robot Command: $command");
+    _bluetoothConnection!.output.add(Uint8List.fromList(utf8.encode(_commands[command]!)));
   }
 
-  void reset() => _sendCommand(RobotCommand.stop);
+  void stopMovement() => _sendCommand(RobotCommand.stop);
 
   void moveLeft() => _sendCommand(RobotCommand.left);
 

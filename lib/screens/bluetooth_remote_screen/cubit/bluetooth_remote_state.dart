@@ -2,11 +2,22 @@ part of 'bluetooth_remote_cubit.dart';
 
 abstract class BluetoothRemoteState {}
 
-class ConnectedToBluetoothDevice extends BluetoothRemoteState {}
+class BluetoothRemoteInitial extends BluetoothRemoteState {}
 
-class EstablishingBluetoothConnection extends BluetoothRemoteState {}
-
-class ConnectionStatus extends BluetoothRemoteState {
+class Connected extends BluetoothRemoteState {
   final String message;
-  ConnectionStatus({required this.message});
+
+  Connected({required this.message});
+}
+
+class Connecting extends BluetoothRemoteState {}
+
+class ConnectionFailed extends BluetoothRemoteState {
+  final String message;
+  ConnectionFailed({required this.message});
+}
+
+class Disconnected extends BluetoothRemoteState {
+  final String message;
+  Disconnected({required this.message});
 }
