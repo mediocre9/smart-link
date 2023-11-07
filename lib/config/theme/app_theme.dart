@@ -5,7 +5,7 @@ import '../colors/app_colors.dart';
 class AppTheme {
   AppTheme._();
 
-  static ThemeData darkTheme() {
+  static ThemeData get darkTheme {
     return ThemeData.dark(useMaterial3: true).copyWith(
       primaryColor: AppColors.primary,
       useMaterial3: true,
