@@ -30,9 +30,9 @@ class SmartLinkApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: Strings.appName,
+      title: AppStrings.appName,
       color: AppColors.primary,
-      theme: AppTheme.darkTheme(),
+      theme: AppTheme.darkTheme,
       onGenerateRoute: RouteGenerator.generate,
       initialRoute: kDebugMode ? Routes.bluetoothHome : Routes.auth,
       debugShowCheckedModeBanner: kDebugMode ? true : false,
