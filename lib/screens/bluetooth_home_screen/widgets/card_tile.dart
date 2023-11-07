@@ -15,18 +15,14 @@ class CardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title:
-            Text(device.name!, style: Theme.of(context).textTheme.titleMedium),
+        title: Text(device.name!, style: Theme.of(context).textTheme.titleMedium),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text('Paired: ${device.isBonded ? "Yes" : "No"}',
-                style: Theme.of(context).textTheme.labelMedium),
-            Text('Type: ${device.type.stringValue}',
-                style: Theme.of(context).textTheme.labelMedium),
-            Text('MAC: ${device.address}',
-                style: Theme.of(context).textTheme.labelMedium),
+            Text('Type: ${device.type.stringValue}', style: Theme.of(context).textTheme.labelMedium),
+            Text('Bonded: ${device.isBonded ? "Yes" : "No"}', style: Theme.of(context).textTheme.labelMedium),
+            Text('MAC: ${device.address}', style: Theme.of(context).textTheme.labelMedium),
           ],
         ),
         onTap: onPressed,
