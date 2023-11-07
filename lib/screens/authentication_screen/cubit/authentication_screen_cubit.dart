@@ -8,23 +8,22 @@ import '../../../config/index.dart';
 part 'authentication_screen_state.dart';
 
 class AuthenticationScreenCubit extends Cubit<AuthenticationScreenState> {
-  late ConnectivityResult _connectivityResult;
+  final Connectivity internetConnectivity;
   final AuthenticationService authService;
 
-  AuthenticationScreenCubit({required this.authService}) : super(Initial());
+  AuthenticationScreenCubit({
+    required this.authService,
+    required this.internetConnectivity,
+  }) : super(Initial());
 
   Future<bool> _isInternetAvailable() async {
-    _connectivityResult = await Connectivity().checkConnectivity();
-
-    if (_connectivityResult == ConnectivityResult.none) {
-      return false;
-    }
-    return true;
+    var connectivityResult = await internetConnectivity.checkConnectivity();
+    return (connectivityResult != ConnectivityResult.none);
   }
 
   Future<void> signIn() async {
     if (!await _isInternetAvailable()) {
-      emit(NoInternet(message: Strings.noInternet));
+      emit(NoInternet(message: AppStrings.noInternet));
       emit(Initial());
       return;
     }
@@ -35,7 +34,7 @@ class AuthenticationScreenCubit extends Cubit<AuthenticationScreenState> {
 
     switch (state) {
       case SignInState.disabled:
-        emit(UserBlocked(message: Strings.userBlocked));
+        emit(UserBlocked(message: AppStrings.userBlocked));
         emit(Initial());
         break;
 
