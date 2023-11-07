@@ -6,14 +6,9 @@ class InitialHomeScreen extends StatelessWidget {
 
   const InitialHomeScreen({
     super.key,
-    // required this.mediaQuery,
-    // required this.theme,
     required this.text,
     required this.icon,
   });
-
-  // final MediaQueryData mediaQuery;
-  // final ThemeData theme;
 
   @override
   Widget build(BuildContext context) {
