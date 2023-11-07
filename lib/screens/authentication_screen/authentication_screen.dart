@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_link/widgets/common.dart';
+import 'package:smart_link/common/standard_app_widgets.dart';
 import 'package:sign_button/sign_button.dart';
 import '../../config/index.dart';
 import '../authentication_screen/cubit/authentication_screen_cubit.dart';
@@ -20,18 +20,18 @@ class AuthenticationScreen extends StatelessWidget with StandardAppWidgets {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset(
-              Strings.appLogo,
+              AppStrings.appLogo,
               width: mediaQuery.size.width / 3,
             ),
             SizedBox(height: mediaQuery.size.height / 40),
             Text(
-              Strings.appName,
+              AppStrings.appName,
               style: theme.displaySmall!.copyWith(
                 color: Colors.blue,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text(Strings.appDescription, style: theme.labelMedium),
+            Text(AppStrings.appDescription, style: theme.labelMedium),
             SizedBox(height: mediaQuery.size.height / 30),
             BlocConsumer<AuthenticationScreenCubit, AuthenticationScreenState>(
               builder: _blocBuilders,
