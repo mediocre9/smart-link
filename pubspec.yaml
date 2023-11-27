@@ -39,7 +39,7 @@ dependencies:
   bloc: ^8.1.0
   equatable: ^2.0.5
   flutter_bluetooth_serial: ^0.4.0
-  connectivity_plus: ^4.0.1
+  connectivity_plus: ^5.0.2
   lottie: ^2.6.0
   http: ^1.1.0
   local_auth: ^2.1.5
