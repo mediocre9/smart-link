@@ -15,7 +15,7 @@ class CardTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text(device.name!, style: Theme.of(context).textTheme.titleMedium),
+        title: Text(device.name ?? "Unknown", style: Theme.of(context).textTheme.titleMedium),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
