@@ -4,7 +4,7 @@ import 'package:smart_link/services/auth_service.dart';
 import '../config/router/routes.dart';
 
 class AppDrawer extends StatelessWidget {
-  final AuthenticationService _authService = AuthenticationService();
+  final FirebaseAuthService _authService = FirebaseAuthService();
   AppDrawer({super.key});
 
   @override
@@ -19,18 +19,18 @@ class AppDrawer extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 35,
-                  foregroundImage: NetworkImage(_authService.getCurrentUser!.photoURL!),
+                  foregroundImage: NetworkImage(_authService.getUser!.photoURL!),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      _authService.getCurrentUser!.displayName!,
+                      _authService.getUser!.displayName!,
                       style: const TextStyle(fontSize: 18),
                     ),
                     Text(
-                      "ID: ${_authService.getCurrentUser!.uid}",
+                      "ID: ${_authService.getUser!.uid}",
                       style: const TextStyle(fontSize: 9, color: Colors.grey),
                     ),
                   ],

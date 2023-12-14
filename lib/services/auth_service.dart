@@ -11,10 +11,10 @@ abstract interface class IAuthenticationService {
   Future<SignInState> signIn();
 }
 
-class AuthenticationService implements IAuthenticationService {
+class FirebaseAuthService implements IAuthenticationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  User? get getCurrentUser => _auth.currentUser;
+  User? get getUser => _auth.currentUser;
 
   @override
   Future<SignInState> signIn() async {
