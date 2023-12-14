@@ -3,7 +3,7 @@ class AppStrings {
 
   static const String appName = "Smart Link";
 
-  static const String appVersion = "v0.7.0";
+  static const String appVersion = "v0.7.2";
 
   static const String appDescription = "IoT Remote Control";
 
@@ -11,7 +11,7 @@ class AppStrings {
 
   static final String copyright = "(c) Copyright ${DateTime.now().year} CUSIT IT & Robotics Society. All rights reserved.";
 
-  static const String permissionInfo = "Allow Smart Link to access Bluetooth and Location permissions on this device?";
+  static const String permissionInfo = "Allow Smart Link to access Nearby devices and Location permissions on this device?";
 
   static const String noInternet = "No internet connection. Please check your network settings and try again.";
 
