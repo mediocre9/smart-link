@@ -11,7 +11,7 @@ part 'feedback_state.dart';
 
 class FeedbackCubit extends Cubit<FeedbackState> {
   final FeedbackService feedbackService;
-  final AuthenticationService service;
+  final FirebaseAuthService service;
 
   FeedbackCubit({
     required this.feedbackService,
@@ -23,14 +23,14 @@ class FeedbackCubit extends Cubit<FeedbackState> {
 
     emit(const Loading(color: Colors.blue));
 
-    final DateTime(:day, :month, :year) = DateTime.now();
+    final DateTime(:year, :month, :day) = DateTime.now();
 
-    final currentDate = DateTime(day, month, year);
+    final currentDate = DateTime(year, month, day);
 
     final feedback = UserFeedback(
-      id: service.getCurrentUser!.uid,
-      email: service.getCurrentUser!.email!,
-      username: service.getCurrentUser!.displayName!,
+      id: service.getUser!.uid,
+      email: service.getUser!.email!,
+      username: service.getUser!.displayName!,
       subject: subject,
       body: body,
       submittedDate: currentDate,
