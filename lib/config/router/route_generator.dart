@@ -19,7 +19,7 @@ class RouteGenerator {
         return _defaultPageTransition(
           route: BlocProvider(
             create: (_) => AuthenticationScreenCubit(
-              authService: AuthenticationService(),
+              authService: FirebaseAuthService(),
               internetConnectivity: Connectivity(),
             ),
             child: const AuthenticationScreen(),
@@ -66,7 +66,7 @@ class RouteGenerator {
           route: BlocProvider(
             create: (_) => FeedbackCubit(
               feedbackService: FeedbackService(firestore: FirebaseFirestore.instance),
-              service: AuthenticationService(),
+              service: FirebaseAuthService(),
             ),
             child: const FeedbackScreen(),
           ),

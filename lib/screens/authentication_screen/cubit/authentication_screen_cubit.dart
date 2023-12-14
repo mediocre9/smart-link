@@ -9,7 +9,7 @@ part 'authentication_screen_state.dart';
 
 class AuthenticationScreenCubit extends Cubit<AuthenticationScreenState> {
   final Connectivity internetConnectivity;
-  final AuthenticationService authService;
+  final FirebaseAuthService authService;
 
   AuthenticationScreenCubit({
     required this.authService,
@@ -31,6 +31,7 @@ class AuthenticationScreenCubit extends Cubit<AuthenticationScreenState> {
     emit(Loading());
 
     SignInState state = await authService.signIn();
+    User user = authService.getUser!;
 
     switch (state) {
       case SignInState.disabled:
@@ -40,8 +41,8 @@ class AuthenticationScreenCubit extends Cubit<AuthenticationScreenState> {
 
       case SignInState.authenticated:
         emit(Authenticated(
-          user: authService.getCurrentUser!,
-          message: 'Signed in as ${authService.getCurrentUser!.email}',
+          user: user,
+          message: 'Signed in as ${user.email}',
         ));
         break;
 
