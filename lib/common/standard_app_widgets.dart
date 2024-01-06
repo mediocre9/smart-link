@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import '../config/strings/app_strings.dart';
+import 'package:smart_link/config/config.dart';
+
+enum PopupItems {
+  feedback,
+  about,
+}
 
 mixin StandardAppWidgets {
   void showAboutDialogWidget(BuildContext context) {
@@ -20,12 +25,45 @@ mixin StandardAppWidgets {
     );
   }
 
-  void showSnackBarWidget(BuildContext context, String message, {Color? color}) {
+  void showSnackBarWidget(BuildContext context, String message,
+      {Color? color}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
         backgroundColor: color,
       ),
+    );
+  }
+
+  PopupMenuButton<PopupItems> popupMenuButtonWidget(BuildContext context) {
+    return PopupMenuButton(
+      icon: const Icon(
+        Icons.more_vert_rounded,
+        color: Colors.white60,
+      ),
+      color: AppColors.appBar,
+      itemBuilder: (context) {
+        return [
+          const PopupMenuItem(
+            value: PopupItems.feedback,
+            child: Text("Share Feedback"),
+          ),
+          const PopupMenuItem(
+            value: PopupItems.about,
+            child: Text("About"),
+          ),
+        ];
+      },
+      onSelected: (value) {
+        switch (value) {
+          case PopupItems.feedback:
+            Navigator.pushNamed(context, AppRoutes.feedback);
+            break;
+
+          default:
+            showAboutDialogWidget(context);
+        }
+      },
     );
   }
 }
