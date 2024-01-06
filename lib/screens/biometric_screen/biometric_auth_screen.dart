@@ -1,26 +1,27 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:smart_link/config/colors/app_colors.dart';
-import 'package:smart_link/config/router/routes.dart';
-import 'package:smart_link/config/strings/app_strings.dart';
-import 'package:smart_link/common/standard_app_widgets.dart';
-import '../../common/app_drawer.dart';
+import 'package:smart_link/config/config.dart';
+import 'package:smart_link/common/common.dart';
 import 'package:local_auth/error_codes.dart' as biometric_error;
 import 'package:http/http.dart' as http;
 
-class BiometricScreen extends StatefulWidget {
+// A prototype based code was written to test an IoT based project
+class BiometricAuthScreen extends StatefulWidget {
   static final LocalAuthentication _authentication = LocalAuthentication();
-  const BiometricScreen({super.key});
+  const BiometricAuthScreen({super.key});
 
   @override
-  State<BiometricScreen> createState() => _BiometricScreenState();
+  State<BiometricAuthScreen> createState() => _BiometricAuthScreenState();
 }
 
-class _BiometricScreenState extends State<BiometricScreen> with StandardAppWidgets {
+class _BiometricAuthScreenState extends State<BiometricAuthScreen>
+    with StandardAppWidgets {
   bool isAuthenticated = false;
 
   Future<void> on() async {
@@ -54,7 +55,7 @@ class _BiometricScreenState extends State<BiometricScreen> with StandardAppWidge
 
   Future<void> _startAuthentication() async {
     try {
-      isAuthenticated = await BiometricScreen._authentication.authenticate(
+      isAuthenticated = await BiometricAuthScreen._authentication.authenticate(
         localizedReason: "IT & Robotics Engineering Society",
         options: const AuthenticationOptions(
           biometricOnly: true,
@@ -95,14 +96,7 @@ class _BiometricScreenState extends State<BiometricScreen> with StandardAppWidge
       appBar: AppBar(
         title: const Text("Fingerprint"),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.bug_report_rounded),
-            onPressed: () => Navigator.pushNamed(context, Routes.feedback),
-          ),
-          IconButton(
-            icon: const Icon(Icons.info_outline_rounded),
-            onPressed: () => showAboutDialogWidget(context),
-          ),
+          popupMenuButtonWidget(context),
         ],
       ),
       drawer: AppDrawer(),
@@ -114,13 +108,18 @@ class _BiometricScreenState extends State<BiometricScreen> with StandardAppWidge
               onPressed: () => _startAuthentication(),
               icon: const Icon(Icons.fingerprint_rounded),
               iconSize: mediaQuery.size.height / 5,
-              color: isAuthenticated ? AppColors.primary : const Color.fromARGB(255, 107, 107, 107),
+              color: isAuthenticated
+                  ? AppColors.primary
+                  : const Color.fromARGB(255, 107, 107, 107),
             ),
             OutlinedButton(
               onPressed: () => off(),
               child: Text(
                 "Switch Off",
-                style: TextStyle(color: isAuthenticated ? AppColors.primary : const Color.fromARGB(255, 107, 107, 107)),
+                style: TextStyle(
+                    color: isAuthenticated
+                        ? AppColors.primary
+                        : const Color.fromARGB(255, 107, 107, 107)),
               ),
             ),
           ],
