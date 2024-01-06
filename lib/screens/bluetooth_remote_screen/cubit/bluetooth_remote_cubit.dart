@@ -3,7 +3,8 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
-import 'package:smart_link/config/strings/app_strings.dart';
+import 'package:smart_link/config/config.dart';
+import 'package:smart_link/services/services.dart';
 
 part 'bluetooth_remote_state.dart';
 
@@ -21,7 +22,9 @@ enum RobotCommand {
 }
 
 class BluetoothRemoteCubit extends Cubit<BluetoothRemoteState> {
-  BluetoothRemoteCubit() : super(BluetoothRemoteInitial());
+  final IBluetoothService bluetooth;
+
+  BluetoothConnection? _bluetoothConnection;
 
   final Map<RobotCommand, String> _commands = {
     RobotCommand.stop: "X",
@@ -36,13 +39,13 @@ class BluetoothRemoteCubit extends Cubit<BluetoothRemoteState> {
     RobotCommand.cameraRight: "D",
   };
 
-  BluetoothConnection? _bluetoothConnection;
+  BluetoothRemoteCubit({required this.bluetooth})
+      : super(BluetoothRemoteInitial());
 
   Future<void> connect({required BluetoothDevice device}) async {
     emit(Connecting());
-
     try {
-      _bluetoothConnection = await BluetoothConnection.toAddress(device.address);
+      _bluetoothConnection = await bluetooth.establishConnectionTo(device);
       emit(Connected(message: "Connected to ${device.name ?? "Unknown"}!"));
     } catch (e) {
       emit(ConnectionFailed(message: AppStrings.connectionFailed));
@@ -56,7 +59,8 @@ class BluetoothRemoteCubit extends Cubit<BluetoothRemoteState> {
 
   void _sendCommand(RobotCommand command) {
     log("Robot Command: $command");
-    _bluetoothConnection!.output.add(Uint8List.fromList(utf8.encode(_commands[command]!)));
+    _bluetoothConnection!.output
+        .add(Uint8List.fromList(utf8.encode(_commands[command]!)));
   }
 
   void stopMovement() => _sendCommand(RobotCommand.stop);

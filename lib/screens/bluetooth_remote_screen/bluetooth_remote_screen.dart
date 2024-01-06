@@ -4,29 +4,40 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_joystick/flutter_joystick.dart';
-import 'package:smart_link/config/index.dart';
-import 'package:smart_link/screens/bluetooth_remote_screen/widgets/icon_joystick_stick.dart';
-import 'package:smart_link/common/standard_app_widgets.dart';
+import 'package:smart_link/config/config.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:smart_link/common/common.dart';
+import 'package:smart_link/screens/bluetooth_remote_screen/widgets/custom_joystick_stick.dart';
+import 'package:smart_link/screens/bluetooth_remote_screen/cubit/bluetooth_remote_cubit.dart';
 
-import 'cubit/bluetooth_remote_cubit.dart';
-
-class BluetoothRemoteController extends StatefulWidget {
+class BluetoothRemoteControlScreen extends StatefulWidget {
   final BluetoothDevice device;
-  const BluetoothRemoteController({super.key, required this.device});
+
+  const BluetoothRemoteControlScreen({super.key, required this.device});
 
   @override
-  State<BluetoothRemoteController> createState() => _BluetoothRemoteControllerState();
+  State<BluetoothRemoteControlScreen> createState() =>
+      _BluetoothRemoteControlScreenState();
 }
 
-class _BluetoothRemoteControllerState extends State<BluetoothRemoteController> with StandardAppWidgets {
+class _BluetoothRemoteControlScreenState
+    extends State<BluetoothRemoteControlScreen>
+    with StandardAppWidgets, SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat();
+
     _establishConnection(widget.device);
   }
 
   Future<void> _establishConnection(BluetoothDevice device) async {
-    BluetoothRemoteCubit bluetooth = BlocProvider.of<BluetoothRemoteCubit>(context);
+    final bluetooth = BlocProvider.of<BluetoothRemoteCubit>(context);
     await bluetooth.connect(device: device);
   }
 
@@ -54,7 +65,8 @@ class _BluetoothRemoteControllerState extends State<BluetoothRemoteController> w
                     builder: (_) {
                       return AlertDialog(
                         title: const Text("Disconnect?"),
-                        content: const Text("End communication with connected device?"),
+                        content: const Text(
+                            "End communication with connected device?"),
                         actions: [
                           TextButton(
                             child: const Text("Cancel"),
@@ -65,7 +77,9 @@ class _BluetoothRemoteControllerState extends State<BluetoothRemoteController> w
                           TextButton(
                             child: const Text("Yes"),
                             onPressed: () async {
-                              await context.read<BluetoothRemoteCubit>().disconnect();
+                              await context
+                                  .read<BluetoothRemoteCubit>()
+                                  .disconnect();
                             },
                           ),
                         ],
@@ -76,13 +90,14 @@ class _BluetoothRemoteControllerState extends State<BluetoothRemoteController> w
               );
             }
             return IconButton(
-                onPressed: () {
-                  showSnackBarWidget(
-                    context,
-                    "Ongoing operation cannot be interrupted!",
-                  );
-                },
-                icon: const Icon(Icons.exit_to_app_rounded));
+              onPressed: () {
+                showSnackBarWidget(
+                  context,
+                  "Ongoing operation cannot be interrupted!",
+                );
+              },
+              icon: const Icon(Icons.exit_to_app_rounded),
+            );
           },
         ),
       ),
@@ -94,16 +109,19 @@ class _BluetoothRemoteControllerState extends State<BluetoothRemoteController> w
             if (state is ConnectionFailed) {
               Navigator.pushReplacementNamed(
                 context,
-                Routes.bluetoothHome,
+                AppRoutes.bluetoothHome,
               );
               showSnackBarWidget(context, state.message, color: Colors.red);
             }
 
             if (state is Disconnected) {
-              SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+              SystemChrome.setPreferredOrientations(
+                [DeviceOrientation.portraitUp],
+              );
+
               Navigator.pushReplacementNamed(
                 context,
-                Routes.bluetoothHome,
+                AppRoutes.bluetoothHome,
               );
               showSnackBarWidget(context, state.message);
             }
@@ -114,7 +132,11 @@ class _BluetoothRemoteControllerState extends State<BluetoothRemoteController> w
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const CircularProgressIndicator(),
+                  SpinKitWave(
+                    color: AppColors.primary,
+                    size: 50.0,
+                    controller: _animationController,
+                  ),
                   SizedBox(height: MediaQuery.of(context).size.height / 20),
                   Text(
                     "Establishing connection with ${widget.device.name} . . .",
@@ -126,7 +148,9 @@ class _BluetoothRemoteControllerState extends State<BluetoothRemoteController> w
             }
 
             if (state is Connected) {
-              SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
+              SystemChrome.setPreferredOrientations(
+                [DeviceOrientation.landscapeLeft],
+              );
               return const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -135,6 +159,7 @@ class _BluetoothRemoteControllerState extends State<BluetoothRemoteController> w
                 ],
               );
             }
+
             return Container();
           },
         ),
@@ -144,6 +169,7 @@ class _BluetoothRemoteControllerState extends State<BluetoothRemoteController> w
 
   @override
   void dispose() {
+    _animationController.dispose();
     super.dispose();
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   }
@@ -154,7 +180,8 @@ class _RobotMovementController extends StatefulWidget {
   const _RobotMovementController();
 
   @override
-  State<_RobotMovementController> createState() => _RobotMovementControllerState();
+  State<_RobotMovementController> createState() =>
+      _RobotMovementControllerState();
 }
 
 class _RobotMovementControllerState extends State<_RobotMovementController> {
