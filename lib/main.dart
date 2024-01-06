@@ -3,15 +3,24 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_link/config/router/route_generator.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:smart_link/config/config.dart';
 import 'firebase_options.dart';
-import 'config/index.dart';
 
 Future<void> initializeFirebaseModule() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+}
+
+void configureLoadingIndicator() {
+  EasyLoading.instance
+    ..dismissOnTap = false
+    ..userInteractions = false
+    ..indicatorType = EasyLoadingIndicatorType.wave
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..animationStyle = EasyLoadingAnimationStyle.offset;
 }
 
 Future<void> main() async {
@@ -22,6 +31,8 @@ Future<void> main() async {
   }, (error, stack) {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
   });
+
+  configureLoadingIndicator();
 }
 
 class SmartLinkApp extends StatelessWidget {
@@ -33,8 +44,9 @@ class SmartLinkApp extends StatelessWidget {
       title: AppStrings.appName,
       color: AppColors.primary,
       theme: AppTheme.darkTheme,
+      builder: EasyLoading.init(),
       onGenerateRoute: RouteGenerator.generate,
-      initialRoute: kDebugMode ? Routes.bluetoothHome : Routes.auth,
+      initialRoute: kDebugMode ? AppRoutes.bluetoothHome : AppRoutes.auth,
       debugShowCheckedModeBanner: kDebugMode ? true : false,
     );
   }
