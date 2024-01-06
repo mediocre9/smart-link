@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_link/config/index.dart';
-import '../../common/app_drawer.dart';
-import '../../common/standard_app_widgets.dart';
-import 'cubit/wifi_home_cubit.dart';
+import 'package:smart_link/common/common.dart';
+import 'package:smart_link/config/config.dart';
+import 'package:smart_link/screens/wifi_home_screen/cubit/wifi_home_cubit.dart';
 
 class WifiHomeScreen extends StatelessWidget with StandardAppWidgets {
   const WifiHomeScreen({super.key});
@@ -16,14 +15,7 @@ class WifiHomeScreen extends StatelessWidget with StandardAppWidgets {
         appBar: AppBar(
           title: const Text("Locker Home"),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.bug_report_rounded),
-              onPressed: () => Navigator.pushNamed(context, Routes.feedback),
-            ),
-            IconButton(
-              icon: const Icon(Icons.info_outline_rounded),
-              onPressed: () => showAboutDialogWidget(context),
-            ),
+            popupMenuButtonWidget(context),
           ],
         ),
         drawer: AppDrawer(),
@@ -77,7 +69,7 @@ class WifiHomeScreen extends StatelessWidget with StandardAppWidgets {
       case Connected():
         Navigator.pushNamed(
           context,
-          Routes.wifiRemote,
+          AppRoutes.wifiRemote,
           arguments: state.baseUrl,
         );
         break;
