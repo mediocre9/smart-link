@@ -5,16 +5,26 @@ import 'package:google_sign_in/google_sign_in.dart';
 enum SignInState {
   authenticated,
   disabled,
+  error,
 }
 
 abstract interface class IAuthenticationService {
   Future<SignInState> signIn();
 }
 
-class AuthenticationService implements IAuthenticationService {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class GoogleAuthService implements IAuthenticationService {
+  final FirebaseAuth firebaseAuth;
 
-  User? get getCurrentUser => _auth.currentUser;
+  GoogleAuthService({required this.firebaseAuth});
+
+  User? get getCurrentUser => firebaseAuth.currentUser;
+
+  OAuthCredential _getOAuthCredential(GoogleSignInAuthentication? auth) {
+    return GoogleAuthProvider.credential(
+      idToken: auth?.idToken,
+      accessToken: auth?.accessToken,
+    );
+  }
 
   @override
   Future<SignInState> signIn() async {
@@ -22,21 +32,18 @@ class AuthenticationService implements IAuthenticationService {
       GoogleSignIn googleSignIn = GoogleSignIn();
       GoogleSignInAccount? user = await googleSignIn.signIn();
 
-      if (user != null) {
-        GoogleSignInAuthentication auth = await user.authentication;
+      GoogleSignInAuthentication? auth = await user?.authentication;
+      AuthCredential credential = _getOAuthCredential(auth);
 
-        AuthCredential credential = GoogleAuthProvider.credential(
-          idToken: auth.idToken,
-          accessToken: auth.accessToken,
-        );
-
-        await _auth.signInWithCredential(credential);
-      }
+      await firebaseAuth.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       log(e.message!);
       if (e.code == "user-disabled") {
         return SignInState.disabled;
       }
+    } catch (e) {
+      log('SignStateError: ${e.toString()}');
+      return SignInState.error;
     }
     return SignInState.authenticated;
   }

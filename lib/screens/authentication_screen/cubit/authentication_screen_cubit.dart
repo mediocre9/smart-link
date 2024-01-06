@@ -1,28 +1,22 @@
 import 'package:bloc/bloc.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../../services/auth_service.dart';
-import '../../../config/index.dart';
+import 'package:smart_link/services/services.dart';
+import 'package:smart_link/config/config.dart';
 
 part 'authentication_screen_state.dart';
 
 class AuthenticationScreenCubit extends Cubit<AuthenticationScreenState> {
-  final Connectivity internetConnectivity;
-  final AuthenticationService authService;
+  final IConnectivityService connectivityService;
+  final GoogleAuthService authService;
 
   AuthenticationScreenCubit({
     required this.authService,
-    required this.internetConnectivity,
+    required this.connectivityService,
   }) : super(Initial());
 
-  Future<bool> _isInternetAvailable() async {
-    var connectivityResult = await internetConnectivity.checkConnectivity();
-    return (connectivityResult != ConnectivityResult.none);
-  }
-
   Future<void> signIn() async {
-    if (!await _isInternetAvailable()) {
+    if (await connectivityService.isOffline()) {
       emit(NoInternet(message: AppStrings.noInternet));
       emit(Initial());
       return;
@@ -47,6 +41,7 @@ class AuthenticationScreenCubit extends Cubit<AuthenticationScreenState> {
 
       default:
         emit(Initial());
+        break;
     }
   }
 }

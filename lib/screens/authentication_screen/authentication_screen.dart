@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_link/common/standard_app_widgets.dart';
 import 'package:sign_button/sign_button.dart';
-import '../../config/index.dart';
-import '../authentication_screen/cubit/authentication_screen_cubit.dart';
+import 'package:smart_link/config/config.dart';
+import 'package:smart_link/screens/authentication_screen/cubit/authentication_screen_cubit.dart';
 
 class AuthenticationScreen extends StatelessWidget with StandardAppWidgets {
   const AuthenticationScreen({super.key});
@@ -62,7 +62,7 @@ class AuthenticationScreen extends StatelessWidget with StandardAppWidgets {
       case Authenticated():
         Navigator.pushNamedAndRemoveUntil(
           context,
-          Routes.bluetoothHome,
+          AppRoutes.bluetoothHome,
           (route) => false,
         );
         showSnackBarWidget(context, state.message);
