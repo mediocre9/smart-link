@@ -4,7 +4,7 @@ class AppColors {
   AppColors._();
 
   /// Widget colors....
-  static const Color card = Color(0xFF25232A);
+  static const Color pairedCard = Color.fromARGB(255, 34, 32, 39);
 
   static const Color appBar = Color(0xFF2A2831);
 
@@ -16,7 +16,9 @@ class AppColors {
 
   static const Color snackBar = Color(0xFF313033);
 
-  static const Color cardBorder = Color(0xFF49454F);
+  static const Color pairedCardBorder = Color.fromARGB(255, 81, 77, 87);
+
+  static const Color discoveredCard = Color.fromARGB(255, 50, 49, 56);
 
   static const Color elevatedButton = Color(0xFFBEA9EE);
 

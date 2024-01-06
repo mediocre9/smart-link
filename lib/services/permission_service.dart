@@ -2,6 +2,8 @@ import 'package:permission_handler/permission_handler.dart';
 
 abstract interface class IPermissionService {
   Future<bool> requestPermissions();
+
+  Future<bool> openPermissionSettings();
 }
 
 class BluetoothPermissionService implements IPermissionService {
@@ -15,5 +17,10 @@ class BluetoothPermissionService implements IPermissionService {
     ].request();
 
     return permissions.values.every((element) => element.isGranted);
+  }
+
+  @override
+  Future<bool> openPermissionSettings() async {
+    return await openAppSettings();
   }
 }
