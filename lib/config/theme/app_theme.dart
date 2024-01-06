@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../colors/app_colors.dart';
+import 'package:smart_link/config/config.dart';
 
 class AppTheme {
   AppTheme._();
@@ -8,7 +7,6 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData.dark(useMaterial3: true).copyWith(
       primaryColor: AppColors.primary,
-      useMaterial3: true,
       inputDecorationTheme: const InputDecorationTheme(
         border: OutlineInputBorder(),
         isDense: true,
@@ -29,11 +27,11 @@ class AppTheme {
         color: AppColors.progressIndicator,
       ),
       cardTheme: CardTheme(
-        color: AppColors.card,
+        color: AppColors.pairedCard,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
           side: const BorderSide(
-            color: AppColors.cardBorder,
+            color: AppColors.pairedCardBorder,
             style: BorderStyle.solid,
             width: 0.5,
           ),
