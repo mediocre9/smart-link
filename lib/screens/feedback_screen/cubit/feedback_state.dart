@@ -19,10 +19,16 @@ final class Loading extends FeedbackState {
   const Loading({required this.color});
 }
 
-final class NonEmptyState extends FeedbackState {
+final class Error extends FeedbackState {
+  final String message;
+
+  const Error({required this.message});
+}
+
+final class EmptyFieldsState extends FeedbackState {
   final Color color;
 
-  const NonEmptyState({required this.color});
+  const EmptyFieldsState({required this.color});
 }
 
 final class Submitted extends FeedbackState {
