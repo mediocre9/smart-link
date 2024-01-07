@@ -19,7 +19,7 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
   }
 
   Future _init() async {
-    if (await _handlePermissions() && (await bluetooth.isEnabled())!) {
+    if (await _handlePermissions()) {
       await _startBluetoothAdapterListener();
       await _getPairedDevices();
     }
