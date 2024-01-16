@@ -3,7 +3,7 @@ class AppStrings {
 
   static const String appName = "Smart Link";
 
-  static const String appVersion = "v0.8.0";
+  static const String appVersion = "v0.8.1";
 
   static const String appDescription = "IoT Remote Control";
 
