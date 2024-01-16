@@ -40,7 +40,7 @@ dependencies:
     flutter_bluetooth_serial: ^0.4.0
     connectivity_plus: ^5.0.2
     http: ^1.1.0
-    local_auth: ^2.1.5
+    local_auth: ^2.1.8
     permission_handler: ^11.0.1
     firebase_crashlytics: ^3.3.3
     firebase_auth: ^4.7.3
