@@ -23,7 +23,8 @@ class AppDrawer extends StatelessWidget {
                 CircleAvatar(
                   radius: 35,
                   foregroundImage: NetworkImage(
-                    _authService.getCurrentUser!.photoURL!,
+                    _authService.getCurrentUser?.photoURL ??
+                        "assets/images/logo.png",
                   ),
                 ),
                 Column(
