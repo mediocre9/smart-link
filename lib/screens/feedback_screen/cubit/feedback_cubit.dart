@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_link/config/config.dart';
 import 'package:smart_link/models/models.dart';
@@ -14,12 +16,12 @@ class FeedbackCubit extends Cubit<FeedbackState> {
   FeedbackCubit({
     required this.feedbackService,
     required this.authService,
-  }) : super(const FeedbackInitial(color: Colors.grey));
+  }) : super(FeedbackInitial());
 
   Future<void> submitFeedback(String subject, String body) async {
     if (isRequiredFeedbackEmpty(subject, body)) return;
 
-    emit(const Loading(color: Colors.blue));
+    emit(Loading());
 
     final feedback = _createUserFeedback(
       subject: subject,
@@ -29,29 +31,24 @@ class FeedbackCubit extends Cubit<FeedbackState> {
 
     try {
       await feedbackService.post(feedback);
-      emit(const Submitted(message: AppStrings.feedbackPosted));
+      emit(const SubmittedState(message: AppStrings.feedbackPosted));
     } on NetworkException {
-      emit(const Error(message: AppStrings.noInternet));
+      emit(const ErrorState(message: AppStrings.noInternet));
     } catch (e) {
-      emit(const Error(message: 'Something went wrong!'));
+      emit(const ErrorState(message: 'Something went wrong!'));
     } finally {
-      emit(const FeedbackInitial(color: Colors.grey));
+      emit(FeedbackInitial());
     }
   }
 
   bool isRequiredFeedbackEmpty(String subject, String body) {
     if (subject.isNotEmpty && body.isNotEmpty) {
-      emit(const EmptyFieldsState(color: Colors.blue));
+      emit(const SubmitButtonState(color: Colors.blue));
       return false;
     }
 
-    emit(const FeedbackInitial(color: Colors.grey));
+    emit(FeedbackInitial());
     return true;
-  }
-
-  DateTime _getCurrentDate() {
-    final DateTime(:day, :month, :year) = DateTime.now();
-    return DateTime(day, month, year);
   }
 
   UserFeedback _createUserFeedback({
@@ -59,12 +56,13 @@ class FeedbackCubit extends Cubit<FeedbackState> {
     required String body,
     required GoogleAuthService service,
   }) {
-    final currentDate = _getCurrentDate();
+    final currentDate = Timestamp.fromDate(DateTime.timestamp());
+    final User(:uid, :email, :displayName) = service.getCurrentUser!;
 
     return UserFeedback(
-      id: service.getCurrentUser!.uid,
-      email: service.getCurrentUser!.email!,
-      username: service.getCurrentUser!.displayName!,
+      id: uid,
+      email: email!,
+      username: displayName!,
       subject: subject,
       body: body,
       submittedDate: currentDate,

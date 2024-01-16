@@ -7,32 +7,24 @@ sealed class FeedbackState extends Equatable {
   List<Object> get props => [];
 }
 
-final class FeedbackInitial extends FeedbackState {
-  final Color color;
+final class FeedbackInitial extends FeedbackState {}
 
-  const FeedbackInitial({required this.color});
-}
+final class Loading extends FeedbackState {}
 
-final class Loading extends FeedbackState {
-  final Color color;
-
-  const Loading({required this.color});
-}
-
-final class Error extends FeedbackState {
+final class ErrorState extends FeedbackState {
   final String message;
 
-  const Error({required this.message});
+  const ErrorState({required this.message});
 }
 
-final class EmptyFieldsState extends FeedbackState {
+final class SubmitButtonState extends FeedbackState {
   final Color color;
 
-  const EmptyFieldsState({required this.color});
+  const SubmitButtonState({required this.color});
 }
 
-final class Submitted extends FeedbackState {
+final class SubmittedState extends FeedbackState {
   final String message;
 
-  const Submitted({required this.message});
+  const SubmittedState({required this.message});
 }

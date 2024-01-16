@@ -25,25 +25,22 @@ class _FeedbackScreenState extends State<FeedbackScreen>
           actions: [
             BlocConsumer<FeedbackCubit, FeedbackState>(
               listener: (context, state) {
-                if (state is Submitted) {
+                if (state is SubmittedState) {
                   showSnackBarWidget(context, state.message);
                 }
 
-                if (state is Error) {
+                if (state is ErrorState) {
                   showSnackBarWidget(context, state.message);
                 }
               },
               builder: (context, state) {
                 switch (state) {
                   case FeedbackInitial():
-                    return IconButton(
-                      onPressed: null,
-                      icon: Icon(Icons.send_rounded, color: state.color),
-                    );
+                    return const _SubmitButtonWidget();
 
-                  case EmptyFieldsState():
-                    return IconButton(
-                      icon: Icon(Icons.send_rounded, color: state.color),
+                  case SubmitButtonState():
+                    return _SubmitButtonWidget(
+                      color: state.color,
                       onPressed: () async {
                         FocusManager.instance.primaryFocus?.unfocus();
                         await context.read<FeedbackCubit>().submitFeedback(
@@ -57,7 +54,8 @@ class _FeedbackScreenState extends State<FeedbackScreen>
                   case Loading():
                     return Transform.scale(
                       scale: 0.7,
-                      child: CircularProgressIndicator(color: state.color),
+                      child:
+                          const CircularProgressIndicator(color: Colors.blue),
                     );
 
                   default:
@@ -104,6 +102,11 @@ class _FeedbackScreenState extends State<FeedbackScreen>
     );
   }
 
+  DateTime _getCurrentDate() {
+    final DateTime(:year, :month, :day) = DateTime.now();
+    return DateTime(year, month, day);
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -114,5 +117,22 @@ class _FeedbackScreenState extends State<FeedbackScreen>
   void _clearTextFields() {
     _subjectController.clear();
     _bodyController.clear();
+  }
+}
+
+class _SubmitButtonWidget extends StatelessWidget {
+  final Color? color;
+  final Function()? onPressed;
+  const _SubmitButtonWidget({this.color, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(
+        Icons.send_rounded,
+        color: color ?? Colors.grey,
+      ),
+      onPressed: onPressed,
+    );
   }
 }
