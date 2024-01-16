@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smart_link/models/model.dart';
 
 final class UserFeedback extends Model {
@@ -5,7 +6,7 @@ final class UserFeedback extends Model {
   final String username;
   final String subject;
   final String body;
-  final DateTime submittedDate;
+  final Timestamp submittedDate;
 
   UserFeedback({
     required super.id,
