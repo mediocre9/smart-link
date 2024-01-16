@@ -119,9 +119,10 @@ class _BluetoothRemoteControlScreenState
                 [DeviceOrientation.portraitUp],
               );
 
-              Navigator.pushReplacementNamed(
+              Navigator.pushNamedAndRemoveUntil(
                 context,
                 AppRoutes.bluetoothHome,
+                (route) => false,
               );
               showSnackBarWidget(context, state.message);
             }

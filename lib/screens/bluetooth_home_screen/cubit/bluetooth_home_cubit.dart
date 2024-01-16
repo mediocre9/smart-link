@@ -18,11 +18,18 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
     _init();
   }
 
-  Future _init() async {
-    if (await _handlePermissions()) {
-      await _startBluetoothAdapterListener();
-      await _getPairedDevices();
-    }
+  void _init() {
+    _handlePermissions().then((granted) {
+      if (granted) {
+        _startBluetoothAdapterListener();
+      }
+
+      bluetooth.isEnabled().then((enabled) {
+        if (granted && enabled!) {
+          _getPairedDevices();
+        }
+      });
+    });
   }
 
   Future<bool> _handlePermissions() async {
@@ -67,9 +74,9 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
   }
 
   Future<void> startScan() async {
-    // Before proceeding to use the bluetooth features,
-    // permissions must have to be ensured and allowed
-    // to avoid the potential crashes.
+    // Ensure necessary permissions
+    // before using Bluetooth features
+    // to avoid potential crashes.
     bool hasPermissions = await _handlePermissions();
     if (!hasPermissions) return;
 
