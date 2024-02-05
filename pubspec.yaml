@@ -52,7 +52,7 @@ dependencies:
     flutter_joystick: ^0.0.3
     app_settings: ^5.1.1
     flutter_spinkit: ^5.2.0
-    flutter_animate: ^4.3.0
+    flutter_animate: ^4.5.0
     flutter_easyloading: ^3.0.5
     equatable: ^2.0.5
 
