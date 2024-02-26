@@ -8,7 +8,7 @@ _<p align="center">A simple IoT based Application</p>_
 
 ## Smart Link
 
-> An application to remotely control Arduino devices to interact specifically with the HC-05/06 and ESP8266 (Node-MCU) modules.
+> An application to remotely control Arduino, HC-05/06 and ESP8266 (Node-MCU) IoT based devices.
 
 ## Features
 
@@ -20,6 +20,12 @@ _<p align="center">A simple IoT based Application</p>_
 
 <p align="center">
   <img src="previews/preview.jpeg" width="100%">
+</p>
+
+## Architecture:
+
+<p align="center">
+  <img src="previews/architecture.png" width="100%">
 </p>
 
 ## Hardware Repositories:
