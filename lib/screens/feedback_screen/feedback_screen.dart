@@ -102,11 +102,6 @@ class _FeedbackScreenState extends State<FeedbackScreen>
     );
   }
 
-  DateTime _getCurrentDate() {
-    final DateTime(:year, :month, :day) = DateTime.now();
-    return DateTime(year, month, day);
-  }
-
   @override
   void dispose() {
     super.dispose();
