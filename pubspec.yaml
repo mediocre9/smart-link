@@ -48,7 +48,7 @@ dependencies:
     google_sign_in: ^6.1.4
     sign_button: ^2.0.4
     build_runner: ^2.4.6
-    cloud_firestore: ^4.10.0
+    cloud_firestore: ^4.15.9
     flutter_joystick: ^0.0.3
     app_settings: ^5.1.1
     flutter_spinkit: ^5.2.0
