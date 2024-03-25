@@ -38,7 +38,7 @@ dependencies:
     flutter_bloc: ^8.1.1
     bloc: ^8.1.0
     flutter_bluetooth_serial: ^0.4.0
-    connectivity_plus: ^5.0.2
+    connectivity_plus: ^6.0.1
     http: ^1.1.0
     local_auth: ^2.1.5
     permission_handler: ^11.0.1
