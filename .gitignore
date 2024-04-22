@@ -52,5 +52,7 @@ macos/
 web/
 ios/
 
-# remove firebase options
+# remove firebase
 firebase_options.dart
+firebase.json
+
