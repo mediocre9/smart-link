@@ -44,7 +44,7 @@ dependencies:
     permission_handler: ^11.0.1
     firebase_crashlytics: ^3.3.3
     firebase_auth: ^4.7.3
-    firebase_core: ^2.14.0
+    firebase_core: ^2.30.0
     google_sign_in: ^6.1.4
     sign_button: ^2.0.4
     build_runner: ^2.4.6
