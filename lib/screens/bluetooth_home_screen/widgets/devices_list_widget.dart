@@ -49,26 +49,34 @@ class _CardTileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-            child: ListTile(
-                tileColor: device.isBonded
-                    ? AppColors.pairedCard
-                    : AppColors.discoveredCard,
-                enableFeedback: true,
-                title: Text(device.name!,
-                    style: Theme.of(context).textTheme.titleMedium),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text('Type: ${device.type.stringValue}',
-                        style: Theme.of(context).textTheme.labelMedium),
-                    Text('Bonded: ${device.isBonded ? "Yes" : "No"}',
-                        style: Theme.of(context).textTheme.labelMedium),
-                    Text('MAC: ${device.address}',
-                        style: Theme.of(context).textTheme.labelMedium),
-                  ],
-                ),
-                onTap: onPressed))
+      child: ListTile(
+          tileColor:
+              device.isBonded ? AppColors.pairedCard : AppColors.discoveredCard,
+          enableFeedback: true,
+          title: Text(
+            device.name ?? "Unknown",
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                'Type: ${device.type.stringValue}',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              Text(
+                'Bonded: ${device.isBonded ? "Yes" : "No"}',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              Text(
+                'MAC: ${device.address}',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ],
+          ),
+          onTap: onPressed),
+    )
         .animate()
         .fadeIn(duration: 600.ms)
         .slide(curve: Curves.easeInOut, begin: const Offset(-1, 0));
