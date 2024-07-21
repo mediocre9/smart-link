@@ -108,11 +108,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                           TextButton(
                             child: const Text("Sign Out"),
-                            onPressed: () {
-                              FirebaseAuth.instance.signOut().then((_) async {
-                                await GoogleSignIn().disconnect();
-                              });
-                              Navigator.pop(context);
+                            onPressed: () async {
+                              await FirebaseAuth.instance.signOut();
+                              await GoogleSignIn().disconnect();
+
+                              if (context.mounted) {
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  AppRoutes.auth,
+                                  (context) => false,
+                                );
+                              }
                             },
                           ),
                         ],
