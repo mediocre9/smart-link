@@ -111,7 +111,7 @@ class _BluetoothRemoteControlScreenState
                 context,
                 AppRoutes.bluetoothHome,
               );
-              showSnackBarWidget(context, state.message, color: Colors.red);
+              showSnackBarWidget(context, state.message);
             }
 
             if (state is Disconnected) {
@@ -134,7 +134,7 @@ class _BluetoothRemoteControlScreenState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SpinKitWave(
-                    color: AppColors.primary,
+                    color: const Color.fromARGB(255, 224, 224, 224),
                     size: 50.0,
                     controller: _animationController,
                   ),

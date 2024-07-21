@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:smart_link/config/config.dart';
+import 'package:smart_link/extensions.dart';
 import 'package:smart_link/services/services.dart';
 
 part 'bluetooth_home_state.dart';
@@ -14,11 +15,9 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
   BluetoothHomeCubit({
     required this.bluetooth,
     required this.permission,
-  }) : super(Initial()) {
-    _init();
-  }
+  }) : super(Initial());
 
-  void _init() {
+  void init() {
     _handlePermissions().then((granted) {
       if (granted) {
         _startBluetoothAdapterListener();
@@ -36,8 +35,8 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
     bool hasPermissions = await permission.requestPermissions();
 
     if (!hasPermissions) {
-      emit(AskForPermissions(message: AppStrings.permissionInfo));
-      emit(Initial());
+      safeEmit(AskForPermissions(message: AppStrings.permissionInfo));
+      safeEmit(Initial());
     }
 
     return hasPermissions;
@@ -46,7 +45,7 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
   Future<void> _startBluetoothAdapterListener() async {
     await for (final state in bluetooth.onAdapterStateChanges()) {
       if (state == BluetoothState.STATE_OFF) {
-        emit(Initial());
+        safeEmit(Initial());
       } else if (state == BluetoothState.STATE_ON) {
         if (await _handlePermissions()) {
           await _bluetoothStateOn();
@@ -70,7 +69,7 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
         ? LoadedDevices(devices: _discovered.toList())
         : Initial();
 
-    emit(state);
+    safeEmit(state);
   }
 
   Future<void> startScan() async {
@@ -83,23 +82,23 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
     bool? isAdapterEnabled = await bluetooth.enableBluetoothAdapter();
 
     if (!(isAdapterEnabled)!) {
-      emit(Initial());
+      safeEmit(Initial());
       return;
     }
 
     await _getPairedDevices();
-    emit(LoadDevices(devices: _discovered.toList()));
+    safeEmit(LoadDevices(devices: _discovered.toList()));
 
     await for (final results in bluetooth.startDiscovery()) {
       _discovered
         ..removeWhere((e) => e.address == results.device.address)
         ..add(results.device);
 
-      emit(LoadDevices(devices: _discovered.toList()));
+      safeEmit(LoadDevices(devices: _discovered.toList()));
     }
 
     if (_discovered.isNotEmpty) {
-      emit(LoadedDevices(devices: _discovered.toList()));
+      safeEmit(LoadedDevices(devices: _discovered.toList()));
     } else {
       _getPairedDevices();
     }
@@ -117,7 +116,7 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
     await stopScan();
 
     if (device.isBonded) {
-      emit(DeviceConnection(device: device));
+      safeEmit(DeviceConnection(device: device));
       return;
     }
 
@@ -129,7 +128,7 @@ class BluetoothHomeCubit extends Cubit<BluetoothHomeState> {
         ? DeviceConnection(device: device)
         : LoadedDevices(devices: _discovered.toList());
 
-    emit(state);
+    safeEmit(state);
   }
 
   Future<void> _showLoading(String? name) async {
