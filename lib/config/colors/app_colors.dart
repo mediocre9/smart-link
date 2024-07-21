@@ -1,4 +1,4 @@
-import 'package:flutter/rendering.dart';
+import 'package:flutter/material.dart';
 
 class AppColors {
   AppColors._();
@@ -8,7 +8,7 @@ class AppColors {
 
   static const Color appBar = Color(0xFF2A2831);
 
-  static const Color primary = Color(0xFFD4C5F6);
+  static Color primary = Colors.blue.shade600;
 
   static const Color listTile = Color(0xFF25232A);
 
@@ -20,11 +20,9 @@ class AppColors {
 
   static const Color discoveredCard = Color.fromARGB(255, 50, 49, 56);
 
-  static const Color elevatedButton = Color(0xFFBEA9EE);
+  static Color elevatedButton = Colors.blue.shade600;
 
-  static const Color progressIndicator = Color(0xFFD0BCFF);
-
-  static const Color floatingActionButton = Color(0xFF313034);
+  static Color progressIndicator = Colors.blue.shade600;
 
   /// Text Colors....
   static const Color smallTitle = Color(0xFFE6E1E5);
@@ -42,6 +40,4 @@ class AppColors {
   static const Color mediumDisplay = Color(0xFFAC8EF0);
 
   static const Color snackBarContent = Color(0xFFF4EFF4);
-
-  static const Color elevatedButtonContent = Color(0xFF381E72);
 }

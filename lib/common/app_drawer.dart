@@ -45,30 +45,17 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.connect_without_contact_rounded),
-            title: const Text("HC-06"),
+            title: const Text("CURO 360 Robot"),
             onTap: () {
               Navigator.pushReplacementNamed(context, AppRoutes.bluetoothHome);
             },
           ),
           const Divider(),
-          ExpansionTile(
-            leading: const Icon(Icons.wifi_protected_setup_rounded),
-            title: const Text("Node-MCU"),
-            children: [
-              ListTile(
-                title: const Text("Locker"),
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.wifiHome);
-                },
-              ),
-              ListTile(
-                title: const Text("Fingerprint"),
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, AppRoutes.biometric);
-                },
-              ),
-            ],
+          ListTile(
+            title: const Text("Smart Lock"),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, AppRoutes.wifiHome);
+            },
           ),
         ],
       ),

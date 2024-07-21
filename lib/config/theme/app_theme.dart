@@ -14,16 +14,11 @@ class AppTheme {
       popupMenuTheme: const PopupMenuThemeData(
         color: Color(0xFFE2D9F8),
       ),
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: AppColors.elevatedButton,
-        foregroundColor: AppColors.elevatedButtonContent,
-        shape: CircleBorder(),
-      ),
       bottomSheetTheme: const BottomSheetThemeData(
         shape: BeveledRectangleBorder(),
         backgroundColor: AppColors.scaffold,
       ),
-      progressIndicatorTheme: const ProgressIndicatorThemeData(
+      progressIndicatorTheme: ProgressIndicatorThemeData(
         color: AppColors.progressIndicator,
       ),
       cardTheme: CardTheme(
@@ -39,22 +34,6 @@ class AppTheme {
       ),
       listTileTheme: const ListTileThemeData(
         dense: true,
-        tileColor: AppColors.listTile,
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(5),
-            ),
-          ),
-          backgroundColor: MaterialStateProperty.all(
-            AppColors.elevatedButton,
-          ),
-          foregroundColor: MaterialStateProperty.all(
-            AppColors.elevatedButtonContent,
-          ),
-        ),
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: AppColors.snackBar,
