@@ -54,8 +54,9 @@ class _FeedbackScreenState extends State<FeedbackScreen>
                   case Loading():
                     return Transform.scale(
                       scale: 0.7,
-                      child:
-                          const CircularProgressIndicator(color: Colors.blue),
+                      child: const CircularProgressIndicator(
+                        color: Colors.blue,
+                      ),
                     );
 
                   default:
