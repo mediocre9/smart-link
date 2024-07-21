@@ -66,7 +66,7 @@ class BluetoothRemoteCubit extends Cubit<BluetoothRemoteState> {
   }
 
   Future<void> disconnect() async {
-    // await _bluetoothConnection!.finish();
+    await _bluetoothConnection!.finish();
     safeEmit(Disconnected(message: AppStrings.bluetoothDisconnected));
   }
 
