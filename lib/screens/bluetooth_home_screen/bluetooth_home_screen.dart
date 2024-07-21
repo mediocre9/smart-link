@@ -1,13 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_link/common/common.dart';
 import 'package:smart_link/config/config.dart';
+import 'package:smart_link/config/router/routes.dart';
 import 'package:smart_link/screens/bluetooth_home_screen/cubit/bluetooth_home_cubit.dart';
 import 'package:smart_link/screens/bluetooth_home_screen/widgets/widgets.dart';
 
 class BluetoothHomeScreen extends StatefulWidget {
-  const BluetoothHomeScreen({super.key});
+  final IAuthenticationService authService;
+  const BluetoothHomeScreen({super.key, required this.authService});
 
   @override
   State<BluetoothHomeScreen> createState() => _BluetoothHomeScreenState();
@@ -19,21 +23,30 @@ class _BluetoothHomeScreenState extends State<BluetoothHomeScreen>
 
   @override
   void initState() {
+    super.initState();
+    widget.authService.isRevoked().then((blocked) {
+      if (blocked) {
+        Navigator.pushReplacementNamed(context, AppRoutes.auth);
+      }
+    });
+
+    context.read<BluetoothHomeCubit>().init();
+
     _animationController = AnimationController(
       vsync: this,
       duration: 1200.ms,
     )..repeat();
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Bluetooth Home"),
+        title: const Text("CURO 360 Robot"),
         actions: [
           BlocBuilder<BluetoothHomeCubit, BluetoothHomeState>(
             builder: (context, state) {
+              log(state.runtimeType.toString());
               switch (state) {
                 case Initial() || LoadedDevices():
                   return const StartScanButtonWidget();
