@@ -20,7 +20,11 @@ class _WifiHomeScreenState extends State<WifiHomeScreen>
     super.initState();
     widget.authService.isRevoked().then((blocked) {
       if (blocked) {
-        Navigator.pushReplacementNamed(context, AppRoutes.auth);
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoutes.auth,
+          (context) => false,
+        );
       }
     });
   }
