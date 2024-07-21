@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:smart_link/config/router/routes.dart';
 
 enum SignInState {
   authenticated,
@@ -10,10 +11,13 @@ enum SignInState {
 
 abstract interface class IAuthenticationService {
   Future<SignInState> signIn();
+  Future<bool> isRevoked();
 }
 
 class GoogleAuthService implements IAuthenticationService {
   final FirebaseAuth firebaseAuth;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final IConnectivityService _connectivityService = ConnectivityService();
 
   GoogleAuthService({required this.firebaseAuth});
 
@@ -29,12 +33,9 @@ class GoogleAuthService implements IAuthenticationService {
   @override
   Future<SignInState> signIn() async {
     try {
-      GoogleSignIn googleSignIn = GoogleSignIn();
-      GoogleSignInAccount? user = await googleSignIn.signIn();
-
+      GoogleSignInAccount? user = await _googleSignIn.signIn();
       GoogleSignInAuthentication? auth = await user?.authentication;
       AuthCredential credential = _getOAuthCredential(auth);
-
       await firebaseAuth.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       log(e.message!);
@@ -46,5 +47,20 @@ class GoogleAuthService implements IAuthenticationService {
       return SignInState.error;
     }
     return SignInState.authenticated;
+  }
+
+  @override
+  Future<bool> isRevoked() async {
+    if (await _connectivityService.isOffline()) return false;
+    try {
+      await for (final user in FirebaseAuth.instance.authStateChanges()) {
+        if (user == null) return true;
+        IdTokenResult result = await user.getIdTokenResult(true);
+        return result.token == null;
+      }
+    } catch (e) {
+      return true;
+    }
+    return false;
   }
 }
