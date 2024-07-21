@@ -3,14 +3,14 @@ class AppStrings {
 
   static const String appName = "Smart Link";
 
-  static const String appVersion = "v0.8.2";
+  static const String appVersion = "v1.0.0";
 
-  static const String appDescription = "IoT Remote Control";
+  static const String appDescription = "Seamless IoT Solution";
 
   static const String appLogo = "assets/images/logo.png";
 
-  static final String copyright =
-      "(c) Copyright ${DateTime.now().year} CUSIT IT & Robotics Society. All rights reserved.";
+  static const String copyright =
+      "IT & Robotics Society. Licensed under the MIT license.";
 
   static const String permissionInfo =
       "Allow Smart Link to access Nearby devices and Location permissions on this device?";
@@ -32,11 +32,10 @@ class AppStrings {
 
   static const String bluetoothDisconnected = "Disconnected!";
 
-  static const String connectionFailed = "End device not responding!";
-
   static const String feedbackPosted = "Thanks for your valuable feedback!";
 
-  static const String biometricLock = "Locked out due to too many attempts!";
+  static const String biometricLock =
+      "Locked out due to too many attempts. Please try again later.";
 
   static const String biometricPermanent =
       "Locked out permanently due to too many attempts!";
@@ -49,7 +48,8 @@ class AppStrings {
 
   static const String deviceServerIP = "192.168.4.1";
 
-  static const String userBlocked = "Your account access has been revoked!";
+  static const String userBlocked =
+      "Account access revoked. Contact IT & Robotics society for more information.";
 
   static const String googleLogoPath = "assets/images/google_logo.png";
 

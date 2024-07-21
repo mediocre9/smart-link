@@ -33,7 +33,11 @@ class RouteGenerator {
               permission: BluetoothPermissionService(),
               bluetooth: BluetoothService(FlutterBluetoothSerial.instance),
             ),
-            child: const BluetoothHomeScreen(),
+            child: BluetoothHomeScreen(
+              authService: GoogleAuthService(
+                firebaseAuth: FirebaseAuth.instance,
+              ),
+            ),
           ),
         );
 
@@ -51,15 +55,11 @@ class RouteGenerator {
         return _defaultPageTransition(
           route: BlocProvider(
             create: (_) => WifiHomeCubit(),
-            child: const WifiHomeScreen(),
-          ),
-        );
-
-      case AppRoutes.wifiRemote:
-        return _defaultPageTransition(
-          route: BlocProvider(
-            create: (_) => WifiRemoteCubit(),
-            child: WifiRemoteScreen(baseUrl: (arg as String)),
+            child: WifiHomeScreen(
+              authService: GoogleAuthService(
+                firebaseAuth: FirebaseAuth.instance,
+              ),
+            ),
           ),
         );
 
@@ -79,9 +79,6 @@ class RouteGenerator {
           ),
           pageTransitionBuilder: const FadeUpwardsPageTransitionsBuilder(),
         );
-
-      case AppRoutes.biometric:
-        return _defaultPageTransition(route: const BiometricAuthScreen());
 
       default:
         return _defaultPageTransition(route: _defaultRoute());
