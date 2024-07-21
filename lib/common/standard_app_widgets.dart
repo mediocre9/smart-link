@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:smart_link/config/config.dart';
+import 'package:smart_link/screens/settings_screen.dart';
 
 enum PopupItems {
-  feedback,
+  settings,
   about,
 }
 
@@ -25,8 +26,12 @@ mixin StandardAppWidgets {
     );
   }
 
-  void showSnackBarWidget(BuildContext context, String message,
-      {Color? color}) {
+  void showSnackBarWidget(
+    BuildContext context,
+    String message, {
+    Color? color,
+  }) {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
@@ -45,8 +50,8 @@ mixin StandardAppWidgets {
       itemBuilder: (context) {
         return [
           const PopupMenuItem(
-            value: PopupItems.feedback,
-            child: Text("Share Feedback"),
+            value: PopupItems.settings,
+            child: Text("Settings"),
           ),
           const PopupMenuItem(
             value: PopupItems.about,
@@ -54,10 +59,15 @@ mixin StandardAppWidgets {
           ),
         ];
       },
-      onSelected: (value) {
+      onSelected: (value) async {
         switch (value) {
-          case PopupItems.feedback:
-            Navigator.pushNamed(context, AppRoutes.feedback);
+          case PopupItems.settings:
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SettingsScreen(),
+              ),
+            );
             break;
 
           default:
