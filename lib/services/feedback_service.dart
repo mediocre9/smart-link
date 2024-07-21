@@ -25,7 +25,9 @@ class FeedbackService extends IFeedbackService<UserFeedback> {
   @override
   Future<void> post(UserFeedback data) async {
     try {
-      if (await connectivityService.isOffline()) throw NetworkException();
+      if (await connectivityService.isOffline()) {
+        throw NetworkException();
+      }
       await _feedbackCollections.doc().set(data);
     } catch (e) {
       log("Feedback Exception: $e");
