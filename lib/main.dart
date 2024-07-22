@@ -46,7 +46,7 @@ class SmartLinkApp extends StatelessWidget {
       theme: AppTheme.darkTheme,
       builder: EasyLoading.init(),
       onGenerateRoute: RouteGenerator.generate,
-      initialRoute: kDebugMode ? AppRoutes.bluetoothHome : AppRoutes.auth,
+      initialRoute: kDebugMode ? AppRoutes.auth : AppRoutes.bluetoothHome,
       debugShowCheckedModeBanner: kDebugMode ? true : false,
     );
   }
