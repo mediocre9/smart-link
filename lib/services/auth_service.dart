@@ -51,16 +51,21 @@ class GoogleAuthService implements IAuthenticationService {
 
   @override
   Future<bool> isRevoked() async {
-    if (await _connectivityService.isOffline()) return false;
     try {
-      await for (final user in FirebaseAuth.instance.authStateChanges()) {
-        if (user == null) return true;
-        IdTokenResult result = await user.getIdTokenResult(true);
-        return result.token == null;
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        return true;
       }
-    } catch (e) {
+
+      if (await _connectivityService.isOffline()) {
+        return false;
+      }
+
+      IdTokenResult result = await user.getIdTokenResult(true);
+      return result.token == null;
+    } on Exception catch (e) {
+      log(e.toString());
       return true;
     }
-    return false;
   }
 }
