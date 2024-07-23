@@ -31,10 +31,10 @@ class _BluetoothHomeScreenState extends State<BluetoothHomeScreen>
           AppRoutes.auth,
           (context) => false,
         );
+      } else {
+        context.read<BluetoothHomeCubit>().init();
       }
     });
-
-    context.read<BluetoothHomeCubit>().init();
 
     _animationController = AnimationController(
       vsync: this,
