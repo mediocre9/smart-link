@@ -36,8 +36,8 @@ class AppDrawer extends StatelessWidget {
                       style: const TextStyle(fontSize: 18),
                     ),
                     Text(
-                      "ID: ${_authService.getCurrentUser?.uid ?? "Undefined"}",
-                      style: const TextStyle(fontSize: 9, color: Colors.grey),
+                      _authService.getCurrentUser?.uid ?? "Undefined",
+                      style: const TextStyle(fontSize: 7, color: Colors.grey),
                     ),
                   ],
                 ),
@@ -47,14 +47,22 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             title: const Text("CURO 360 Robot"),
             onTap: () {
-              Navigator.pushReplacementNamed(context, AppRoutes.bluetoothHome);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRoutes.bluetoothHome,
+                (context) => false,
+              );
             },
           ),
           const Divider(),
           ListTile(
             title: const Text("Smart Lock"),
             onTap: () {
-              Navigator.pushReplacementNamed(context, AppRoutes.wifiHome);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                AppRoutes.wifiHome,
+                (context) => false,
+              );
             },
           ),
         ],
