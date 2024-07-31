@@ -1,7 +1,7 @@
 class AppRoutes {
   AppRoutes._();
 
-  static const String bluetoothHome = 'bluetoothHome';
+  static const String bluetoothHome = '/';
 
   static const String auth = '/auth';
 

@@ -6,27 +6,14 @@ class Initial extends WifiHomeState {}
 
 class Connecting extends WifiHomeState {}
 
-class Connected extends WifiHomeState {
-  final String message;
-
-  Connected(this.message);
-}
-
 class NotConnected extends WifiHomeState {
   final String message;
   NotConnected(this.message);
 }
 
-class OnSignal extends WifiHomeState {
+class Unlock extends WifiHomeState {
   final String message;
-  final Color color;
-  OnSignal(this.message, this.color);
-}
-
-class OffSignal extends WifiHomeState {
-  final String message;
-  final Color color;
-  OffSignal(this.message, this.color);
+  Unlock(this.message);
 }
 
 class NetworkError extends WifiHomeState {

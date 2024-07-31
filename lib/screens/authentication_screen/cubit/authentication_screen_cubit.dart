@@ -39,6 +39,14 @@ class AuthenticationScreenCubit extends Cubit<AuthenticationScreenState> {
         ));
         break;
 
+      case SignInState.error:
+        emit(NoInternet(
+          message:
+              'Something went wrong. Please check your internet connection.',
+        ));
+        emit(Initial());
+        break;
+
       default:
         emit(Initial());
         break;

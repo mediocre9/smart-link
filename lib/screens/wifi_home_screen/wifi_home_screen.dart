@@ -58,9 +58,8 @@ class _WifiHomeScreenState extends State<WifiHomeScreen>
 
   Center _biometricAuthButton(
     BuildContext context,
-    Future<void> Function()? cb, [
-    Color color = Colors.grey,
-  ]) {
+    Future<void> Function()? cb,
+  ) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -69,7 +68,7 @@ class _WifiHomeScreenState extends State<WifiHomeScreen>
             icon: Icon(
               Icons.fingerprint_rounded,
               size: MediaQuery.of(context).size.height / 5,
-              color: color,
+              color: Colors.grey,
             ),
             onPressed: cb != null ? () async => await cb() : null,
           ),
@@ -90,25 +89,11 @@ class _WifiHomeScreenState extends State<WifiHomeScreen>
       case Initial():
         return _biometricAuthButton(
           context,
-          context.read<WifiHomeCubit>().connectToESP8266,
+          context.read<WifiHomeCubit>().connectToDevice,
         );
 
       case Connecting():
         return _biometricAuthButton(context, null);
-
-      case OnSignal():
-        return _biometricAuthButton(
-          context,
-          context.read<WifiHomeCubit>().sendOffMessage,
-          state.color,
-        );
-
-      case OffSignal():
-        return _biometricAuthButton(
-          context,
-          context.read<WifiHomeCubit>().sendOnMessage,
-          state.color,
-        );
 
       default:
         return Container();
@@ -129,15 +114,7 @@ class _WifiHomeScreenState extends State<WifiHomeScreen>
         showSnackBarWidget(context, state.message);
         break;
 
-      case OnSignal():
-        showSnackBarWidget(
-          context,
-          state.message,
-          color: Colors.green.shade700,
-        );
-        break;
-
-      case OffSignal():
+      case Unlock():
         showSnackBarWidget(context, state.message);
         break;
 
