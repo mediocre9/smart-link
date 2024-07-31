@@ -10,16 +10,13 @@ class AppStrings {
   static const String appLogo = "assets/images/logo.png";
 
   static const String copyright =
-      "IT & Robotics Society. Licensed under the MIT license.";
+      "CUSIT Makerspace R&D Lab. Licensed under the MIT license.";
 
   static const String permissionInfo =
       "Allow Smart Link to access Nearby devices and Location permissions on this device?";
 
   static const String noInternet =
       "No internet connection. Please check your network settings and try again.";
-
-  static const String lockerHomeInfo =
-      "Info: Connect to the \"It & Robotics - (Node-MCU)\" network through your system's Wi-Fi settings. You will be prompted to enter the Wi-Fi password, which is \"1116equj5\". After successful connection, simply press the \"Connect\" button.";
 
   static const String bluetoothHomeDescription = "Scan for bluetooth devices";
 
@@ -49,7 +46,7 @@ class AppStrings {
   static const String deviceServerIP = "192.168.4.1";
 
   static const String userBlocked =
-      "Account access revoked. Contact IT & Robotics society for more information.";
+      "Account access revoked. Contact CUSIT Makerspace R&D Lab for more information.";
 
   static const String googleLogoPath = "assets/images/google_logo.png";
 
