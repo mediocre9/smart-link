@@ -66,7 +66,8 @@ class AuthenticationScreen extends StatelessWidget with StandardAppWidgets {
               padding: const EdgeInsets.all(8.0),
               child: RichText(
                 text: TextSpan(
-                  text: 'By signing in, you agree to our ',
+                  text:
+                      "By signing in, you agree to the CUSIT Makerspace R&D Lab’s ",
                   style: const TextStyle(fontSize: 12, color: Colors.grey),
                   children: [
                     TextSpan(
