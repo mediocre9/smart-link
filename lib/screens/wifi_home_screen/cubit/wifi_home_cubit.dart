@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:app_settings/app_settings.dart';
@@ -19,7 +18,7 @@ class WifiHomeCubit extends Cubit<WifiHomeState> with StandardAppWidgets {
 
   WifiHomeCubit() : super(Initial());
 
-  Future<void> connectToESP8266() async {
+  Future<void> connectToDevice() async {
     try {
       safeEmit(Connecting());
       http.Response response = await http.post(
@@ -30,9 +29,8 @@ class WifiHomeCubit extends Cubit<WifiHomeState> with StandardAppWidgets {
         body: FirebaseAuth.instance.currentUser?.email,
       );
       if (response.statusCode == 200) {
-        safeEmit(Connected(response.body));
         safeEmit(Initial());
-        await sendOnMessage();
+        await openLocker();
         return;
       }
       safeEmit(NotConnected(response.body));
@@ -46,7 +44,7 @@ class WifiHomeCubit extends Cubit<WifiHomeState> with StandardAppWidgets {
     }
   }
 
-  Future<void> sendOnMessage() async {
+  Future<void> openLocker() async {
     try {
       bool isAuthenticated = await _isBiometricAuth();
       if (isAuthenticated) {
@@ -55,11 +53,12 @@ class WifiHomeCubit extends Cubit<WifiHomeState> with StandardAppWidgets {
           headers: {
             'Content-Type': 'text/plain',
           },
-          body: FirebaseAuth.instance.currentUser?.email,
+          body: FirebaseAuth.instance.currentUser!.email,
         );
 
         if (response.statusCode == 200) {
-          safeEmit(OnSignal(response.body, AppColors.primary));
+          safeEmit(Unlock(response.body));
+          safeEmit(Initial());
           return;
         }
       }
@@ -84,26 +83,6 @@ class WifiHomeCubit extends Cubit<WifiHomeState> with StandardAppWidgets {
       log(e.toString());
       safeEmit(NetworkError(
           "Something went wrong! Please contact support for further assistance."));
-    }
-  }
-
-  Future<void> sendOffMessage() async {
-    safeEmit(Connecting());
-    try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/lock'),
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        body: FirebaseAuth.instance.currentUser?.email,
-      );
-      safeEmit(OffSignal(response.body, Colors.grey));
-    } on Exception catch (e) {
-      log(e.toString());
-      safeEmit(NetworkError(
-          "Something went wrong! Please contact support for further assistance."));
-    } finally {
-      safeEmit(Initial());
     }
   }
 
