@@ -25,16 +25,16 @@ class _BluetoothHomeScreenState extends State<BluetoothHomeScreen>
   void initState() {
     super.initState();
     widget.authService.isRevoked().then((blocked) {
+      log(blocked.toString());
       if (blocked) {
-        Navigator.pushNamedAndRemoveUntil(
+        Navigator.pushReplacementNamed(
           context,
           AppRoutes.auth,
-          (context) => false,
         );
+      } else {
+        context.read<BluetoothHomeCubit>().init();
       }
     });
-
-    context.read<BluetoothHomeCubit>().init();
 
     _animationController = AnimationController(
       vsync: this,
@@ -50,7 +50,6 @@ class _BluetoothHomeScreenState extends State<BluetoothHomeScreen>
         actions: [
           BlocBuilder<BluetoothHomeCubit, BluetoothHomeState>(
             builder: (context, state) {
-              log(state.runtimeType.toString());
               switch (state) {
                 case Initial() || LoadedDevices():
                   return const StartScanButtonWidget();
