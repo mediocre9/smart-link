@@ -10,6 +10,8 @@ _<p align="center">A simple IoT based Application</p>_
 
 > An IoT application designed for remote control and management of various devices, including Arduino, HC-05/06, ESP32 or ESP8266 (Node-MCU). The app offers features such as Google authentication, user feedback, in-app update checker and Bluetooth communication. It enables users to control robots and does also provides fingerprint biometric authentication for secure locker access through ESP32 firmware.
 
+**⚠️ Note: The current mobile app release is incompatible with the latest firmware of <a href="https://github.com/mediocre9/esp-32-smart-safe-locker">ESP32 Smart Safe Locker Firmware</a>. Updating soon!**
+
 ## Previews
 <p align="center">
   <img src="previews/screen-previews.png" height="100%">
